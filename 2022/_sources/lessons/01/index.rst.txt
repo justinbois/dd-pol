@@ -1,0 +1,9 @@
+****************************************
+Lesson 1: Pandas and split-apply-combine
+****************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   Introduction to Pandas <intro_to_pandas.ipynb>
+   Tidy data and split-apply-combine <split_apply_combine.ipynb>

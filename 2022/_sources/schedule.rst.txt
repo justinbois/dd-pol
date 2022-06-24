@@ -1,0 +1,46 @@
+Schedule overview
+-----------------
+
+The workshop runs June 26–July 1, 2022, 9 am-6 pm in AAC 020. The times below are approximate.
+
+----
+
+Daily schedule
+--------------
+
+- **Pre-bootcamp**
+
+	+ :ref:`Lesson 0: Configuring your computer`
+
+
+- **Day 1: Monday, July 4**
+
+	+ **1:00** - :ref:`Lesson 1: Pandas and split-apply-combine`
+	+ **2:00** - :ref:`Exercise 1. Pandas and split-apply-combine`
+	+ **3:00** - :ref:`Lesson 2: Exploratory plotting`
+	+ **4:00** - :ref:`Exercise 2. Exploratory plotting`
+
+
+- **Day 2: Tuesday, July 5**
+
+	+ **1:00** - :ref:`Lesson 3: Probability distributions and the plug-in principle`
+	+ **2:00** - :ref:`Exercise 3. Working with probability distributions`
+	+ **2:30** - :ref:`Lesson 4: Nonparametric inference with hacker stats`
+	+ **4:00** - :ref:`Exercise 4. Nonparametric hacker stats`
+
+- **Day 3: Wednesday, July 6**
+
+	+ **1:00** - Lesson 5: Generative modeling and parametric inference
+	+ **2:00** - Exercise 5
+	+ **3:00** - Lesson 6: Maximum likelihood estimation
+	+ **4:00** - Exercise 6
+
+
+- **Day 4: Thursday, July 7**
+
+	+ **1:00** - Numerical MLE
+	+ **2:00** - Exercise 7
+	+ **3:00** - Variate-covariate modeling
+	+ **4:00** - Exercise 8
+
+

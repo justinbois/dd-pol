@@ -1,0 +1,10 @@
+**************************************
+Exercise 4. Nonparametric hacker stats
+**************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e04.1.ipynb
+   e04.2.ipynb
+   e04.3.ipynb
