@@ -30,17 +30,17 @@ Daily schedule
 
 - **Day 3: Wednesday, July 6**
 
-	+ **1:00** - Lesson 5: Generative modeling and parametric inference
-	+ **2:00** - Exercise 5
-	+ **3:00** - Lesson 6: Maximum likelihood estimation
+	+ **1:00** - :ref:`Lesson 5: Generative modeling and parametric inference`
+	+ **2:00** - :ref:`Exercise 5: Generative modeling`
+	+ **3:00** - :ref:`Lesson 6: Maximum likelihood estimation`
 	+ **4:00** - Exercise 6
 
 
 - **Day 4: Thursday, July 7**
 
-	+ **1:00** - Numerical MLE
+	+ **1:00** - :ref:`Lesson 7: Variate-covariate modeling`
 	+ **2:00** - Exercise 7
-	+ **3:00** - Variate-covariate modeling
+	+ **3:00** - :ref:`Lesson 8: Model assessment`
 	+ **4:00** - Exercise 8
 
 

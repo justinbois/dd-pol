@@ -1,0 +1,10 @@
+************************************
+Lesson 7: Variate-covariate modeling
+************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   model_building.ipynb
+   mle_normal.ipynb
+   regression.ipynb

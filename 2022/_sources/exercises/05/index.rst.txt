@@ -1,0 +1,9 @@
+**************************************
+Exercise 5: Generative modeling
+**************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e05.1.ipynb
+   e05.2.ipynb

@@ -25,6 +25,10 @@ Students should download and unzip the `data sets we will use in the workshop <h
    lessons/02/index
    lessons/03/index
    lessons/04/index
+   lessons/05/index
+   lessons/06/index
+   lessons/07/index
+   lessons/08/index
 
 
 .. toctree::
@@ -35,6 +39,8 @@ Students should download and unzip the `data sets we will use in the workshop <h
    exercises/02/index
    exercises/03/index
    exercises/04/index
+   exercises/05/index
+   exercises/06/index
 
 
 .. toctree::

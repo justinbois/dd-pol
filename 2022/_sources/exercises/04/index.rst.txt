@@ -1,5 +1,5 @@
 **************************************
-Exercise 4. Nonparametric hacker stats
+Exercise 4: Nonparametric hacker stats
 **************************************
 
 .. toctree::

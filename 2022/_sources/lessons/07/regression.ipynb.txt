@@ -1,0 +1,954 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Regression\n",
+    "\n",
+    "[Dataset download](https://s3.amazonaws.com/bebi103.caltech.edu/data/good_invitro_droplet_data.csv)\n",
+    "\n",
+    "\n",
+    "<hr>"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "    <div class=\"bk-root\">\n",
+       "        <a href=\"https://bokeh.org\" target=\"_blank\" class=\"bk-logo bk-logo-small bk-logo-notebook\"></a>\n",
+       "        <span id=\"1003\">Loading BokehJS ...</span>\n",
+       "    </div>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": [
+       "\n",
+       "(function(root) {\n",
+       "  function now() {\n",
+       "    return new Date();\n",
+       "  }\n",
+       "\n",
+       "  const force = true;\n",
+       "\n",
+       "  if (typeof root._bokeh_onload_callbacks === \"undefined\" || force === true) {\n",
+       "    root._bokeh_onload_callbacks = [];\n",
+       "    root._bokeh_is_loading = undefined;\n",
+       "  }\n",
+       "\n",
+       "  const JS_MIME_TYPE = 'application/javascript';\n",
+       "  const HTML_MIME_TYPE = 'text/html';\n",
+       "  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';\n",
+       "  const CLASS_NAME = 'output_bokeh rendered_html';\n",
+       "\n",
+       "  /**\n",
+       "   * Render data to the DOM node\n",
+       "   */\n",
+       "  function render(props, node) {\n",
+       "    const script = document.createElement(\"script\");\n",
+       "    node.appendChild(script);\n",
+       "  }\n",
+       "\n",
+       "  /**\n",
+       "   * Handle when an output is cleared or removed\n",
+       "   */\n",
+       "  function handleClearOutput(event, handle) {\n",
+       "    const cell = handle.cell;\n",
+       "\n",
+       "    const id = cell.output_area._bokeh_element_id;\n",
+       "    const server_id = cell.output_area._bokeh_server_id;\n",
+       "    // Clean up Bokeh references\n",
+       "    if (id != null && id in Bokeh.index) {\n",
+       "      Bokeh.index[id].model.document.clear();\n",
+       "      delete Bokeh.index[id];\n",
+       "    }\n",
+       "\n",
+       "    if (server_id !== undefined) {\n",
+       "      // Clean up Bokeh references\n",
+       "      const cmd_clean = \"from bokeh.io.state import curstate; print(curstate().uuid_to_server['\" + server_id + \"'].get_sessions()[0].document.roots[0]._id)\";\n",
+       "      cell.notebook.kernel.execute(cmd_clean, {\n",
+       "        iopub: {\n",
+       "          output: function(msg) {\n",
+       "            const id = msg.content.text.trim();\n",
+       "            if (id in Bokeh.index) {\n",
+       "              Bokeh.index[id].model.document.clear();\n",
+       "              delete Bokeh.index[id];\n",
+       "            }\n",
+       "          }\n",
+       "        }\n",
+       "      });\n",
+       "      // Destroy server and session\n",
+       "      const cmd_destroy = \"import bokeh.io.notebook as ion; ion.destroy_server('\" + server_id + \"')\";\n",
+       "      cell.notebook.kernel.execute(cmd_destroy);\n",
+       "    }\n",
+       "  }\n",
+       "\n",
+       "  /**\n",
+       "   * Handle when a new output is added\n",
+       "   */\n",
+       "  function handleAddOutput(event, handle) {\n",
+       "    const output_area = handle.output_area;\n",
+       "    const output = handle.output;\n",
+       "\n",
+       "    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only\n",
+       "    if ((output.output_type != \"display_data\") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {\n",
+       "      return\n",
+       "    }\n",
+       "\n",
+       "    const toinsert = output_area.element.find(\".\" + CLASS_NAME.split(' ')[0]);\n",
+       "\n",
+       "    if (output.metadata[EXEC_MIME_TYPE][\"id\"] !== undefined) {\n",
+       "      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];\n",
+       "      // store reference to embed id on output_area\n",
+       "      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE][\"id\"];\n",
+       "    }\n",
+       "    if (output.metadata[EXEC_MIME_TYPE][\"server_id\"] !== undefined) {\n",
+       "      const bk_div = document.createElement(\"div\");\n",
+       "      bk_div.innerHTML = output.data[HTML_MIME_TYPE];\n",
+       "      const script_attrs = bk_div.children[0].attributes;\n",
+       "      for (let i = 0; i < script_attrs.length; i++) {\n",
+       "        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);\n",
+       "        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent\n",
+       "      }\n",
+       "      // store reference to server id on output_area\n",
+       "      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE][\"server_id\"];\n",
+       "    }\n",
+       "  }\n",
+       "\n",
+       "  function register_renderer(events, OutputArea) {\n",
+       "\n",
+       "    function append_mime(data, metadata, element) {\n",
+       "      // create a DOM node to render to\n",
+       "      const toinsert = this.create_output_subarea(\n",
+       "        metadata,\n",
+       "        CLASS_NAME,\n",
+       "        EXEC_MIME_TYPE\n",
+       "      );\n",
+       "      this.keyboard_manager.register_events(toinsert);\n",
+       "      // Render to node\n",
+       "      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};\n",
+       "      render(props, toinsert[toinsert.length - 1]);\n",
+       "      element.append(toinsert);\n",
+       "      return toinsert\n",
+       "    }\n",
+       "\n",
+       "    /* Handle when an output is cleared or removed */\n",
+       "    events.on('clear_output.CodeCell', handleClearOutput);\n",
+       "    events.on('delete.Cell', handleClearOutput);\n",
+       "\n",
+       "    /* Handle when a new output is added */\n",
+       "    events.on('output_added.OutputArea', handleAddOutput);\n",
+       "\n",
+       "    /**\n",
+       "     * Register the mime type and append_mime function with output_area\n",
+       "     */\n",
+       "    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {\n",
+       "      /* Is output safe? */\n",
+       "      safe: true,\n",
+       "      /* Index of renderer in `output_area.display_order` */\n",
+       "      index: 0\n",
+       "    });\n",
+       "  }\n",
+       "\n",
+       "  // register the mime type if in Jupyter Notebook environment and previously unregistered\n",
+       "  if (root.Jupyter !== undefined) {\n",
+       "    const events = require('base/js/events');\n",
+       "    const OutputArea = require('notebook/js/outputarea').OutputArea;\n",
+       "\n",
+       "    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {\n",
+       "      register_renderer(events, OutputArea);\n",
+       "    }\n",
+       "  }\n",
+       "\n",
+       "  \n",
+       "  if (typeof (root._bokeh_timeout) === \"undefined\" || force === true) {\n",
+       "    root._bokeh_timeout = Date.now() + 5000;\n",
+       "    root._bokeh_failed_load = false;\n",
+       "  }\n",
+       "\n",
+       "  const NB_LOAD_WARNING = {'data': {'text/html':\n",
+       "     \"<div style='background-color: #fdd'>\\n\"+\n",
+       "     \"<p>\\n\"+\n",
+       "     \"BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \\n\"+\n",
+       "     \"may be due to a slow or bad network connection. Possible fixes:\\n\"+\n",
+       "     \"</p>\\n\"+\n",
+       "     \"<ul>\\n\"+\n",
+       "     \"<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\\n\"+\n",
+       "     \"<li>use INLINE resources instead, as so:</li>\\n\"+\n",
+       "     \"</ul>\\n\"+\n",
+       "     \"<code>\\n\"+\n",
+       "     \"from bokeh.resources import INLINE\\n\"+\n",
+       "     \"output_notebook(resources=INLINE)\\n\"+\n",
+       "     \"</code>\\n\"+\n",
+       "     \"</div>\"}};\n",
+       "\n",
+       "  function display_loaded() {\n",
+       "    const el = document.getElementById(\"1003\");\n",
+       "    if (el != null) {\n",
+       "      el.textContent = \"BokehJS is loading...\";\n",
+       "    }\n",
+       "    if (root.Bokeh !== undefined) {\n",
+       "      if (el != null) {\n",
+       "        el.textContent = \"BokehJS \" + root.Bokeh.version + \" successfully loaded.\";\n",
+       "      }\n",
+       "    } else if (Date.now() < root._bokeh_timeout) {\n",
+       "      setTimeout(display_loaded, 100)\n",
+       "    }\n",
+       "  }\n",
+       "\n",
+       "\n",
+       "  function run_callbacks() {\n",
+       "    try {\n",
+       "      root._bokeh_onload_callbacks.forEach(function(callback) {\n",
+       "        if (callback != null)\n",
+       "          callback();\n",
+       "      });\n",
+       "    } finally {\n",
+       "      delete root._bokeh_onload_callbacks\n",
+       "    }\n",
+       "    console.debug(\"Bokeh: all callbacks have finished\");\n",
+       "  }\n",
+       "\n",
+       "  function load_libs(css_urls, js_urls, callback) {\n",
+       "    if (css_urls == null) css_urls = [];\n",
+       "    if (js_urls == null) js_urls = [];\n",
+       "\n",
+       "    root._bokeh_onload_callbacks.push(callback);\n",
+       "    if (root._bokeh_is_loading > 0) {\n",
+       "      console.debug(\"Bokeh: BokehJS is being loaded, scheduling callback at\", now());\n",
+       "      return null;\n",
+       "    }\n",
+       "    if (js_urls == null || js_urls.length === 0) {\n",
+       "      run_callbacks();\n",
+       "      return null;\n",
+       "    }\n",
+       "    console.debug(\"Bokeh: BokehJS not loaded, scheduling load and callback at\", now());\n",
+       "    root._bokeh_is_loading = css_urls.length + js_urls.length;\n",
+       "\n",
+       "    function on_load() {\n",
+       "      root._bokeh_is_loading--;\n",
+       "      if (root._bokeh_is_loading === 0) {\n",
+       "        console.debug(\"Bokeh: all BokehJS libraries/stylesheets loaded\");\n",
+       "        run_callbacks()\n",
+       "      }\n",
+       "    }\n",
+       "\n",
+       "    function on_error(url) {\n",
+       "      console.error(\"failed to load \" + url);\n",
+       "    }\n",
+       "\n",
+       "    for (let i = 0; i < css_urls.length; i++) {\n",
+       "      const url = css_urls[i];\n",
+       "      const element = document.createElement(\"link\");\n",
+       "      element.onload = on_load;\n",
+       "      element.onerror = on_error.bind(null, url);\n",
+       "      element.rel = \"stylesheet\";\n",
+       "      element.type = \"text/css\";\n",
+       "      element.href = url;\n",
+       "      console.debug(\"Bokeh: injecting link tag for BokehJS stylesheet: \", url);\n",
+       "      document.body.appendChild(element);\n",
+       "    }\n",
+       "\n",
+       "    for (let i = 0; i < js_urls.length; i++) {\n",
+       "      const url = js_urls[i];\n",
+       "      const element = document.createElement('script');\n",
+       "      element.onload = on_load;\n",
+       "      element.onerror = on_error.bind(null, url);\n",
+       "      element.async = false;\n",
+       "      element.src = url;\n",
+       "      console.debug(\"Bokeh: injecting script tag for BokehJS library: \", url);\n",
+       "      document.head.appendChild(element);\n",
+       "    }\n",
+       "  };\n",
+       "\n",
+       "  function inject_raw_css(css) {\n",
+       "    const element = document.createElement(\"style\");\n",
+       "    element.appendChild(document.createTextNode(css));\n",
+       "    document.body.appendChild(element);\n",
+       "  }\n",
+       "\n",
+       "  \n",
+       "  const js_urls = [\"https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.2.min.js\", \"https://unpkg.com/@holoviz/panel@0.13.0/dist/panel.min.js\"];\n",
+       "  const css_urls = [];\n",
+       "  \n",
+       "\n",
+       "  const inline_js = [\n",
+       "    function(Bokeh) {\n",
+       "      Bokeh.set_log_level(\"info\");\n",
+       "    },\n",
+       "    function(Bokeh) {\n",
+       "    \n",
+       "    \n",
+       "    }\n",
+       "  ];\n",
+       "\n",
+       "  function run_inline_js() {\n",
+       "    \n",
+       "    if (root.Bokeh !== undefined || force === true) {\n",
+       "      \n",
+       "    for (let i = 0; i < inline_js.length; i++) {\n",
+       "      inline_js[i].call(root, root.Bokeh);\n",
+       "    }\n",
+       "    if (force === true) {\n",
+       "        display_loaded();\n",
+       "      }} else if (Date.now() < root._bokeh_timeout) {\n",
+       "      setTimeout(run_inline_js, 100);\n",
+       "    } else if (!root._bokeh_failed_load) {\n",
+       "      console.log(\"Bokeh: BokehJS failed to load within specified timeout.\");\n",
+       "      root._bokeh_failed_load = true;\n",
+       "    } else if (force !== true) {\n",
+       "      const cell = $(document.getElementById(\"1003\")).parents('.cell').data().cell;\n",
+       "      cell.output_area.append_execute_result(NB_LOAD_WARNING)\n",
+       "    }\n",
+       "\n",
+       "  }\n",
+       "\n",
+       "  if (root._bokeh_is_loading === 0) {\n",
+       "    console.debug(\"Bokeh: BokehJS loaded, going straight to plotting\");\n",
+       "    run_inline_js();\n",
+       "  } else {\n",
+       "    load_libs(css_urls, js_urls, function() {\n",
+       "      console.debug(\"Bokeh: BokehJS plotting callback run at\", now());\n",
+       "      run_inline_js();\n",
+       "    });\n",
+       "  }\n",
+       "}(window));"
+      ],
+      "application/vnd.bokehjs_load.v0+json": "\n(function(root) {\n  function now() {\n    return new Date();\n  }\n\n  const force = true;\n\n  if (typeof root._bokeh_onload_callbacks === \"undefined\" || force === true) {\n    root._bokeh_onload_callbacks = [];\n    root._bokeh_is_loading = undefined;\n  }\n\n  \n\n  \n  if (typeof (root._bokeh_timeout) === \"undefined\" || force === true) {\n    root._bokeh_timeout = Date.now() + 5000;\n    root._bokeh_failed_load = false;\n  }\n\n  const NB_LOAD_WARNING = {'data': {'text/html':\n     \"<div style='background-color: #fdd'>\\n\"+\n     \"<p>\\n\"+\n     \"BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \\n\"+\n     \"may be due to a slow or bad network connection. Possible fixes:\\n\"+\n     \"</p>\\n\"+\n     \"<ul>\\n\"+\n     \"<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\\n\"+\n     \"<li>use INLINE resources instead, as so:</li>\\n\"+\n     \"</ul>\\n\"+\n     \"<code>\\n\"+\n     \"from bokeh.resources import INLINE\\n\"+\n     \"output_notebook(resources=INLINE)\\n\"+\n     \"</code>\\n\"+\n     \"</div>\"}};\n\n  function display_loaded() {\n    const el = document.getElementById(\"1003\");\n    if (el != null) {\n      el.textContent = \"BokehJS is loading...\";\n    }\n    if (root.Bokeh !== undefined) {\n      if (el != null) {\n        el.textContent = \"BokehJS \" + root.Bokeh.version + \" successfully loaded.\";\n      }\n    } else if (Date.now() < root._bokeh_timeout) {\n      setTimeout(display_loaded, 100)\n    }\n  }\n\n\n  function run_callbacks() {\n    try {\n      root._bokeh_onload_callbacks.forEach(function(callback) {\n        if (callback != null)\n          callback();\n      });\n    } finally {\n      delete root._bokeh_onload_callbacks\n    }\n    console.debug(\"Bokeh: all callbacks have finished\");\n  }\n\n  function load_libs(css_urls, js_urls, callback) {\n    if (css_urls == null) css_urls = [];\n    if (js_urls == null) js_urls = [];\n\n    root._bokeh_onload_callbacks.push(callback);\n    if (root._bokeh_is_loading > 0) {\n      console.debug(\"Bokeh: BokehJS is being loaded, scheduling callback at\", now());\n      return null;\n    }\n    if (js_urls == null || js_urls.length === 0) {\n      run_callbacks();\n      return null;\n    }\n    console.debug(\"Bokeh: BokehJS not loaded, scheduling load and callback at\", now());\n    root._bokeh_is_loading = css_urls.length + js_urls.length;\n\n    function on_load() {\n      root._bokeh_is_loading--;\n      if (root._bokeh_is_loading === 0) {\n        console.debug(\"Bokeh: all BokehJS libraries/stylesheets loaded\");\n        run_callbacks()\n      }\n    }\n\n    function on_error(url) {\n      console.error(\"failed to load \" + url);\n    }\n\n    for (let i = 0; i < css_urls.length; i++) {\n      const url = css_urls[i];\n      const element = document.createElement(\"link\");\n      element.onload = on_load;\n      element.onerror = on_error.bind(null, url);\n      element.rel = \"stylesheet\";\n      element.type = \"text/css\";\n      element.href = url;\n      console.debug(\"Bokeh: injecting link tag for BokehJS stylesheet: \", url);\n      document.body.appendChild(element);\n    }\n\n    for (let i = 0; i < js_urls.length; i++) {\n      const url = js_urls[i];\n      const element = document.createElement('script');\n      element.onload = on_load;\n      element.onerror = on_error.bind(null, url);\n      element.async = false;\n      element.src = url;\n      console.debug(\"Bokeh: injecting script tag for BokehJS library: \", url);\n      document.head.appendChild(element);\n    }\n  };\n\n  function inject_raw_css(css) {\n    const element = document.createElement(\"style\");\n    element.appendChild(document.createTextNode(css));\n    document.body.appendChild(element);\n  }\n\n  \n  const js_urls = [\"https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.2.min.js\", \"https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.2.min.js\", \"https://unpkg.com/@holoviz/panel@0.13.0/dist/panel.min.js\"];\n  const css_urls = [];\n  \n\n  const inline_js = [\n    function(Bokeh) {\n      Bokeh.set_log_level(\"info\");\n    },\n    function(Bokeh) {\n    \n    \n    }\n  ];\n\n  function run_inline_js() {\n    \n    if (root.Bokeh !== undefined || force === true) {\n      \n    for (let i = 0; i < inline_js.length; i++) {\n      inline_js[i].call(root, root.Bokeh);\n    }\n    if (force === true) {\n        display_loaded();\n      }} else if (Date.now() < root._bokeh_timeout) {\n      setTimeout(run_inline_js, 100);\n    } else if (!root._bokeh_failed_load) {\n      console.log(\"Bokeh: BokehJS failed to load within specified timeout.\");\n      root._bokeh_failed_load = true;\n    } else if (force !== true) {\n      const cell = $(document.getElementById(\"1003\")).parents('.cell').data().cell;\n      cell.output_area.append_execute_result(NB_LOAD_WARNING)\n    }\n\n  }\n\n  if (root._bokeh_is_loading === 0) {\n    console.debug(\"Bokeh: BokehJS loaded, going straight to plotting\");\n    run_inline_js();\n  } else {\n    load_libs(css_urls, js_urls, function() {\n      console.debug(\"Bokeh: BokehJS plotting callback run at\", now());\n      run_inline_js();\n    });\n  }\n}(window));"
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "import warnings\n",
+    "\n",
+    "import tqdm\n",
+    "\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import scipy.optimize\n",
+    "import scipy.stats as st\n",
+    "\n",
+    "import iqplot\n",
+    "import bebi103\n",
+    "\n",
+    "import bokeh.io\n",
+    "bokeh.io.output_notebook()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<hr>\n",
+    "\n",
+    "We now proceed to do maximum likelihood estimation for the parameters of the second model for spindle length.\n",
+    "\n",
+    "\\begin{align}\n",
+    "&\\mu_i =  \\frac{\\gamma d_i}{\\left(1+(\\gamma d_i/\\phi)^3\\right)^{\\frac{1}{3}}}, \\\\[1em]\n",
+    "&l_i \\sim \\text{Norm}(\\mu_i, \\sigma) \\;\\forall i,\n",
+    "\\end{align}\n",
+    "\n",
+    "\n",
+    "The parameters for this model are $\\gamma$, $\\phi$, and $\\sigma$.\n",
+    "\n",
+    "In this model, we have an independent variable, the droplet diameter, and a dependent variable, the spindle length. We refer to the independent variable(s) as a **variate** and the dependent variable(s) as a **covariate**. Models of this type are often called **variate-covariate models**. The procedure of parameter estimation for these models is commonly called **regression**, which I think is a bit of a misnomer, as regression has other meaning. I prefer to use \"variate-covariate modeling,\" a preference I developed after discussion with [Michael Betancourt](https://betanalpha.github.io).\n",
+    "\n",
+    "Finally, before we being doing MLE, as a reminder, we will load in and plot the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "  <div class=\"bk-root\" id=\"15214075-6cba-488f-b62a-b7a6d03e26fb\" data-root-id=\"1004\"></div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": [
+       "(function(root) {\n",
+       "  function embed_document(root) {\n",
+       "    \n",
+       "  const docs_json = {\"3cd8ec8a-ee9f-4e8b-bcb1-14881858135a\":{\"defs\":[{\"extends\":null,\"module\":null,\"name\":\"ReactiveHTML1\",\"overrides\":[],\"properties\":[]},{\"extends\":null,\"module\":null,\"name\":\"FlexBox1\",\"overrides\":[],\"properties\":[{\"default\":\"flex-start\",\"kind\":null,\"name\":\"align_content\"},{\"default\":\"flex-start\",\"kind\":null,\"name\":\"align_items\"},{\"default\":\"row\",\"kind\":null,\"name\":\"flex_direction\"},{\"default\":\"wrap\",\"kind\":null,\"name\":\"flex_wrap\"},{\"default\":\"flex-start\",\"kind\":null,\"name\":\"justify_content\"}]},{\"extends\":null,\"module\":null,\"name\":\"GridStack1\",\"overrides\":[],\"properties\":[{\"default\":\"warn\",\"kind\":null,\"name\":\"mode\"},{\"default\":null,\"kind\":null,\"name\":\"ncols\"},{\"default\":null,\"kind\":null,\"name\":\"nrows\"},{\"default\":true,\"kind\":null,\"name\":\"allow_resize\"},{\"default\":true,\"kind\":null,\"name\":\"allow_drag\"},{\"default\":[],\"kind\":null,\"name\":\"state\"}]},{\"extends\":null,\"module\":null,\"name\":\"click1\",\"overrides\":[],\"properties\":[{\"default\":\"\",\"kind\":null,\"name\":\"terminal_output\"},{\"default\":\"\",\"kind\":null,\"name\":\"debug_name\"},{\"default\":0,\"kind\":null,\"name\":\"clears\"}]},{\"extends\":null,\"module\":null,\"name\":\"TemplateActions1\",\"overrides\":[],\"properties\":[{\"default\":0,\"kind\":null,\"name\":\"open_modal\"},{\"default\":0,\"kind\":null,\"name\":\"close_modal\"}]},{\"extends\":null,\"module\":null,\"name\":\"MaterialTemplateActions1\",\"overrides\":[],\"properties\":[{\"default\":0,\"kind\":null,\"name\":\"open_modal\"},{\"default\":0,\"kind\":null,\"name\":\"close_modal\"}]}],\"roots\":{\"references\":[{\"attributes\":{\"below\":[{\"id\":\"1013\"}],\"center\":[{\"id\":\"1016\"},{\"id\":\"1020\"}],\"frame_height\":250,\"frame_width\":350,\"left\":[{\"id\":\"1017\"}],\"renderers\":[{\"id\":\"1039\"}],\"title\":{\"id\":\"1041\"},\"toolbar\":{\"id\":\"1028\"},\"x_range\":{\"id\":\"1005\"},\"x_scale\":{\"id\":\"1009\"},\"y_range\":{\"id\":\"1007\"},\"y_scale\":{\"id\":\"1011\"}},\"id\":\"1004\",\"subtype\":\"Figure\",\"type\":\"Plot\"},{\"attributes\":{},\"id\":\"1011\",\"type\":\"LinearScale\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.7},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.7},\"line_alpha\":{\"value\":0.7},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1036\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1044\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"data\":{\"x\":{\"__ndarray__\":\"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MzMzMzPTUEAzMzMzM9NQQDMzMzMz01BAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQDMzMzMz81BAMzMzMzPzUEAzMzMzM/NQQDMzMzMz81BAMzMzMzPzUEAzMzMzM/NQQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUCamZmZmRlRQJqZmZmZGVFAmpmZmZkZUUCamZmZmRlRQJqZmZmZGVFAmpmZmZkZUUCamZmZmRlRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQJqZmZmZOVFAmpmZmZk5UUCamZmZmTlRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUBmZmZmZoZRQGZmZmZmhlFAZmZmZmaGUUBmZmZmZoZRQGZmZmZmhlFAZmZmZmaGUUBmZmZmZoZRQGZmZmZmhlFAmpmZmZmZUUCamZmZmZlRQJqZmZmZmVFAmpmZmZmZUUCamZmZmZlRQJqZmZmZmVFAmpmZmZmZUUCamZmZmZlRQM3MzMzMrFFAzczMzMysUUDNzMzMzKxRQM3MzMzMrFFAzczMzMysUUDNzMzMzKxRQM3MzMzMrFFAzczMzMysUUCamZmZmblRQJqZmZmZuVFAmpmZmZm5UUDNzMzMzMxRQM3MzMzMzFFAzczMzMzMUUDNzMzMzMxRQM3MzMzMzFFAzczMzMzMUUDNzMzMzMxRQJqZmZmZ2VFAmpmZmZnZUUCamZmZmdlRQJqZmZmZ2VFAmpmZmZnZUUCamZmZmdlRQM3MzMzM7FFAzczMzMzsUUDNzMzMzOxRQM3MzMzM7FFAmpmZmZn5UUCamZmZmflRQJqZmZmZ+VFAzczMzMwMUkDNzMzMzAxSQM3MzMzMDFJAzczMzMwMUkDNzMzMzAxSQM3MzMzMDFJAmpmZmZkZUkCamZmZmRlSQJqZmZmZGVJAmpmZmZkZUkCamZmZmRlSQM3MzMzMLFJAzczMzMwsUkAAAAAAAEBSQAAAAAAAQFJAAAAAAABAUkDNzMzMzExSQM3MzMzMTFJAzczMzMxMUkDNzMzMzExSQM3MzMzMTFJAAAAAAABgUkAAAAAAAGBSQAAAAAAAYFJAAAAAAABgUkAAAAAAAGBSQM3MzMzMbFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAzczMzMyMUkAAAAAAAKBSQAAAAAAAoFJAMzMzMzOzUkAAAAAAAMBSQDMzMzMz81JAAAAAAAAAU0AAAAAAACBTQDMzMzMzM1NAMzMzMzNTU0AzMzMzM1NTQGZmZmZmZlNAZmZmZmZmU0AzMzMzM7NTQGZmZmZmxlNAmpmZmZkZVEDNzMzMzExUQJqZmZmZeVRAzczMzMyMVECamZmZmZlUQJqZmZmZmVRAAAAAAAAgVUAAAAAAAIBVQGZmZmZmBlZAZmZmZmbmVkCamZmZmflWQAAAAAAAgFdAzczMzMysV0AAAAAAACBYQAAAAAAAIFhAMzMzMzNTWEAAAAAAAGBYQDMzMzMzk1hAmpmZmZkZWUDNzMzMzKxZQJqZmZmZ+VlAmpmZmZl5XEDNzMzMzAxdQM3MzMzMLF1AAAAAAABgXUAAAAAAAMBdQGZmZmZmJl5AZmZmZmZGXkCamZmZmZleQJqZmZmZuV5AZmZmZmbGXkAzMzMzM2NgQJqZmZmZeWFAmpmZmZmJYUCamZmZmalhQAAAAAAAAGRAMzMzMzPDZEDNzMzMzDxnQAAAAAAA0GdAzczMzMysa0A=\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[670]},\"y\":{\"__ndarray__\":\"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\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[670]}},\"selected\":{\"id\":\"1050\"},\"selection_policy\":{\"id\":\"1049\"}},\"id\":\"1035\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"coordinates\":null,\"data_source\":{\"id\":\"1035\"},\"glyph\":{\"id\":\"1036\"},\"group\":null,\"hover_glyph\":null,\"muted_glyph\":{\"id\":\"1038\"},\"nonselection_glyph\":{\"id\":\"1037\"},\"view\":{\"id\":\"1040\"}},\"id\":\"1039\",\"type\":\"GlyphRenderer\"},{\"attributes\":{\"bottom_units\":\"screen\",\"coordinates\":null,\"fill_alpha\":0.5,\"fill_color\":\"lightgrey\",\"group\":null,\"left_units\":\"screen\",\"level\":\"overlay\",\"line_alpha\":1.0,\"line_color\":\"black\",\"line_dash\":[4,4],\"line_width\":2,\"right_units\":\"screen\",\"syncable\":false,\"top_units\":\"screen\"},\"id\":\"1027\",\"type\":\"BoxAnnotation\"},{\"attributes\":{\"source\":{\"id\":\"1035\"}},\"id\":\"1040\",\"type\":\"CDSView\"},{\"attributes\":{},\"id\":\"1007\",\"type\":\"DataRange1d\"},{\"attributes\":{},\"id\":\"1045\",\"type\":\"AllLabels\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.2},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.2},\"line_alpha\":{\"value\":0.2},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1038\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1022\",\"type\":\"WheelZoomTool\"},{\"attributes\":{},\"id\":\"1047\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.1},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.1},\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1037\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1021\",\"type\":\"PanTool\"},{\"attributes\":{},\"id\":\"1009\",\"type\":\"LinearScale\"},{\"attributes\":{\"axis_label\":\"spindle length (\\u00b5m)\",\"coordinates\":null,\"formatter\":{\"id\":\"1044\"},\"group\":null,\"major_label_policy\":{\"id\":\"1045\"},\"ticker\":{\"id\":\"1018\"}},\"id\":\"1017\",\"type\":\"LinearAxis\"},{\"attributes\":{},\"id\":\"1048\",\"type\":\"AllLabels\"},{\"attributes\":{\"coordinates\":null,\"group\":null},\"id\":\"1041\",\"type\":\"Title\"},{\"attributes\":{},\"id\":\"1005\",\"type\":\"DataRange1d\"},{\"attributes\":{},\"id\":\"1049\",\"type\":\"UnionRenderers\"},{\"attributes\":{},\"id\":\"1024\",\"type\":\"SaveTool\"},{\"attributes\":{},\"id\":\"1050\",\"type\":\"Selection\"},{\"attributes\":{\"tools\":[{\"id\":\"1021\"},{\"id\":\"1022\"},{\"id\":\"1023\"},{\"id\":\"1024\"},{\"id\":\"1025\"},{\"id\":\"1026\"}]},\"id\":\"1028\",\"type\":\"Toolbar\"},{\"attributes\":{},\"id\":\"1025\",\"type\":\"ResetTool\"},{\"attributes\":{},\"id\":\"1018\",\"type\":\"BasicTicker\"},{\"attributes\":{},\"id\":\"1014\",\"type\":\"BasicTicker\"},{\"attributes\":{\"overlay\":{\"id\":\"1027\"}},\"id\":\"1023\",\"type\":\"BoxZoomTool\"},{\"attributes\":{},\"id\":\"1026\",\"type\":\"HelpTool\"},{\"attributes\":{\"axis\":{\"id\":\"1013\"},\"coordinates\":null,\"group\":null,\"ticker\":null},\"id\":\"1016\",\"type\":\"Grid\"},{\"attributes\":{\"axis\":{\"id\":\"1017\"},\"coordinates\":null,\"dimension\":1,\"group\":null,\"ticker\":null},\"id\":\"1020\",\"type\":\"Grid\"},{\"attributes\":{\"axis_label\":\"droplet diameter (\\u00b5m)\",\"coordinates\":null,\"formatter\":{\"id\":\"1047\"},\"group\":null,\"major_label_policy\":{\"id\":\"1048\"},\"ticker\":{\"id\":\"1014\"}},\"id\":\"1013\",\"type\":\"LinearAxis\"}],\"root_ids\":[\"1004\"]},\"title\":\"Bokeh Application\",\"version\":\"2.4.2\"}};\n",
+       "  const render_items = [{\"docid\":\"3cd8ec8a-ee9f-4e8b-bcb1-14881858135a\",\"root_ids\":[\"1004\"],\"roots\":{\"1004\":\"15214075-6cba-488f-b62a-b7a6d03e26fb\"}}];\n",
+       "  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);\n",
+       "\n",
+       "  }\n",
+       "  if (root.Bokeh !== undefined) {\n",
+       "    embed_document(root);\n",
+       "  } else {\n",
+       "    let attempts = 0;\n",
+       "    const timer = setInterval(function(root) {\n",
+       "      if (root.Bokeh !== undefined) {\n",
+       "        clearInterval(timer);\n",
+       "        embed_document(root);\n",
+       "      } else {\n",
+       "        attempts++;\n",
+       "        if (attempts > 100) {\n",
+       "          clearInterval(timer);\n",
+       "          console.log(\"Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing\");\n",
+       "        }\n",
+       "      }\n",
+       "    }, 10, root)\n",
+       "  }\n",
+       "})(window);"
+      ],
+      "application/vnd.bokehjs_exec.v0+json": ""
+     },
+     "metadata": {
+      "application/vnd.bokehjs_exec.v0+json": {
+       "id": "1004"
+      }
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "df = pd.read_csv('../data/good_invitro_droplet_data.csv', comment='#')\n",
+    "\n",
+    "p = bokeh.plotting.figure(\n",
+    "    frame_width=350,\n",
+    "    frame_height=250,\n",
+    "    x_axis_label='droplet diameter (µm)',\n",
+    "    y_axis_label='spindle length (µm)',    \n",
+    ")\n",
+    "\n",
+    "p.circle(df['Droplet Diameter (um)'], df['Spindle Length (um)'], alpha=0.7)\n",
+    "\n",
+    "bokeh.io.show(p)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It is also useful to extract the data sets as Numpy arrays for speed in the MLE and bootstrap calculations."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d = df['Droplet Diameter (um)'].values\n",
+    "ell = df['Spindle Length (um)'].values"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Performing MLE by direct numerical optimization\n",
+    "\n",
+    "We can take the same approach as we did with the mRNA counts from the smFISH experiments. We write a function for the log likelihood and then use numerical optimization to find the parameters.\n",
+    "\n",
+    "The joint probability density function for the data set is the product of the probability densities of Normals. Therefore, the log likelihood is the *sum* of *log* probability densities of Normals. We can code that up using the convenient functions in the `scipy.stats` module."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def theor_spindle_length(gamma, phi, d):\n",
+    "    \"\"\"Compute spindle length using mathematical model\"\"\"\n",
+    "    return gamma * d / np.cbrt(1 + (gamma * d / phi)**3)\n",
+    "    \n",
+    "    \n",
+    "def log_likelihood(params, d, ell):\n",
+    "    \"\"\"Log likelihood of spindle length model.\"\"\"\n",
+    "    gamma, phi, sigma = params\n",
+    "    \n",
+    "    if gamma <= 0 or gamma > 1 or phi <= 0:\n",
+    "        return -np.inf\n",
+    "\n",
+    "    mu = theor_spindle_length(gamma, phi, d)\n",
+    "    return np.sum(st.norm.logpdf(ell, mu, sigma))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In looking at the code for the log likelihood, the convenience of the `scipy.stats` module is clear. We more or less code up the model as we would say it!\n",
+    "\n",
+    "We can now code up the MLE calculation. For our initial guesses, we can look at the data an make estimates. The initial slope of the $l$ vs. $d$ curve is about one-half, so we will guess an initial value of $\\gamma$ of 0.5. The plateau seems to be around 40 µm, so we will guess $\\phi = 40$ µm. Eyeballing the standard deviation in the data points, I would guess it is about 5 µm."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def spindle_mle(d, ell):\n",
+    "    \"\"\"Compute MLE for parameters in spindle length model.\"\"\"\n",
+    "    with warnings.catch_warnings():\n",
+    "        warnings.simplefilter(\"ignore\")\n",
+    "\n",
+    "        res = scipy.optimize.minimize(\n",
+    "            fun=lambda params, d, ell: -log_likelihood(params, d, ell),\n",
+    "            x0=np.array([0.5, 35, 5]),\n",
+    "            args=(d, ell),\n",
+    "            method='Powell'\n",
+    "        )\n",
+    "\n",
+    "    if res.success:\n",
+    "        return res.x\n",
+    "    else:\n",
+    "        raise RuntimeError('Convergence failed with message', res.message)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's run the calculation to get MLEs for the parameters."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 0.86047455, 38.23124995,  3.75342168])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mle_params = spindle_mle(d, ell)\n",
+    "\n",
+    "mle_params"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can take a quick look as to how the theoretical curve might look with respect to the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "\n",
+       "  <div class=\"bk-root\" id=\"f088d1df-11a1-4c33-9b37-fab9723c0f9b\" data-root-id=\"1004\"></div>\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": [
+       "(function(root) {\n",
+       "  function embed_document(root) {\n",
+       "    \n",
+       "  const docs_json = {\"16b451c0-5e59-4cc6-9e46-c4090cae0775\":{\"defs\":[{\"extends\":null,\"module\":null,\"name\":\"ReactiveHTML1\",\"overrides\":[],\"properties\":[]},{\"extends\":null,\"module\":null,\"name\":\"FlexBox1\",\"overrides\":[],\"properties\":[{\"default\":\"flex-start\",\"kind\":null,\"name\":\"align_content\"},{\"default\":\"flex-start\",\"kind\":null,\"name\":\"align_items\"},{\"default\":\"row\",\"kind\":null,\"name\":\"flex_direction\"},{\"default\":\"wrap\",\"kind\":null,\"name\":\"flex_wrap\"},{\"default\":\"flex-start\",\"kind\":null,\"name\":\"justify_content\"}]},{\"extends\":null,\"module\":null,\"name\":\"GridStack1\",\"overrides\":[],\"properties\":[{\"default\":\"warn\",\"kind\":null,\"name\":\"mode\"},{\"default\":null,\"kind\":null,\"name\":\"ncols\"},{\"default\":null,\"kind\":null,\"name\":\"nrows\"},{\"default\":true,\"kind\":null,\"name\":\"allow_resize\"},{\"default\":true,\"kind\":null,\"name\":\"allow_drag\"},{\"default\":[],\"kind\":null,\"name\":\"state\"}]},{\"extends\":null,\"module\":null,\"name\":\"click1\",\"overrides\":[],\"properties\":[{\"default\":\"\",\"kind\":null,\"name\":\"terminal_output\"},{\"default\":\"\",\"kind\":null,\"name\":\"debug_name\"},{\"default\":0,\"kind\":null,\"name\":\"clears\"}]},{\"extends\":null,\"module\":null,\"name\":\"TemplateActions1\",\"overrides\":[],\"properties\":[{\"default\":0,\"kind\":null,\"name\":\"open_modal\"},{\"default\":0,\"kind\":null,\"name\":\"close_modal\"}]},{\"extends\":null,\"module\":null,\"name\":\"MaterialTemplateActions1\",\"overrides\":[],\"properties\":[{\"default\":0,\"kind\":null,\"name\":\"open_modal\"},{\"default\":0,\"kind\":null,\"name\":\"close_modal\"}]}],\"roots\":{\"references\":[{\"attributes\":{\"below\":[{\"id\":\"1013\"}],\"center\":[{\"id\":\"1016\"},{\"id\":\"1020\"}],\"frame_height\":250,\"frame_width\":350,\"left\":[{\"id\":\"1017\"}],\"renderers\":[{\"id\":\"1039\"},{\"id\":\"1111\"}],\"title\":{\"id\":\"1041\"},\"toolbar\":{\"id\":\"1028\"},\"x_range\":{\"id\":\"1005\"},\"x_scale\":{\"id\":\"1009\"},\"y_range\":{\"id\":\"1007\"},\"y_scale\":{\"id\":\"1011\"}},\"id\":\"1004\",\"subtype\":\"Figure\",\"type\":\"Plot\"},{\"attributes\":{},\"id\":\"1011\",\"type\":\"LinearScale\"},{\"attributes\":{\"data\":{\"x\":{\"__ndarray__\":\"AAAAAAAAAACFn1yIuhn0P4WfXIi6GQRASO+KzJcmDkCFn1yIuhkUQGbHcyopIBlASO+KzJcmHkCUC1E3g5YhQIWfXIi6GSRAdjNo2fGcJkBmx3MqKSApQFdbf3tgoytASO+KzJcmLkCcQcuO51QwQJQLUTeDljFAjdXW3x7YMkCFn1yIuhk0QH1p4jBWWzVAdjNo2fGcNkBu/e2Bjd43QGbHcyopIDlAX5H50sRhOkBXW397YKM7QE8lBST85DxASO+KzJcmPkBAuRB1M2g/QJxBy47nVEBAmCYOY7X1QECUC1E3g5ZBQJHwkwtRN0JAjdXW3x7YQkCJuhm07HhDQIWfXIi6GURAgYSfXIi6REB9aeIwVltFQHlOJQUk/EVAdjNo2fGcRkByGKutvz1HQG797YGN3kdAauIwVlt/SEBmx3MqKSBJQGKstv72wElAX5H50sRhSkBbdjynkgJLQFdbf3tgo0tAU0DCTy5ETEBPJQUk/ORMQEsKSPjJhU1ASO+KzJcmTkBE1M2gZcdOQEC5EHUzaE9AHs+ppIAEUECcQcuO51RQQBq07HhOpVBAmCYOY7X1UEAWmS9NHEZRQJQLUTeDllFAEn5yIermUUCR8JMLUTdSQA9jtfW3h1JAjdXW3x7YUkALSPjJhShTQIm6GbTseFNABy07nlPJU0CFn1yIuhlUQAMSfnIhalRAgYSfXIi6VED/9sBG7wpVQH1p4jBWW1VA+9sDG72rVUB5TiUFJPxVQPjARu+KTFZAdjNo2fGcVkD0pYnDWO1WQHIYq62/PVdA8IrMlyaOV0Bu/e2Bjd5XQOxvD2z0LlhAauIwVlt/WEDoVFJAws9YQGbHcyopIFlA5DmVFJBwWUBirLb+9sBZQOAe2OhdEVpAX5H50sRhWkDdAxu9K7JaQFt2PKeSAltA2ehdkflSW0BXW397YKNbQNXNoGXH81tAU0DCTy5EXEDRsuM5lZRcQE8lBST85FxAzZcmDmM1XUBLCkj4yYVdQMl8aeIw1l1ASO+KzJcmXkDGYay2/nZeQETUzaBlx15AwkbviswXX0BAuRB1M2hfQL4rMl+auF9AHs+ppIAEYEBdiLoZtCxgQJxBy47nVGBA2/rbAxt9YEAatOx4TqVgQFlt/e2BzWBAmCYOY7X1YEDX3x7Y6B1hQBaZL00cRmFAVVJAwk9uYUCUC1E3g5ZhQNPEYay2vmFAEn5yIermYUBRN4OWHQ9iQJHwkwtRN2JA0KmkgIRfYkAPY7X1t4diQE4cxmrrr2JAjdXW3x7YYkDMjudUUgBjQAtI+MmFKGNASgEJP7lQY0CJuhm07HhjQMhzKikgoWNABy07nlPJY0BG5ksTh/FjQIWfXIi6GWRAxFht/e1BZEADEn5yIWpkQELLjudUkmRAgYSfXIi6ZEDAPbDRu+JkQP/2wEbvCmVAPrDRuyIzZUB9aeIwVltlQLwi86WJg2VA+9sDG72rZUA6lRSQ8NNlQHlOJQUk/GVAuQc2elckZkD4wEbvikxmQDd6V2S+dGZAdjNo2fGcZkC17HhOJcVmQPSlicNY7WZAM1+aOIwVZ0ByGKutvz1nQLHRuyLzZWdA8IrMlyaOZ0AvRN0MWrZnQG797YGN3mdArbb+9sAGaEDsbw9s9C5oQCspIOEnV2hAauIwVlt/aECpm0HLjqdoQOhUUkDCz2hAJw5jtfX3aEBmx3MqKSBpQKWAhJ9cSGlA5DmVFJBwaUAj86WJw5hpQGKstv72wGlAoWXHcyrpaUDgHtjoXRFqQCDY6F2ROWpAX5H50sRhakCeSgpI+IlqQN0DG70rsmpAHL0rMl/aakBbdjynkgJrQJovTRzGKmtA2ehdkflSa0AYom4GLXtrQFdbf3tgo2tAlhSQ8JPLa0DVzaBlx/NrQBSHsdr6G2xAU0DCTy5EbECS+dLEYWxsQNGy4zmVlGxAEGz0rsi8bEBPJQUk/ORsQI7eFZkvDW1AzZcmDmM1bUAMUTeDll1tQEsKSPjJhW1AisNYbf2tbUDJfGniMNZtQAg2eldk/m1ASO+KzJcmbkCHqJtBy05uQMZhrLb+dm5ABRu9KzKfbkBE1M2gZcduQION3hWZ725AwkbviswXb0AAAAAAAEBvQA==\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[200]},\"y\":{\"__ndarray__\":\"AAAAAAAAAABIrpUzvEvxP4FSr2uASwFAEtoxVU3wCUDzIZigokkRQD0Sm9yBmRVAq3abtuDmGUCkKCW9qzAeQItcqwzROiFAay05ZyxaI0DirMNzn3UlQHTDlk1RjCdABMNusFudKUA319hyzqcrQCVXDmCzqi1AVCs2WhKlL0ChP/nT+sowQPT5wSU3vjFA0ViKH8yrMkBB8qI4T5MzQKFCgy9fdDRA8Cv6laVONUDO/l4Q2CE2QNdaVT+57TZAfMf1TxmyN0CFMHsy1m44QPRvnHvbIzlAXTww+CHROUAY/mz9rnY6QFC86IGTFDtAvqpqDOuqO0AembeF2jk8QDja4/mOwTxAR/aIVDxCPUCSI7AhHLw9QGJDf1tsLz5AxTTjSm6cPkAuoq5/ZQM/QK/CBuOWZD9A8o6O5UfAP0CnGMrkXgtAQEXbSoQeNEBAKUlfaYRaQEBH6EBTsX5AQLfAEv/EoEBAxYp1CN7AQEBdBrvSGd9AQL+Vj3mU+0BAee7/x2gWQUDD+dQ0sC9BQBaRV+OCR0FAnOCmp/ddQUBbiuUNJHNBQGA0mmMch0FAzlK3wvOZQUAdVNMdvKtBQGKiLU2GvEFAZxwuHGLMQUC5wxtXXttBQGt51NiI6UFABuZamO72QUDCOxm2mwNCQF2Rv4ibD0JAlEyrqfgaQkBAoMoAvSVCQHGs88/xL0JA0XqqvZ85QkBEAVTfzkJCQBal1sKGS0JAu4Sqd85TQkASK12XrFtCQEBRjU0nY0JAHwxkX0RqQkBWPZEyCXFCQJZr0dN6d0JA10kD/Z19QkCnO9Mad4NCQNQTA1IKiUJAuCdUhFuOQkCDoRlVbpNCQH7CeC1GmEJAeIZcQOacQkB81SGOUaFCQCYrAeiKpUJAI1Q685SpQkAtnAYscq1CQCaCVegksUJA/sRXWq+0QkDPW9ySE7hCQAKugoNTu0JAuyXFAHG+QkBK/97DbcFCQCcEkGxLxEJAnK7AggvHQkBFBQl4r8lCQE1SHKk4zEJAHbIbX6jOQkCQT9HQ/9BCQOwA1iNA00JAZdiibWrVQkDaHJC0f9dCQIgDw/CA2UJAtmkLDW/bQkA7tbLnSt1CQM7sPFMV30JAiAQdF8/gQkACSF3weOJCQBi6PJIT5EJAMzLCpp/lQkD+70XPHedCQMNQ8qSO6EJA10Q8ufLpQkDlF1SWSutCQPUTj7+W7EJADX3KsdftQkAiWsjjDe9CQIB3hsY58EJA2QaQxVvxQkAGOkpHdPJCQLsuPK2D80JAQHtSVIr0QkBwph6ViPVCQCDQEsR+9kJA8Mm5MW33QkAi3OsqVPhCQOBtAPkz+UJAZ8T84Qz6QkADCcAo3/pCQHnCLA2r+0JASutPzHD8QkCNy4WgMP1CQEy6nMHq/UJACej1ZJ/+QkCKUaS9Tv9CQE74ifz4/0JAp3tzUJ4AQ0ASLDLmPgFDQFuwtOjaAUNAy1IegXICQ0AFC93WBQNDQOdXvg+VA0NAivsCUCAEQ0A/qnG6pwRDQG+8aHArBUNAB/LukasFQ0B8VcM9KAZDQD1LbJGhBkNAxdlFqRcHQ0DVNY+gigdDQEudd5H6B0NA1IoqlWcIQ0DFS9vD0QhDQPMA0DQ5CUNA2hJs/p0JQ0DdIDo2AApDQONy9fBfCkNAP/SSQr0KQ0Bevkk+GAtDQDY5m/ZwC0NAR9dafccLQ0CHcrXjGwxDQExPODpuDENA7MnXkL4MQ0Css/X2DA1DQB9jZ3tZDUNAAnx7LKQNQ0BXcv8X7Q1DQEHMREs0DkNAECYm03kOQ0CM+wu8vQ5DQIk58READ0NAl5pn4EAPQ0Bw0ZsygA9DQKuDWRO+D0NAFhcPjfoPQ0DrU9GpNRBDQBTeXnNvEENAa4cj86cQQ0DrfDsy3xBDQJpQdjkVEUNA3eFZEUoRQ0DVJSXCfRFDQFHR0lOwEUNAwOUbzuERQ0CIIno4EhJDQAZcKppBEkNAg7ku+m8SQ0A321BfnRJDQIXpI9DJEkNAbo4GU/USQ0BV2iTuHxNDQN4UeqdJE0NA/nrShHITQ0Dz6syLmhNDQAJ/3MHBE0NAyBdKLOgTQ0DG1jXQDRRDQPKJmLIyFENA6AhF2FYUQ0BfhOlFehRDQA==\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[200]}},\"selected\":{\"id\":\"1124\"},\"selection_policy\":{\"id\":\"1123\"}},\"id\":\"1107\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.7},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.7},\"line_alpha\":{\"value\":0.7},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1036\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1044\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"data\":{\"x\":{\"__ndarray__\":\"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MzMzMzPTUEAzMzMzM9NQQDMzMzMz01BAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQGZmZmZm5lBAZmZmZmbmUEBmZmZmZuZQQDMzMzMz81BAMzMzMzPzUEAzMzMzM/NQQDMzMzMz81BAMzMzMzPzUEAzMzMzM/NQQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUBmZmZmZgZRQGZmZmZmBlFAZmZmZmYGUUCamZmZmRlRQJqZmZmZGVFAmpmZmZkZUUCamZmZmRlRQJqZmZmZGVFAmpmZmZkZUUCamZmZmRlRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQGZmZmZmJlFAZmZmZmYmUUBmZmZmZiZRQJqZmZmZOVFAmpmZmZk5UUCamZmZmTlRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAZmZmZmZGUUBmZmZmZkZRQGZmZmZmRlFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAmpmZmZlZUUCamZmZmVlRQJqZmZmZWVFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUBmZmZmZmZRQGZmZmZmZlFAZmZmZmZmUUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUCamZmZmXlRQJqZmZmZeVFAmpmZmZl5UUBmZmZmZoZRQGZmZmZmhlFAZmZmZmaGUUBmZmZmZoZRQGZmZmZmhlFAZmZmZmaGUUBmZmZmZoZRQGZmZmZmhlFAmpmZmZmZUUCamZmZmZlRQJqZmZmZmVFAmpmZmZmZUUCamZmZmZlRQJqZmZmZmVFAmpmZmZmZUUCamZmZmZlRQM3MzMzMrFFAzczMzMysUUDNzMzMzKxRQM3MzMzMrFFAzczMzMysUUDNzMzMzKxRQM3MzMzMrFFAzczMzMysUUCamZmZmblRQJqZmZmZuVFAmpmZmZm5UUDNzMzMzMxRQM3MzMzMzFFAzczMzMzMUUDNzMzMzMxRQM3MzMzMzFFAzczMzMzMUUDNzMzMzMxRQJqZmZmZ2VFAmpmZmZnZUUCamZmZmdlRQJqZmZmZ2VFAmpmZmZnZUUCamZmZmdlRQM3MzMzM7FFAzczMzMzsUUDNzMzMzOxRQM3MzMzM7FFAmpmZmZn5UUCamZmZmflRQJqZmZmZ+VFAzczMzMwMUkDNzMzMzAxSQM3MzMzMDFJAzczMzMwMUkDNzMzMzAxSQM3MzMzMDFJAmpmZmZkZUkCamZmZmRlSQJqZmZmZGVJAmpmZmZkZUkCamZmZmRlSQM3MzMzMLFJAzczMzMwsUkAAAAAAAEBSQAAAAAAAQFJAAAAAAABAUkDNzMzMzExSQM3MzMzMTFJAzczMzMxMUkDNzMzMzExSQM3MzMzMTFJAAAAAAABgUkAAAAAAAGBSQAAAAAAAYFJAAAAAAABgUkAAAAAAAGBSQM3MzMzMbFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAzczMzMyMUkAAAAAAAKBSQAAAAAAAoFJAMzMzMzOzUkAAAAAAAMBSQDMzMzMz81JAAAAAAAAAU0AAAAAAACBTQDMzMzMzM1NAMzMzMzNTU0AzMzMzM1NTQGZmZmZmZlNAZmZmZmZmU0AzMzMzM7NTQGZmZmZmxlNAmpmZmZkZVEDNzMzMzExUQJqZmZmZeVRAzczMzMyMVECamZmZmZlUQJqZmZmZmVRAAAAAAAAgVUAAAAAAAIBVQGZmZmZmBlZAZmZmZmbmVkCamZmZmflWQAAAAAAAgFdAzczMzMysV0AAAAAAACBYQAAAAAAAIFhAMzMzMzNTWEAAAAAAAGBYQDMzMzMzk1hAmpmZmZkZWUDNzMzMzKxZQJqZmZmZ+VlAmpmZmZl5XEDNzMzMzAxdQM3MzMzMLF1AAAAAAABgXUAAAAAAAMBdQGZmZmZmJl5AZmZmZmZGXkCamZmZmZleQJqZmZmZuV5AZmZmZmbGXkAzMzMzM2NgQJqZmZmZeWFAmpmZmZmJYUCamZmZmalhQAAAAAAAAGRAMzMzMzPDZEDNzMzMzDxnQAAAAAAA0GdAzczMzMysa0A=\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[670]},\"y\":{\"__ndarray__\":\"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\",\"dtype\":\"float64\",\"order\":\"little\",\"shape\":[670]}},\"selected\":{\"id\":\"1050\"},\"selection_policy\":{\"id\":\"1049\"}},\"id\":\"1035\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"coordinates\":null,\"data_source\":{\"id\":\"1035\"},\"glyph\":{\"id\":\"1036\"},\"group\":null,\"hover_glyph\":null,\"muted_glyph\":{\"id\":\"1038\"},\"nonselection_glyph\":{\"id\":\"1037\"},\"view\":{\"id\":\"1040\"}},\"id\":\"1039\",\"type\":\"GlyphRenderer\"},{\"attributes\":{},\"id\":\"1123\",\"type\":\"UnionRenderers\"},{\"attributes\":{\"bottom_units\":\"screen\",\"coordinates\":null,\"fill_alpha\":0.5,\"fill_color\":\"lightgrey\",\"group\":null,\"left_units\":\"screen\",\"level\":\"overlay\",\"line_alpha\":1.0,\"line_color\":\"black\",\"line_dash\":[4,4],\"line_width\":2,\"right_units\":\"screen\",\"syncable\":false,\"top_units\":\"screen\"},\"id\":\"1027\",\"type\":\"BoxAnnotation\"},{\"attributes\":{\"source\":{\"id\":\"1035\"}},\"id\":\"1040\",\"type\":\"CDSView\"},{\"attributes\":{},\"id\":\"1007\",\"type\":\"DataRange1d\"},{\"attributes\":{\"line_color\":\"orange\",\"line_width\":2,\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1108\",\"type\":\"Line\"},{\"attributes\":{},\"id\":\"1045\",\"type\":\"AllLabels\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.2},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.2},\"line_alpha\":{\"value\":0.2},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1038\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1022\",\"type\":\"WheelZoomTool\"},{\"attributes\":{\"line_alpha\":0.1,\"line_color\":\"orange\",\"line_width\":2,\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1109\",\"type\":\"Line\"},{\"attributes\":{},\"id\":\"1047\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.1},\"fill_color\":{\"value\":\"#1f77b4\"},\"hatch_alpha\":{\"value\":0.1},\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1037\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"1021\",\"type\":\"PanTool\"},{\"attributes\":{},\"id\":\"1009\",\"type\":\"LinearScale\"},{\"attributes\":{\"axis_label\":\"spindle length (\\u00b5m)\",\"coordinates\":null,\"formatter\":{\"id\":\"1044\"},\"group\":null,\"major_label_policy\":{\"id\":\"1045\"},\"ticker\":{\"id\":\"1018\"}},\"id\":\"1017\",\"type\":\"LinearAxis\"},{\"attributes\":{},\"id\":\"1048\",\"type\":\"AllLabels\"},{\"attributes\":{\"coordinates\":null,\"group\":null},\"id\":\"1041\",\"type\":\"Title\"},{\"attributes\":{\"line_alpha\":0.2,\"line_color\":\"orange\",\"line_width\":2,\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"1110\",\"type\":\"Line\"},{\"attributes\":{},\"id\":\"1005\",\"type\":\"DataRange1d\"},{\"attributes\":{\"source\":{\"id\":\"1107\"}},\"id\":\"1112\",\"type\":\"CDSView\"},{\"attributes\":{},\"id\":\"1124\",\"type\":\"Selection\"},{\"attributes\":{},\"id\":\"1049\",\"type\":\"UnionRenderers\"},{\"attributes\":{},\"id\":\"1024\",\"type\":\"SaveTool\"},{\"attributes\":{},\"id\":\"1050\",\"type\":\"Selection\"},{\"attributes\":{\"tools\":[{\"id\":\"1021\"},{\"id\":\"1022\"},{\"id\":\"1023\"},{\"id\":\"1024\"},{\"id\":\"1025\"},{\"id\":\"1026\"}]},\"id\":\"1028\",\"type\":\"Toolbar\"},{\"attributes\":{},\"id\":\"1025\",\"type\":\"ResetTool\"},{\"attributes\":{},\"id\":\"1018\",\"type\":\"BasicTicker\"},{\"attributes\":{\"coordinates\":null,\"data_source\":{\"id\":\"1107\"},\"glyph\":{\"id\":\"1108\"},\"group\":null,\"hover_glyph\":null,\"muted_glyph\":{\"id\":\"1110\"},\"nonselection_glyph\":{\"id\":\"1109\"},\"view\":{\"id\":\"1112\"}},\"id\":\"1111\",\"type\":\"GlyphRenderer\"},{\"attributes\":{},\"id\":\"1014\",\"type\":\"BasicTicker\"},{\"attributes\":{\"overlay\":{\"id\":\"1027\"}},\"id\":\"1023\",\"type\":\"BoxZoomTool\"},{\"attributes\":{},\"id\":\"1026\",\"type\":\"HelpTool\"},{\"attributes\":{\"axis\":{\"id\":\"1013\"},\"coordinates\":null,\"group\":null,\"ticker\":null},\"id\":\"1016\",\"type\":\"Grid\"},{\"attributes\":{\"axis\":{\"id\":\"1017\"},\"coordinates\":null,\"dimension\":1,\"group\":null,\"ticker\":null},\"id\":\"1020\",\"type\":\"Grid\"},{\"attributes\":{\"axis_label\":\"droplet diameter (\\u00b5m)\",\"coordinates\":null,\"formatter\":{\"id\":\"1047\"},\"group\":null,\"major_label_policy\":{\"id\":\"1048\"},\"ticker\":{\"id\":\"1014\"}},\"id\":\"1013\",\"type\":\"LinearAxis\"}],\"root_ids\":[\"1004\"]},\"title\":\"Bokeh Application\",\"version\":\"2.4.2\"}};\n",
+       "  const render_items = [{\"docid\":\"16b451c0-5e59-4cc6-9e46-c4090cae0775\",\"root_ids\":[\"1004\"],\"roots\":{\"1004\":\"f088d1df-11a1-4c33-9b37-fab9723c0f9b\"}}];\n",
+       "  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);\n",
+       "\n",
+       "  }\n",
+       "  if (root.Bokeh !== undefined) {\n",
+       "    embed_document(root);\n",
+       "  } else {\n",
+       "    let attempts = 0;\n",
+       "    const timer = setInterval(function(root) {\n",
+       "      if (root.Bokeh !== undefined) {\n",
+       "        clearInterval(timer);\n",
+       "        embed_document(root);\n",
+       "      } else {\n",
+       "        attempts++;\n",
+       "        if (attempts > 100) {\n",
+       "          clearInterval(timer);\n",
+       "          console.log(\"Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing\");\n",
+       "        }\n",
+       "      }\n",
+       "    }, 10, root)\n",
+       "  }\n",
+       "})(window);"
+      ],
+      "application/vnd.bokehjs_exec.v0+json": ""
+     },
+     "metadata": {
+      "application/vnd.bokehjs_exec.v0+json": {
+       "id": "1004"
+      }
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Compute theoretical curve using MLE parameters\n",
+    "d_theor = np.linspace(0, 250, 200)\n",
+    "ell_theor = theor_spindle_length(*mle_params[:-1], d_theor)\n",
+    "\n",
+    "p.line(d_theor, ell_theor, color='orange', line_width=2)\n",
+    "\n",
+    "bokeh.io.show(p)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Of course, we are not using the full generative model here, since we are not using the parameter $\\sigma$. We will discuss in much more detail in the lesson on model assessment how to visualize the entire generative model as it relates to the measured data."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Least squares\n",
+    "\n",
+    "The likelihood for this model is\n",
+    "\n",
+    "\\begin{align}\n",
+    "L( \\gamma, \\phi, \\sigma; \\mathbf{l}, \\mathbf{d}) = \\prod_{i} f(l_i ; d_i, \\gamma, \\phi, \\sigma) = \\frac{1}{(2\\pi \\sigma^2)^{n/2}}\\,\\exp\\left[-\\frac{1}{2\\sigma^2}\\sum_{i}(l_i - \\mu_i)^2\\right],\n",
+    "\\end{align}\n",
+    "\n",
+    "with \n",
+    "\n",
+    "\\begin{align}\n",
+    "\\mu_i =  \\frac{\\gamma d_i}{\\left(1+(\\gamma d_i/\\phi)^3\\right)^{\\frac{1}{3}}}\n",
+    "\\end{align}.\n",
+    "\n",
+    "Notice that the parameters $\\gamma$ and $\\phi$ only appear in the parameter $\\mu$. Therefore, to find the parameter values of $\\gamma$ and $\\phi$ that maximize the likelihood, we need only to find the values that minimize\n",
+    "\n",
+    "\\begin{align}\n",
+    "\\text{RSS} \\equiv \\sum_{i}(l_i - \\mu_i)^2,\n",
+    "\\end{align}\n",
+    "\n",
+    "a quantity known as the residual sum of squares. This is true for whatever value $\\sigma$ takes. So, assume for a moment we find the MLEs $\\gamma^*$ and $\\phi^*$, which give us a residual sum of squares of $\\text{RSS}^*$. Then, the log-likelihood is\n",
+    "\n",
+    "\\begin{align}\n",
+    "\\ell(\\gamma^*, \\phi^*, \\sigma) = -\\frac{n}{2}\\,\\ln 2\\pi - n\\ln\\sigma - \\frac{\\text{RSS}^*}{2\\sigma^2}.\n",
+    "\\end{align}\n",
+    "\n",
+    "The value of $\\sigma$ that maximizes the log-likelihood is then found by differentiating and setting to zero.\n",
+    "\n",
+    "\\begin{align}\n",
+    "\\frac{\\partial \\ell}{\\partial \\sigma} = -\\frac{n}{\\sigma} + \\frac{\\text{RSS}^*}{\\sigma^3} = 0.\n",
+    "\\end{align}\n",
+    "\n",
+    "This is solved to give $\\sigma^* = \\sqrt{\\text{RSS}^*/n}$.\n",
+    "\n",
+    "So, we can split the optimization problem in two parts. First, find the values of parameters $\\gamma$ and $\\phi$ that minimize the residual sum of squares. Then, using these values, compute the MLE for $\\sigma$ using the analytical result we have just derived.\n",
+    "\n",
+    "It turns out that this is quite powerful because the optimization problem for minimizing the residual sum of squares has nice properties. Importantly, we can use the powerful [Levenberg-Marquardt algorithm](https://en.wikipedia.org/wiki/Levenberg–Marquardt_algorithm) to perform the optimization. A variant of this is implemented in `scipy.optimization.least_squares()` ([docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)). To use that algorithm you need to define a function for the residual; that is a function that returns the quantity $l_i - \\mu_i$. The function has call signature `f(params, *args)`, where `params` is a Numpy array containing the parameters you will use in the optimization (in our case, $\\gamma$ and $\\phi$), and `args` is a tuple of any other arguments passed to the function, which almost always include the data (in our case `(d, ell)`). We can code up that function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def resid(params, d, ell):\n",
+    "    \"\"\"Residual for spindle length model.\"\"\"\n",
+    "    return ell - theor_spindle_length(*params, d)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can call `scipy.optimize.least_squares()` to perform the MLE. We can also specify bounds as a tuple containing a list of the lower bounds of the respective parameters and a list of the upper bounds of the respective parameters. We bound $\\gamma$ between zero and one, and $\\phi$ just has to be positive."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([ 0.8601068 , 38.24676911]), 3.754999871544008)"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = scipy.optimize.least_squares(\n",
+    "    resid, np.array([0.5, 35]), args=(d, ell), bounds=([0, 0], [1, np.inf])\n",
+    ")\n",
+    "\n",
+    "# Compute residual sum of squares from optimal params\n",
+    "rss_mle = np.sum(resid(res.x, d, ell)**2)\n",
+    "\n",
+    "# Compute MLE for sigma\n",
+    "sigma_mle = np.sqrt(rss_mle / len(d))\n",
+    "\n",
+    "# Take a look\n",
+    "res.x, sigma_mle"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Indeed, we got the same results as before. Let's code this procedure up into a function. Looking ahead to using `bebi103.bootstrap.draw_bs_reps_mle()`, we need the function to take the data set as a single argument."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def spindle_mle_lstq(data):\n",
+    "    \"\"\"Compute MLE for parameters in spindle length model.\"\"\"\n",
+    "    # Unpack data\n",
+    "    d = data[:, 0]\n",
+    "    ell = data[:, 1]\n",
+    "    \n",
+    "    res = scipy.optimize.least_squares(\n",
+    "        resid, np.array([0.5, 35]), args=(d, ell), bounds=([0, 0], [1, np.inf])\n",
+    "    )\n",
+    "\n",
+    "    # Compute residual sum of squares from optimal params\n",
+    "    rss_mle = np.sum(resid(res.x, d, ell)**2)\n",
+    "\n",
+    "    # Compute MLE for sigma\n",
+    "    sigma_mle = np.sqrt(rss_mle / len(d))\n",
+    "    \n",
+    "    return tuple([x for x in res.x] + [sigma_mle])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The big advantages of doing this are the robustness and speed of the Levenberg-Marquardt algorithm. Let's do a speed test."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Timing for MLE by Powell's method:\n",
+      "32.5 ms ± 458 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)\n",
+      "\n",
+      "Timing for MLE by least_squares:\n",
+      "10.2 ms ± 1.9 ms per loop (mean ± std. dev. of 7 runs, 100 loops each)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"Timing for MLE by Powell's method:\")\n",
+    "%timeit spindle_mle(d, ell)\n",
+    "\n",
+    "print(\"\\nTiming for MLE by least_squares:\")\n",
+    "data = df[['Droplet Diameter (um)', 'Spindle Length (um)']].values\n",
+    "%timeit spindle_mle_lstq(data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "That's a substantial speed boost of nearly 4×."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Very important caveat\n",
+    "\n",
+    "We just did something you may have heard of. We minimized the sum of the squares of the residuals. Notice that this depended on the model for the residuals being Normal. **This does not in general work for all models!** We will also find that this does not in general work in a Bayesian setting with non-Uniform priors, which is almost always the case."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Confidence intervals\n",
+    "\n",
+    "We can now proceed to compute confidence intervals for our parameters. There are many ways to do this, including pairs, residual, and wild bootstrap, which will be topics for recitation. We will instead do a parametric bootstrap here. We use the generative model parametrized by the MLE to regenerate data sets. For each value of $d$ (which are fixed), we draw values of $l$ using the generative distribution). Then we perform MLE of those to get confidence intervals. To use `bebi103.draw_bs_reps_mle()`, then, we just are left to supply the bootstrap sample generating function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gen_spindle_data(params, d, size, rg):\n",
+    "    \"\"\"Generate a new spindle data set.\"\"\"\n",
+    "    mu = theor_spindle_length(*params[:-1], d)\n",
+    "    sigma = params[-1]\n",
+    "\n",
+    "    return np.vstack((d, rg.normal(mu, sigma))).transpose()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that we were careful to make sure the data set has the appropriate dimensions; the row indexes the trial. We can now compute our replicates and confidence intervals."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "95% Confidence intervals\n",
+      "γ: [ 0.83,  0.90]\n",
+      "φ: [37.53, 39.00]\n",
+      "σ: [ 3.55,  3.95]\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "bs_reps = bebi103.bootstrap.draw_bs_reps_mle(\n",
+    "    spindle_mle_lstq,\n",
+    "    gen_spindle_data,\n",
+    "    data=df[[\"Droplet Diameter (um)\", \"Spindle Length (um)\"]].values,\n",
+    "    mle_args=(),\n",
+    "    gen_args=(d,),\n",
+    "    size=10000,\n",
+    "    n_jobs=2,\n",
+    "    progress_bar=False,\n",
+    ")\n",
+    "\n",
+    "# Compute confidence intervals\n",
+    "conf_ints = np.percentile(bs_reps, [2.5, 97.5], axis=0)\n",
+    "\n",
+    "# Print the results\n",
+    "print(\n",
+    "    \"\"\"95% Confidence intervals\n",
+    "γ: [ {0:.2f},  {1:.2f}]\n",
+    "φ: [{2:.2f}, {3:.2f}]\n",
+    "σ: [ {4:.2f},  {5:.2f}]\n",
+    "\"\"\".format(\n",
+    "        *conf_ints.T.ravel()\n",
+    "    )\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The confidence intervals are given in each column for $\\gamma$, $\\phi$, and $\\sigma$, respectively, and are quite tight. This is because we have lots of data points. This does *not* mean that the data are tightly distributed about the theoretical curve, only that the MLE estimates for the parameters will not vary much if we repeated the experiment and analysis."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Computing environment"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Python implementation: CPython\n",
+      "Python version       : 3.9.12\n",
+      "IPython version      : 8.2.0\n",
+      "\n",
+      "numpy     : 1.21.5\n",
+      "scipy     : 1.7.3\n",
+      "pandas    : 1.4.2\n",
+      "bokeh     : 2.4.2\n",
+      "iqplot    : 0.2.5\n",
+      "bebi103   : 0.1.11\n",
+      "jupyterlab: 3.3.2\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "%load_ext watermark\n",
+    "%watermark -v -p numpy,scipy,pandas,bokeh,iqplot,bebi103,jupyterlab"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
