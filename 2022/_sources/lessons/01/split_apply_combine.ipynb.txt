@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Tidy data and split-apply-combine\n",
+    "# Tidy data and split-apply-combine\n",
     "\n",
     "<hr>"
    ]

@@ -1,7 +1,7 @@
 Schedule overview
 -----------------
 
-The workshop runs June 26–July 1, 2022, 9 am-6 pm in AAC 020. The times below are approximate.
+The workshop runs July 4 though July 7. The topics list will depend on our interactions with each other as we get a feel for the background and needs of the students. I we manage to cover *everything* (we won't), the times below are approximate for the lessons and exercises we will do.
 
 ----
 
@@ -33,14 +33,14 @@ Daily schedule
 	+ **1:00** - :ref:`Lesson 5: Generative modeling and parametric inference`
 	+ **2:00** - :ref:`Exercise 5: Generative modeling`
 	+ **3:00** - :ref:`Lesson 6: Maximum likelihood estimation`
-	+ **4:00** - Exercise 6
+	+ **4:00** - :ref:`Exercise 6: Maximum likelihood estimation`
 
 
 - **Day 4: Thursday, July 7**
 
 	+ **1:00** - :ref:`Lesson 7: Variate-covariate modeling`
-	+ **2:00** - Exercise 7
+	+ **2:00** - :ref:`Exercise 7: MLE with variate-covariate models`
 	+ **3:00** - :ref:`Lesson 8: Model assessment`
-	+ **4:00** - Exercise 8
+	+ **4:00** - :ref:`Exercise 8: Model assessment`
 
 

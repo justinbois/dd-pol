@@ -78,6 +78,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
 <ul>
@@ -1058,7 +1061,7 @@ Timing for MLE by least_squares:
 </section>
 <section id="Confidence-intervals">
 <h2>Confidence intervals<a class="headerlink" href="#Confidence-intervals" title="Permalink to this headline"></a></h2>
-<p>We can now proceed to compute confidence intervals for our parameters. There are many ways to do this, including pairs, residual, and wild bootstrap, which will be topics for recitation. We will instead do a parametric bootstrap here. We use the generative model parametrized by the MLE to regenerate data sets. For each value of <span class="math notranslate nohighlight">\(d\)</span> (which are fixed), we draw values of <span class="math notranslate nohighlight">\(l\)</span> using the generative distribution). Then we perform MLE of those to get confidence intervals. To use
+<p>We can now proceed to compute confidence intervals for our parameters. There are many ways to do this, including pairs, residual, and wild bootstrap, which we will omit here. We will instead do a parametric bootstrap here. We use the generative model parametrized by the MLE to regenerate data sets. For each value of <span class="math notranslate nohighlight">\(d\)</span> (which are fixed), we draw values of <span class="math notranslate nohighlight">\(l\)</span> using the generative distribution). Then we perform MLE of those to get confidence intervals. To use
 <code class="docutils literal notranslate"><span class="pre">bebi103.draw_bs_reps_mle()</span></code>, then, we just are left to supply the bootstrap sample generating function.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1164,11 +1167,11 @@ jupyterlab: 3.3.2
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Jun 27, 2022.
+      <span class="lastupdated">Last updated on Jul 04, 2022.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7fba8c13ebe0> 
+   <jinja2.runtime.BlockReference object at 0x7f92c4e09a90> 
 
 <p>© 2021 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
