@@ -26,7 +26,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Confidence intervals for a MLE" href="mle_confidence_intervals.html" />
-    <link rel="prev" title="Lesson 6: Maximum likelihood estimation" href="index.html" /> 
+    <link rel="prev" title="Theoretical maximum likelihood estimation" href="mle.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,6 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 6: Maximum likelihood estimation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mle.html">Theoretical maximum likelihood estimation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Numerical MLE</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#The-data-set">The data set</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Exploratory-data-analysis">Exploratory data analysis</a></li>
@@ -932,11 +933,11 @@ n_i \sim \text{NBinom}(\alpha,\beta)\;\forall i.
 \end{align}</span></p>
 <p>Referring to the PMF of the Negative Binomial distribution and making the change of variables <span class="math notranslate nohighlight">\(b=1/\beta\)</span>, the likelihood function is</p>
 <p><span class="math">\begin{align}
-L(\alpha, b;\mathbf{n}) = \prod_i\frac{\Gamma(n_i+\alpha)}{\Gamma(\alpha)n!}\left(\frac{1}{1+b}\right)^\alpha\left(\frac{b}{1+b}\right)^{n_i},
+L(\alpha, b;\mathbf{n}) = \prod_i\frac{\Gamma(n_i+\alpha)}{\Gamma(\alpha)n_i!}\left(\frac{1}{1+b}\right)^\alpha\left(\frac{b}{1+b}\right)^{n_i},
 \end{align}</span></p>
 <p>and the log-likelihood is</p>
 <p><span class="math">\begin{align}
-\ell(\alpha, b;\mathbf{n}) = \ln L(\alpha, b;\mathbf{n}) = \sum_i \ln \left(\frac{\Gamma(n_i+\alpha)}{\Gamma(\alpha)n!}\left(\frac{1}{1+b}\right)^\alpha\left(\frac{b}{1+b}\right)^{n_i}\right).
+\ell(\alpha, b;\mathbf{n}) = \ln L(\alpha, b;\mathbf{n}) = \sum_i \ln \left(\frac{\Gamma(n_i+\alpha)}{\Gamma(\alpha)n_i!}\left(\frac{1}{1+b}\right)^\alpha\left(\frac{b}{1+b}\right)^{n_i}\right).
 \end{align}</span></p>
 <p>To find the MLE, we need to find the values of <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(b\)</span> that satisfy</p>
 <p><span class="math">\begin{align}
@@ -1314,7 +1315,7 @@ jupyterlab: 3.3.2
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Lesson 6: Maximum likelihood estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mle.html" class="btn btn-neutral float-left" title="Theoretical maximum likelihood estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="mle_confidence_intervals.html" class="btn btn-neutral float-right" title="Confidence intervals for a MLE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -1322,11 +1323,11 @@ jupyterlab: 3.3.2
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Jul 04, 2022.
+      <span class="lastupdated">Last updated on Jul 07, 2022.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f92c4576400> 
+   <jinja2.runtime.BlockReference object at 0x7fcc9e0ea610> 
 
 <p>© 2021 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
