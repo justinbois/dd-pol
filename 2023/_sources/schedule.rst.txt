@@ -1,0 +1,45 @@
+Schedule overview
+-----------------
+
+The workshop formally runs August 28–30, and, depending on interest, we can cover more topics or work with student data sets August 31 and September 1. The topics list will depend on our interactions with each other as we get a feel for the background and needs of the students. I we manage to cover *everything* (we won't), the times below are approximate for the lessons and exercises we will do.
+
+Additional topics that may be interesting to students include null hypothesis significance overplotting, dashboarding, testing (NHST), principled workflows, advanced bootstrapping techniques (BCa, Studentization), and Bayesian modeling (including hierarchical modeling).
+
+----
+
+Daily schedule
+--------------
+
+- **Pre-bootcamp**
+
+	+ :ref:`Lesson 0: Configuring your computer`
+
+
+- **Day 1: Monday, August 28**
+
+	+ **9:30** - :ref:`Lesson 1: Pandas and split-apply-combine`
+	+ **11:00** - :ref:`Exercise 1. Pandas and split-apply-combine`
+	+ **13:00** - :ref:`Lesson 2: Exploratory plotting`
+	+ **14:30** - :ref:`Exercise 2. Exploratory plotting`
+	+ **15:00** - :ref:`Lesson 3: Probability distributions and the plug-in principle`
+	+ **16:00** - :ref:`Exercise 3. Working with probability distributions`
+
+
+- **Day 2: Tuesday, August 29**
+
+	+ **9:30** - :ref:`Lesson 4: Nonparametric inference with hacker stats`
+	+ **11:00** - :ref:`Exercise 4: Nonparametric hacker stats`
+	+ **13:00** - :ref:`Lesson 5: Generative modeling and parametric inference`
+	+ **14:00** - :ref:`Exercise 5: Generative modeling`
+	+ **14:30** - :ref:`Lesson 6: Maximum likelihood estimation`
+
+
+- **Day 3: Wednesday, August 30**
+
+	+ **9:30** - :ref:`Exercise 6: Maximum likelihood estimation`
+	+ **11:30** - :ref:`Lesson 7: Variate-covariate modeling`
+	+ **13:30** - :ref:`Exercise 7: MLE with variate-covariate models`
+	+ **14:30** - :ref:`Lesson 8: Model assessment`
+	+ **15:30** - :ref:`Exercise 8: Model assessment`
+
+

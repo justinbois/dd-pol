@@ -1,0 +1,68 @@
+PoL workshop on statistical inference
+=====================================================================
+
+Physical biology is a quantitative science, and biological scientists need to be equipped with tools to analyze quantitative data. This workshop takes a hands-on approach toward development of these tools. Together, we will analyze real data. We will learn how to organize, preserve, and share data sets, create informative interactive graphical displays of data, and perform basic resampling-based statistical inferences.
+
+
+Prerequisites
+--------------
+
+Familiarity with the Python programming language and the `NumPy package <https://numpy.org>`_ are assumed. Some experience with `Pandas <https://pandas.pydata.org:>`_ is useful, but not required. We will use `Bokeh <https://docs.bokeh.org/en/latest/>`_ for plotting, and some familiarity with that package is useful as well, but not required. Finally, students should have some experience with calculus and familiarity with basic concepts in probability, though advanced knowledge is not required.
+
+
+Data sets
+---------
+
+Students should download and unzip the `data sets we will use in the workshop <http://bois.caltech.edu/data.zip>`_.
+
+
+People
+------
+
+- `Justin Bois <http://bois.caltech.edu/>`_
+- Saehui Hwang
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Lessons
+
+   lessons/00/configuring_your_computer.ipynb
+   lessons/01/index
+   lessons/02/index
+   lessons/03/index
+   lessons/04/index
+   lessons/05/index
+   lessons/06/index
+   lessons/07/index
+   lessons/08/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Exercises
+
+   exercises/01/index
+   exercises/02/index
+   exercises/03/index
+   exercises/04/index
+   exercises/05/index
+   exercises/06/index
+   exercises/07/index
+   exercises/08/index
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Schedule
+
+   schedule
+
+
+Useful resources
+----------------
+
+- `BE/Bi 103 a at Caltech <https://bebi103a.github.io/>`_
+- `BE/Bi 103 b at Caltech <https://bebi103b.github.io/>`_
+- `Allen Downey's <https://www.allendowney.com/>`_ `Think Stats <https://greenteapress.com/wp/think-stats-2e/>`_
+- `Larry Wasserman's All of Statistics <https://www.stat.cmu.edu/~larry/all-of-statistics/index.html>`_
+- `Casella and Berger's Statistical Inference <https://www.amazon.com/Statistical-Inference-George-Casella/dp/0534243126>`_

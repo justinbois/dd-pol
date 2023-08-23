@@ -1,0 +1,10 @@
+***********************************
+Exercise 2. Exploratory plotting
+***********************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e02.1.ipynb
+   e02.2.ipynb
+   e02.3.ipynb
