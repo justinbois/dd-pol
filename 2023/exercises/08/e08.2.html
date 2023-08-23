@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercise 8.2: Caulobacter growth &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -92,14 +95,14 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Exercise 8: Model assessment</a> &raquo;</li>
-      <li>Exercise 8.2: Caulobacter growth</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 8: Model assessment</a></li>
+      <li class="breadcrumb-item active">Exercise 8.2: Caulobacter growth</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/exercises/08/e08.2.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/exercises/08/e08.2.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/exercises/08/e08.2.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/exercises/08/e08.2.ipynb" download> Download notebook</a>
         
       
     
@@ -111,31 +114,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Exercise-8.2:-Caulobacter-growth">
+  <div class="section" id="Exercise-8.2:-Caulobacter-growth">
 <h1>Exercise 8.2: Caulobacter growth<a class="headerlink" href="#Exercise-8.2:-Caulobacter-growth" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/caulobacter_growth_events.csv">Data download</a></p>
 <hr /><p>In this problem, we will study the growth and division of <em>Caulobacter crescentus</em> over time. The lab of <a class="reference external" href="http://schererlab.uchicago.edu">Norbert Scherer</a> at the University of Chicago acquired these data and published the work in PNAS, which you can download <a class="reference external" href="https://doi.org/10.1073/pnas.1403232111">here</a>.</p>
@@ -154,7 +133,7 @@ a(t) = a_0\mathrm{e}^{kt}.
 <p>Considering each growth event to be independent of all others, develop a generative model for each of the two theoretical models. Comment on any considerations you made and concerns you may have with your modeling procedures.</p>
 <p><strong>b)</strong> Using this model, perform parameter estimates for <span class="math notranslate nohighlight">\(a_0\)</span> and <span class="math notranslate nohighlight">\(k\)</span> for each growth event separately. Think about how to display your results graphically and make informative graphics.</p>
 <p><strong>c)</strong> Compare the two models. Do you think growth is exponential or linear?</p>
-</section>
+</div>
 
 
            </div>
@@ -172,7 +151,7 @@ a(t) = a_0\mathrm{e}^{kt}.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8c09a882e0> 
+   <jinja2.runtime.BlockReference object at 0x118292f10> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

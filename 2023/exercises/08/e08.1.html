@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercise 8.1: Analysis of microtubule catastrophe &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -92,14 +95,14 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Exercise 8: Model assessment</a> &raquo;</li>
-      <li>Exercise 8.1: Analysis of microtubule catastrophe</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 8: Model assessment</a></li>
+      <li class="breadcrumb-item active">Exercise 8.1: Analysis of microtubule catastrophe</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/exercises/08/e08.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/exercises/08/e08.1.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/exercises/08/e08.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/exercises/08/e08.1.ipynb" download> Download notebook</a>
         
       
     
@@ -111,31 +114,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Exercise-8.1:-Analysis-of-microtubule-catastrophe">
+  <div class="section" id="Exercise-8.1:-Analysis-of-microtubule-catastrophe">
 <h1>Exercise 8.1: Analysis of microtubule catastrophe<a class="headerlink" href="#Exercise-8.1:-Analysis-of-microtubule-catastrophe" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/gardner_mt_catastrophe_only_tubulin.csv">Dataset download</a></p>
 <hr><p>Refresh yourself about the microtubule catastrophe data we explored previously. The data set we used there was from a control experiment wherein <a class="reference external" href="https://doi.org/10.1016/j.cell.2011.10.037">Garner, Zanic, and coworkers</a> compared measurements of microtubule catastrophe times for experiments using fluorescently labeled tubulin and unlabeled tubulin. In this problem you will investigate microtubule catastrophe using labeled tubulin for different concentrations of total tubulin.</p>
@@ -149,7 +128,7 @@ f(t;\beta_1, \beta_2) = \frac{\beta_1\beta_2}{\beta_2 - \beta_1}\left(\mathrm{e}
 <p><em>It turns out that if you want to compute a confidence region for these parameters, it is a</em><strong>very</strong><em>tricky calculation. If you want to attempt it, I encourage your to talk with course staff before attempting so we can apprise you of the dastardly pitfalls.</em></p>
 <p><strong>d)</strong> Which of these two models is preferred?</p>
 <p><strong>e)</strong> Using whichever model you favor based on your work in parts (a–d), obtain parameter estimates for the other tubulin concentrations. Given that microtubules polymerize faster with higher tubulin concentrations, is there anything you can say about the occurrence of catastrophe by looking at the values of the parameters versus tubulin concentration?</p>
-</section>
+</div>
 
 
            </div>
@@ -167,7 +146,7 @@ f(t;\beta_1, \beta_2) = \frac{\beta_1\beta_2}{\beta_2 - \beta_1}\left(\mathrm{e}
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8bf9388820> 
+   <jinja2.runtime.BlockReference object at 0x118185e10> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

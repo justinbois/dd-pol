@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a generative model &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -113,9 +116,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Lesson 5: Generative modeling and parametric inference</a> &raquo;</li>
-      <li>Building a generative model</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+      <li class="breadcrumb-item active">Building a generative model</li>
   <li class="wy-breadcrumbs-aside">
     
         
@@ -132,55 +135,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="building-a-generative-model">
+  <div class="section" id="building-a-generative-model">
 <h1>Building a generative model<a class="headerlink" href="#building-a-generative-model" title="Permalink to this heading"></a></h1>
 <p>The process of model building usually involves starting with a cartoon model, mathematizing it, and the forming that into a statistical model to model noise in measurement. Sometimes this process is very simple, and sometimes it involves careful and difficult modeling.</p>
-<section id="probability-distributions-the-building-blocks">
+<div class="section" id="probability-distributions-the-building-blocks">
 <h2>Probability distributions: The building blocks<a class="headerlink" href="#probability-distributions-the-building-blocks" title="Permalink to this heading"></a></h2>
 <p>The building blocks of a generative model are probability distributions. A given probability distribution has a <strong>story</strong>, a description of how data are generated from a distribution. In many cases, matching a theoretical model for your system of interest to the story of a named distribution is sufficient to build a generative model. In other cases, you may need to convert the story of your theoretical model into a mathematical representation of a probability distribution, usually as a probability density or probability mass function.</p>
 <p>In describing stories of distributions, the concepts of a <strong>Bernoulli trial</strong> and of a <strong>Poisson process</strong> are useful.</p>
-<section id="bernoulli-trial">
+<div class="section" id="bernoulli-trial">
 <h3>Bernoulli trial<a class="headerlink" href="#bernoulli-trial" title="Permalink to this heading"></a></h3>
 <p>A Bernoulli trial is an experiment that has two outcomes that can be encoded as success (<span class="math notranslate nohighlight">\(y=1\)</span>) or failure (<span class="math notranslate nohighlight">\(y = 0\)</span>). The words “success” and “failure” do not necessarily mean positive or negative outcomes as they appeal to human emotion. They are just names for the encodings of the outcomes.</p>
-</section>
-<section id="poisson-process">
+</div>
+<div class="section" id="poisson-process">
 <h3>Poisson process<a class="headerlink" href="#poisson-process" title="Permalink to this heading"></a></h3>
 <p>Rare events occur with a rate <span class="math notranslate nohighlight">\(\lambda\)</span> per unit time. There is no “memory” of previous events; i.e., that rate is independent of time. A process that generates such events is called a Poisson process. The occurrence of a rare event in this context is referred to as an <em>arrival</em>.</p>
 <p>Importantly, (bio)chemical processes are often well-described as Poisson processes.</p>
-</section>
-<section id="check-out-the-stories-pdfs-and-pmf-in-the-distribution-explorer">
+</div>
+<div class="section" id="check-out-the-stories-pdfs-and-pmf-in-the-distribution-explorer">
 <h3>Check out the stories, PDFs, and PMF in the Distribution explorer<a class="headerlink" href="#check-out-the-stories-pdfs-and-pmf-in-the-distribution-explorer" title="Permalink to this heading"></a></h3>
 <p>In addition to syntax for sampling out of distributions, <a class="reference external" href="https://distribution-explorer.github.io/">the Distribution Explorer</a> gives stories, PDFs, PMFs, and other useful information about many named distributions. I encourage you to read through it to help build a toolbox for generative modeling.</p>
-</section>
-</section>
-<section id="examples-of-generative-models">
+</div>
+</div>
+<div class="section" id="examples-of-generative-models">
 <h2>Examples of generative models<a class="headerlink" href="#examples-of-generative-models" title="Permalink to this heading"></a></h2>
 <p>It is often easiest to learn from example. I present here some examples of how we might come up with generative models.</p>
-<section id="the-size-of-eggs-laid-by-c-elegans">
+<div class="section" id="the-size-of-eggs-laid-by-c-elegans">
 <h3>The size of eggs laid by <em>C. elegans</em><a class="headerlink" href="#the-size-of-eggs-laid-by-c-elegans" title="Permalink to this heading"></a></h3>
 <p>The experiment here is repeated measurements of the length of eggs laid by <em>C. elegans</em> worms. We do not pretend to know much about how the process of egg generation sets its length. Surely many processes are involved, and we choose to model the egg length as being Normally distributed, as this story roughly matches what we would expect. We further assume that the length of each egg we measure is independent of all of the other eggs we measure, and further that the distribution we use to describe the egg length of any given egg is the same as any other. That is to say that the egg lengths are <strong>independent and identically distributed</strong>, abbreviated <strong>i.i.d.</strong></p>
 <p>We can then write down the probability density function for the length of egg <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(y_i\)</span>, as</p>
@@ -196,7 +175,7 @@ f(y_i; \mu, \sigma) = \frac{1}{\sqrt{2\pi \sigma^2}}\,\mathrm{e}^{-(y_i-\mu)^2/2
 \end{align}\end{split}\]</div>
 <p>The PDF has all of the information for the generative model. Importantly, <strong>the statistical model dictates what parameters you are trying to estimate.</strong> In this case, there are two parameters, <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>. The generative model tells us that we can infer the characteristic egg length <span class="math notranslate nohighlight">\(\mu\)</span> and the variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 <p>In this, model, we skipped through the cartoon model, through mathematization, and went directly to the generative statistical model, since the former two models are trivial.</p>
-<section id="short-hand-model-definition">
+<div class="section" id="short-hand-model-definition">
 <h4>Short-hand model definition<a class="headerlink" href="#short-hand-model-definition" title="Permalink to this heading"></a></h4>
 <p>Writing out the mathematical expression for the PDF can be cumbersome, even for a relatively simple model like we have here. In English, the model is, “The egg lengths are i.i.d. and are Normally distributed with mean <span class="math notranslate nohighlight">\(\mu\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.” A shorthand for this is</p>
 <div class="math notranslate nohighlight">
@@ -204,14 +183,14 @@ f(y_i; \mu, \sigma) = \frac{1}{\sqrt{2\pi \sigma^2}}\,\mathrm{e}^{-(y_i-\mu)^2/2
 y_i \sim \text{Norm}(\mu, \sigma) \;\forall i.
 \end{align}\]</div>
 <p>This is read just like the English sentence describing the model. The tilde symbol means “is distributed as.”</p>
-</section>
-</section>
-<section id="the-amount-of-time-before-microtubule-catastrophe">
+</div>
+</div>
+<div class="section" id="the-amount-of-time-before-microtubule-catastrophe">
 <h3>The amount of time before microtubule catastrophe<a class="headerlink" href="#the-amount-of-time-before-microtubule-catastrophe" title="Permalink to this heading"></a></h3>
 <p>We has already discussed the experiment of Gardner, et al., in which they measured the time to catastrophe of microtubules. Let us consider here three models for that experiment.</p>
-</section>
-</section>
-<section id="catastrophe-as-a-poisson-process">
+</div>
+</div>
+<div class="section" id="catastrophe-as-a-poisson-process">
 <h2>Catastrophe as a Poisson process<a class="headerlink" href="#catastrophe-as-a-poisson-process" title="Permalink to this heading"></a></h2>
 <p>We may consider the case where catastrophe is itself a Poisson process (or triggered by the arrival of a single Poisson process). Written in shorthand, this is</p>
 <div class="math notranslate nohighlight">
@@ -224,8 +203,8 @@ y_i \sim \text{Norm}(\mu, \sigma) \;\forall i.
 f(\mathbf{t};\beta) = \beta^n\,\prod_{i=1}^n\mathrm{e}^{-\beta t_i} = \beta^n\exp\left[-\beta \sum_{i=1}^nt_i\right] = \beta^n\,\mathrm{e}^{n\beta\bar{t}}.
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{t} = \{t_1, t_2, \ldots, t_n\}\)</span>, and <span class="math notranslate nohighlight">\(\bar{t}\)</span> is the arithmetic mean of the measured times to catastrophe.</p>
-</section>
-<section id="catastrophe-as-a-gamma-distribution">
+</div>
+<div class="section" id="catastrophe-as-a-gamma-distribution">
 <h2>Catastrophe as a Gamma distribution<a class="headerlink" href="#catastrophe-as-a-gamma-distribution" title="Permalink to this heading"></a></h2>
 <p>Gardner and coworkers modeling catastrophe times as being Gamma distributed. The related story is that catastrophe occurs after a series of <span class="math notranslate nohighlight">\(\alpha\)</span> Poisson processes, all arriving at the sae rate, arrives. That is to say that several chemical events must happen in succession to trigger catastrophe. Again denoted the rate of arrival of a Poisson process as <span class="math notranslate nohighlight">\(\beta\)</span>, the model is then</p>
 <div class="math notranslate nohighlight">
@@ -238,8 +217,8 @@ t_i \sim \text{Gamma}(\alpha, beta) \;\forall i
 f(\mathbf{t};\alpha,\beta) = \left(\frac{1}{\Gamma(\alpha)}\right)^n\prod_{i=1}^n\frac{(\beta t_i)^\alpha}{t_i}\,\mathrm{e}^{-\beta t_i}.
 \end{align}\]</div>
 <p>Note that the <span class="math notranslate nohighlight">\(\alpha = 1\)</span> special case yields the previously defined Exponential model. In general, it is a good idea to have various candidate models be limits of special cases of each other so that complexity is added systematically as you are doing your modeling.</p>
-</section>
-<section id="catastrophe-as-a-two-step-process">
+</div>
+<div class="section" id="catastrophe-as-a-two-step-process">
 <h2>Catastrophe as a two-step process<a class="headerlink" href="#catastrophe-as-a-two-step-process" title="Permalink to this heading"></a></h2>
 <p>In the Gamma model, we stipulate that each of the <span class="math notranslate nohighlight">\(\alpha\)</span> steps come from Poisson processes of the same rate. As we will see when we do maximum likelihood estimation, we can fudge this a bit by stipulating that <span class="math notranslate nohighlight">\(\alpha\)</span> need not be integer. We may want to choose a perhaps more realistic model in which the events leading to catastrophe from from Poisson processes of different rates. Though we may derive a probability density function for <span class="math notranslate nohighlight">\(\alpha\)</span> arrivals, we will instead derive it for two for simplicity.</p>
 <p>Assume the first process arrives at time <span class="math notranslate nohighlight">\(t_1\)</span>. The second process then has the possibility to arrive, so we must wait a time <span class="math notranslate nohighlight">\(t-t_1\)</span> for it to arrive at time <span class="math notranslate nohighlight">\(t\)</span>. Because the arrival times of the respective events are independent, the joint probability density function is</p>
@@ -274,7 +253,7 @@ f(t) &amp;= \beta^2\,t\,\mathrm{e}^{-\beta t},
 &amp;t_i - t'_i \sim \text{Expon}(\beta_2) \;\forall i.
 \end{align}\end{split}\]</div>
 <p>Note that this construction of the model has a <strong>latent variable</strong>, <span class="math notranslate nohighlight">\(t_i'\)</span>, a random variable that we can define in the model, but we cannot measure.</p>
-<section id="the-change-in-bacterial-mass-over-time">
+<div class="section" id="the-change-in-bacterial-mass-over-time">
 <h3>The change in bacterial mass over time<a class="headerlink" href="#the-change-in-bacterial-mass-over-time" title="Permalink to this heading"></a></h3>
 <p>You may be familiar with exponential microbial growth. When you put a single cell in growth media, it divides, and then you have two. Those two cells then grow and divide, giving four cells. This continues, and the number of cells grows exponentially with time.</p>
 <p>In an interesting paper (<a class="reference external" href="https://doi.org/10.1073/pnas.1403232111">PNAS, 2014</a>), Iyer-Biswas and coworkers addressed the question of whether or not a <em>single cell</em> exhibits exponential growth (not to be confused with the Exponential <em>distribution</em>). That is, right after a division, does the total mass of a cell grow exponentially before dividing? Even if individual cells grow linearly, in bulk growth will still appear exponential, so we cannot really tell from a growth experiment.</p>
@@ -367,7 +346,7 @@ f(t) &amp;= \beta^2\,t\,\mathrm{e}^{-\beta t},
 </html>
 
 </embed><p>We can consider two models for growth of an individual cell, linear growth and exponential growth.</p>
-<section id="linear-growth">
+<div class="section" id="linear-growth">
 <h4>Linear growth<a class="headerlink" href="#linear-growth" title="Permalink to this heading"></a></h4>
 <p>We will start with linear growth; stating that the growth is linear is the cartoon model. More precisely, we model bacterial growth as a constant process for each bacterium; it grows at the same rate regardless of bacterial mass. We can mathematize our model as</p>
 <div class="math notranslate nohighlight">
@@ -402,8 +381,8 @@ f(\mathbf{a};\mathbf{t},a^0, b, \sigma) = \left(\frac{1}{2\pi\sigma^2}\right)^{n
 \[\begin{align}
 a_i \sim \text{Norm}(a^0 + b t_i, \sigma)\;\forall i.
 \end{align}\]</div>
-</section>
-<section id="exponential-growth">
+</div>
+<div class="section" id="exponential-growth">
 <h4>Exponential growth<a class="headerlink" href="#exponential-growth" title="Permalink to this heading"></a></h4>
 <p>We can use exactly the same logic as above to write the model for Exponential growth.</p>
 <div class="math notranslate nohighlight">
@@ -416,14 +395,14 @@ a_i \sim \text{Norm}(a^0 + b t_i, \sigma)\;\forall i.
 \[\begin{align}
 a_i \sim \text{Norm}(a^0 \mathrm{e}^{kt}, \sigma)\;\forall i.
 \end{align}\]</div>
-</section>
-</section>
-</section>
-<section id="important-notes-on-generative-modeling">
+</div>
+</div>
+</div>
+<div class="section" id="important-notes-on-generative-modeling">
 <h2>Important notes on generative modeling<a class="headerlink" href="#important-notes-on-generative-modeling" title="Permalink to this heading"></a></h2>
 <p>In the three example models presented here, we used our best scientific and statistical insights to put forward a generative model. The model for linear growth of bacteria is in some sense “standard,” in that it leads to linear regression, a widely-used statistical tool. Nonetheless, your modeling should be <strong>bespoke</strong>. You should choose models that are appropriate for the experiment and data you are analyzing.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
@@ -441,7 +420,7 @@ a_i \sim \text{Norm}(a^0 \mathrm{e}^{kt}, \sigma)\;\forall i.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8c09a889d0> 
+   <jinja2.runtime.BlockReference object at 0x1183956d0> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

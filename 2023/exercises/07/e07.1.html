@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercise 7.1: Parameter estimates from FRAP curves &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -92,14 +95,14 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Exercise 7: MLE with variate-covariate models</a> &raquo;</li>
-      <li>Exercise 7.1: Parameter estimates from FRAP curves</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 7: MLE with variate-covariate models</a></li>
+      <li class="breadcrumb-item active">Exercise 7.1: Parameter estimates from FRAP curves</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/exercises/07/e07.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/exercises/07/e07.1.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/exercises/07/e07.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/exercises/07/e07.1.ipynb" download> Download notebook</a>
         
       
     
@@ -111,31 +114,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Exercise-7.1:-Parameter-estimates-from-FRAP-curves">
+  <div class="section" id="Exercise-7.1:-Parameter-estimates-from-FRAP-curves">
 <h1>Exercise 7.1: Parameter estimates from FRAP curves<a class="headerlink" href="#Exercise-7.1:-Parameter-estimates-from-FRAP-curves" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/frap_image_processing_results.csv">Dataset download</a></p>
 <hr /><p>For this problem, you will perform analysis of data from a fluorescence recovery after photobleaching (FRAP) experiment. The data set comes from <a class="reference external" href="https://goehringlab.crick.ac.uk">Nate Goehring</a>. The data are taken of a <em>C. elegans</em> one-cell embryo expressing a GFP fusion to the PH domain of Protein Lipase C delta 1 (PH-PLCd1). This domain binds PIP2, a lipid enriched in the plasma membrane. By using FRAP, we can investigate the dynamics of diffusion of the PH-PLCd1/PIP2 complex on the cell
@@ -164,7 +143,7 @@ f_f\left(1 - f_b\,\frac{4 \mathrm{e}^{-k_\mathrm{off}t}}{d_x d_y}\,\psi_x(t)\,\p
 \end{align}</span></p>
 <p>where <span class="math notranslate nohighlight">\(f_f\)</span> is the fraction of fluorescent species left. So, we have four parameters to use in regression, the physical parameters of interest, <span class="math notranslate nohighlight">\(D\)</span> and <span class="math notranslate nohighlight">\(k_\mathrm{off}\)</span>, and <span class="math notranslate nohighlight">\(f_f\)</span> and <span class="math notranslate nohighlight">\(f_b\)</span>.</p>
 <p>I have processed images from the data set. The results may be downloaded here: <a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/frap_image_processing_results.csv">https://s3.amazonaws.com/bebi103.caltech.edu/data/frap_image_processing_results.csv</a>. There are eight FRAP experiments in total. Assume each of the eight experiments are independent. Obtain MLE estimates, with confidence intervals, for the parameters for each of the eight experiments. You might want to make a plot of all eight values of <span class="math notranslate nohighlight">\(D\)</span> and <span class="math notranslate nohighlight">\(k_\mathrm{off}\)</span>.</p>
-</section>
+</div>
 
 
            </div>
@@ -182,7 +161,7 @@ f_f\left(1 - f_b\,\frac{4 \mathrm{e}^{-k_\mathrm{off}t}}{d_x d_y}\,\psi_x(t)\,\p
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8c09a88d30> 
+   <jinja2.runtime.BlockReference object at 0x118156550> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

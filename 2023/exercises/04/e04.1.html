@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercise 4.1: Confidence intervals for microtubule catastrophe &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,14 +96,14 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Exercise 4: Nonparametric hacker stats</a> &raquo;</li>
-      <li>Exercise 4.1: Confidence intervals for microtubule catastrophe</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 4: Nonparametric hacker stats</a></li>
+      <li class="breadcrumb-item active">Exercise 4.1: Confidence intervals for microtubule catastrophe</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/exercises/04/e04.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/exercises/04/e04.1.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/exercises/04/e04.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/exercises/04/e04.1.ipynb" download> Download notebook</a>
         
       
     
@@ -112,31 +115,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Exercise-4.1:-Confidence-intervals-for-microtubule-catastrophe">
+  <div class="section" id="Exercise-4.1:-Confidence-intervals-for-microtubule-catastrophe">
 <h1>Exercise 4.1: Confidence intervals for microtubule catastrophe<a class="headerlink" href="#Exercise-4.1:-Confidence-intervals-for-microtubule-catastrophe" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/gardner_time_to_catastrophe_dic_tidy.csv">Dataset download</a></p>
 <hr /><p>Refresh yourself about the microtubule catastrophe data we have already explored in previous exercises. We will again work with this data set here.</p>
@@ -171,7 +150,7 @@ U(x) = \min\left(1, \hat{F}(x) + \epsilon\right).
 \end{align}</span></p>
 <p>Note that this is not strictly speaking a confidence interval, but rather a set of bounds for where the confidence interval can lie (it’s the DKW <strong>in</strong>equality after all).</p>
 <p>Plot the upper and lower bounds for the 95% confidence interval as computed from the DKW inequality for the microtubule catastrophe data and comment on how the DKW bounds compare to bootstrap confidence intervals of the ECDF.</p>
-</section>
+</div>
 
 
            </div>
@@ -189,7 +168,7 @@ U(x) = \min\left(1, \hat{F}(x) + \epsilon\right).
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8bf93778b0> 
+   <jinja2.runtime.BlockReference object at 0x118661510> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

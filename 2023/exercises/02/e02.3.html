@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercise 2.3: Long-term trends in hybridization of Darwin finches &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -35,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,14 +96,14 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Exercise 2. Exploratory plotting</a> &raquo;</li>
-      <li>Exercise 2.3: Long-term trends in hybridization of Darwin finches</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 2. Exploratory plotting</a></li>
+      <li class="breadcrumb-item active">Exercise 2.3: Long-term trends in hybridization of Darwin finches</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/exercises/02/e02.3.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/exercises/02/e02.3.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/exercises/02/e02.3.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/exercises/02/e02.3.ipynb" download> Download notebook</a>
         
       
     
@@ -112,31 +115,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Exercise-2.3:-Long-term-trends-in-hybridization-of-Darwin-finches">
+  <div class="section" id="Exercise-2.3:-Long-term-trends-in-hybridization-of-Darwin-finches">
 <h1>Exercise 2.3: Long-term trends in hybridization of Darwin finches<a class="headerlink" href="#Exercise-2.3:-Long-term-trends-in-hybridization-of-Darwin-finches" title="Permalink to this heading"></a></h1>
 <hr><p><a class="reference external" href="https://en.wikipedia.org/wiki/Peter_and_Rosemary_Grant">Peter and Rosemary Grant</a> have been working on the Galápagos island of Daphne Major for over forty years. During this time, they have collected lots and lots of data about physiological features of finches. In 2014, they published a book with a summary of some of their major results (Grant P. R., Grant B. R., <em>40 years of evolution. Darwin’s finches on Daphne Major Island</em>, Princeton University Press, 2014). They made their data from
 the book publicly available via the <a class="reference external" href="http://dx.doi.org/10.5061/dryad.g6g3h">Dryad Digital Repository</a>.</p>
@@ -161,13 +140,13 @@ data frame. When you have made this data frame, save it as a CSV file.</p>
 <p><em>Hint</em>: The data frame methods <code class="docutils literal notranslate"><span class="pre">duplicated()</span></code> and <code class="docutils literal notranslate"><span class="pre">drop_duplicates()</span></code> will be useful.</p>
 <p>After doing this work, it is worth saving your tidy data frame in a CSV document. To this using the <code class="docutils literal notranslate"><span class="pre">to_csv()</span></code> method of your data frame. Since the indices are uninformative, you should use the <code class="docutils literal notranslate"><span class="pre">index=False</span></code> kwarg. (I have already done this and saved it as <code class="docutils literal notranslate"><span class="pre">~/git/bootcamp/data/grant_complete.csv</span></code>, which will help you do the rest of the exercise if you have problems with this part.)</p>
 <p><strong>d)</strong> Make a plots exploring how beak depth changes over time for each species. Think about what might be effective ways to display the data.</p>
-<p><strong>e)</strong> It is informative to plot the measurement of each bird’s beak as a point in the beak depth-beak length plane. For the 1987 data, plot beak depth vs. beak width for <em>Geospiza fortis</em> and for <em>Geospiza scandens</em>.</p>
+<p><strong>e)</strong> It is informative to plot the measurement of each bird’s beak as a point in the beak depth-beak length plane. For the 1987 data, plot beak depth vs. beak width for <em>Geospiza fortis</em> and for <em>Geospiza scandens</em>.</p>
 <p><strong>f)</strong> Do part (d) again for all years. <em>Hint</em>: To display all of the plots, check out the <a class="reference external" href="https://bokeh.pydata.org/en/latest/docs/user_guide/layout.html">Bokeh documentation for layouts</a>. In your plots, make sure all plots have the same range on the axes. If you want to set two plots, say <code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> to have the same axis ranges, you can do the following.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span><span class="o">.</span><span class="n">x_range</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">x_range</span>
 <span class="n">p1</span><span class="o">.</span><span class="n">y_range</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">y_range</span>
 </pre></div>
 </div>
-</section>
+</div>
 
 
            </div>
@@ -185,7 +164,7 @@ data frame. When you have made this data frame, save it as a CSV file.</p>
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8bf95ad070> 
+   <jinja2.runtime.BlockReference object at 0x118981c10> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

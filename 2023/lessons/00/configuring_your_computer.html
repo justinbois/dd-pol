@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lesson 0: Configuring your computer &mdash; PoL workshop on statistical inference  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -35,12 +35,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #827F7F" >
-            <a href="../../index.html">
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -105,13 +109,13 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Lesson 0: Configuring your computer</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lesson 0: Configuring your computer</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/bebi103a/bebi103a.github.io/blob/master/lessons/00/configuring_your_computer.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/bebi103a/bebi103a.github.io/master/lessons/00/configuring_your_computer.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2023/lessons/00/configuring_your_computer.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/lessons/00/configuring_your_computer.ipynb" download> Download notebook</a>
         
       
     
@@ -123,285 +127,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt .copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-.jp-RenderedHTMLCommon table,
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-.jp-RenderedHTMLCommon thead,
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-.jp-RenderedHTMLCommon tr,
-.jp-RenderedHTMLCommon th,
-.jp-RenderedHTMLCommon td,
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-.jp-RenderedHTMLCommon th,
-div.rendered_html th {
-  font-weight: bold;
-}
-.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-.jp-RenderedHTMLCommon tbody tr:hover,
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Lesson-0:-Configuring-your-computer">
+  <div class="section" id="Lesson-0:-Configuring-your-computer">
 <h1>Lesson 0: Configuring your computer<a class="headerlink" href="#Lesson-0:-Configuring-your-computer" title="Permalink to this heading"></a></h1>
 <hr/><p>In this lesson, you will set up a Python computing environment for scientific computing. There are two main ways people set up Python for scientific computing on their own machine.</p>
 <ol class="arabic simple">
@@ -409,7 +135,7 @@ div.rendered_html tbody tr:hover {
 <li><p>By downloading and installing a Python distribution that contains binaries of many of the scientific packages needed. One widely used distribution is from <a class="reference external" href="https://www.anaconda.com">Anaconda</a>.</p></li>
 </ol>
 <p>In this class, we will use Anaconda, with its associated package manager, <code class="docutils literal notranslate"><span class="pre">conda</span></code>. It has become the de facto package manager/distribution for scientific use.</p>
-<section id="macOS-users:-Install-Command-Line-Tools">
+<div class="section" id="macOS-users:-Install-Command-Line-Tools">
 <h2>macOS users: Install Command Line Tools<a class="headerlink" href="#macOS-users:-Install-Command-Line-Tools" title="Permalink to this heading"></a></h2>
 <p>If you are using macOS, you should install Command Line Tools. This is a set of utilities, such as compilers and (most importantly for this bootcamp) <a class="reference external" href="https://git-scm.com">Git</a>. You could install it along with the very bloated software <a class="reference external" href="https://developer.apple.com/xcode/">XCode</a>, but we will not do that to save on the ≈35 GB of disk space that XCode will consume.</p>
 <p>To install Command Line Tools, open the Terminal application. It is typically in the <code class="docutils literal notranslate"><span class="pre">/Applications/Utilities</span></code> folder. Otherwise, hit <code class="docutils literal notranslate"><span class="pre">⌘-space</span> <span class="pre">bar</span></code> and type <code class="docutils literal notranslate"><span class="pre">terminal</span></code> in the search box, and select the Terminal Application. Once you have a prompt in the Terminal application, type</p>
@@ -417,13 +143,13 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <p>and hit enter. You will be prompted for the installation, and you should go ahead with it. It may take several minutes for the installation to complete.</p>
-</section>
-<section id="Windows-users:-Install-Git-and-Chrome-or-Firefox">
+</div>
+<div class="section" id="Windows-users:-Install-Git-and-Chrome-or-Firefox">
 <h2>Windows users: Install Git and Chrome or Firefox<a class="headerlink" href="#Windows-users:-Install-Git-and-Chrome-or-Firefox" title="Permalink to this heading"></a></h2>
 <p>We will be using <a class="reference external" href="https://jupyterlab.readthedocs.io/en/stable/">JupyterLab</a> in the workshop. It is browser-based, and Chrome, Firefox, and Safari are supported. Microsoft Edge is <strong>not</strong>. Therefore, if you are a Windows user, you need to be sure you have either Chrome of Firefox installed.</p>
 <p>Git is installed on Macs with XCode. For Windows users, you need to install Git. You can do this by following the instructions <a class="reference external" href="https://gitforwindows.org">here</a>.</p>
-</section>
-<section id="Downloading-and-installing-Anaconda">
+</div>
+<div class="section" id="Downloading-and-installing-Anaconda">
 <h2>Downloading and installing Anaconda<a class="headerlink" href="#Downloading-and-installing-Anaconda" title="Permalink to this heading"></a></h2>
 <p>If you already have Anaconda installed on your machine, you can skip this step.</p>
 <p>Downloading and installing Anaconda is simple.</p>
@@ -432,19 +158,19 @@ div.rendered_html tbody tr:hover {
 <li><p>Follow the on-screen instructions for installation. While doing so, be sure that Anaconda is installed in your home directory (which is the default), not in root.</p></li>
 </ol>
 <p>That’s it! After you do that, you will have a functioning Python distribution.</p>
-</section>
-<section id="Installing-node.js">
+</div>
+<div class="section" id="Installing-node.js">
 <h2>Installing node.js<a class="headerlink" href="#Installing-node.js" title="Permalink to this heading"></a></h2>
 <p>node.js is a platform that enables you to run JavaScript outside of the browser. We will not use it directly, but it needs to be installed for some of the more sophisticated JupyterLab functionality. Install node.js by following the instructions <a class="reference external" href="https://nodejs.dev">here</a>.</p>
-</section>
-<section id="Setting-up-a-conda-environment">
+</div>
+<div class="section" id="Setting-up-a-conda-environment">
 <h2>Setting up a conda environment<a class="headerlink" href="#Setting-up-a-conda-environment" title="Permalink to this heading"></a></h2>
 <p>I have created a conda environment for use in this workshop. You can download the YML specification for the environment:</p>
 <blockquote>
 <div><p><a class="reference external" href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2023/_static/pol_stats.yml">Download pol_stats.yml</a></p>
 </div></blockquote>
 <p>You can set up and activate the environment on the command line or by using the <strong>Anaconda Navigator</strong>, which should be installed with Anaconda. You can do either of the two options, (a) or (b), below.</p>
-<section id="a)-Activating-from-the-command-line">
+<div class="section" id="a)-Activating-from-the-command-line">
 <h3>a) Activating from the command line<a class="headerlink" href="#a)-Activating-from-the-command-line" title="Permalink to this heading"></a></h3>
 <p>To set up your conda environment from the command line, navigate to the directory where you saved the <code class="docutils literal notranslate"><span class="pre">pol_stats.yml</span></code> file. Then, on the command line, enter</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda env create -f pol_stats.yml
@@ -455,14 +181,14 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <p>on the command line.</p>
-</section>
-<section id="b)-Activating-using-the-Anaconda-Navigator">
+</div>
+<div class="section" id="b)-Activating-using-the-Anaconda-Navigator">
 <h3>b) Activating using the Anaconda Navigator<a class="headerlink" href="#b)-Activating-using-the-Anaconda-Navigator" title="Permalink to this heading"></a></h3>
 <p>If you are using macOS, Anaconda Navigator will be available in your <code class="docutils literal notranslate"><span class="pre">Applications</span></code> menu. If you are using Windows, you can launch Anaconda Navigator from the Start menu.</p>
 <p>When the Navigator window opens, select <code class="docutils literal notranslate"><span class="pre">Environments</span></code> on the left menu pane. Upon selecting <code class="docutils literal notranslate"><span class="pre">Environments</span></code>, you will see a pane immediately to the right of the <code class="docutils literal notranslate"><span class="pre">Home</span></code>/<code class="docutils literal notranslate"><span class="pre">Environments</span></code>/<code class="docutils literal notranslate"><span class="pre">Learning</span></code>/<code class="docutils literal notranslate"><span class="pre">Community</span></code> pane with a <code class="docutils literal notranslate"><span class="pre">Search</span> <span class="pre">Environments</span></code> window at the top. At the bottom of that pane, click <code class="docutils literal notranslate"><span class="pre">Import</span></code>. In the window that pops up, click on the folder icon under <code class="docutils literal notranslate"><span class="pre">Local</span> <span class="pre">drive</span></code>. Find the <code class="docutils literal notranslate"><span class="pre">pol_stats.yml</span></code> file you just downloaded. Click <code class="docutils literal notranslate"><span class="pre">Import</span></code>. It may take some time for the
 environment to be imported and built.</p>
-</section>
-<section id="Optional:-Install-CmdStan">
+</div>
+<div class="section" id="Optional:-Install-CmdStan">
 <h3>Optional: Install CmdStan<a class="headerlink" href="#Optional:-Install-CmdStan" title="Permalink to this heading"></a></h3>
 <p>While we do not plan on using <a class="reference external" href="https://mc-stan.org">Stan</a> in this workshop, we may play with some Bayesian modeling later in the week. To install Stan, you can do the following on the command line.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda activate pol_stats
@@ -470,9 +196,9 @@ python -c &quot;import cmdstanpy; cmdstanpy.install_cmdstan()&quot;
 </pre></div>
 </div>
 <p>This will take several minutes to run.</p>
-</section>
-</section>
-<section id="Launching-JupyterLab-and-a-terminal">
+</div>
+</div>
+<div class="section" id="Launching-JupyterLab-and-a-terminal">
 <h2>Launching JupyterLab and a terminal<a class="headerlink" href="#Launching-JupyterLab-and-a-terminal" title="Permalink to this heading"></a></h2>
 <p>We will be using JupyterLab throughout the workshop. You can alternatively launch JupyterLab via the Anaconda Navigator or via your operating system’s terminal program (Terminal on macOS and PowerShell on Windows). If you wish to launch using the latter, skip to the next section.</p>
 <p>In the Anaconda Navigator, click <code class="docutils literal notranslate"><span class="pre">Home</span></code> on the left pane. To the right, you will have a pane from which you can launch JupyterLab. On the top of the right pane, you will see two pulldown menus separated by the word “on.” Be sure you select <code class="docutils literal notranslate"><span class="pre">pol_stats</span></code> on the right pulldown menu. This ensures that you are using the bootcamp environment you just set up.</p>
@@ -480,8 +206,8 @@ python -c &quot;import cmdstanpy; cmdstanpy.install_cmdstan()&quot;
 </div><p>You should see a card for JupyterLab. Do not confuse this with Notebook; you want to launch JupyterLab. Click <code class="docutils literal notranslate"><span class="pre">Launch</span></code> on the JupyterLab card. This will launch JupyterLab in your default browser.</p>
 <p>Within the JupyterLab window in your browser, you will have the option to launch a notebook, a console, a terminal, or a text editor. We will use all of these during the workshop. For the updating and installation of necessary packages, click on <code class="docutils literal notranslate"><span class="pre">Terminal</span></code> to launch a terminal. You will get a terminal window (probably black) with a bash prompt. We refer to this text interface in the terminal as the <strong>command line</strong>. You can alternatively use Terminal for macOS or PowerShell for Windows for
 interfacing with the command line, but many students find it convenient to do so via JupyterLab.</p>
-</section>
-<section id="Launching-JupyterLab-from-the-command-line">
+</div>
+<div class="section" id="Launching-JupyterLab-from-the-command-line">
 <h2>Launching JupyterLab from the command line<a class="headerlink" href="#Launching-JupyterLab-from-the-command-line" title="Permalink to this heading"></a></h2>
 <p>While launching JupyterLab from the Anaconda Navigator is fine, I generally prefer to launch it from the command line on my own machine. If you are on a Mac, open the <code class="docutils literal notranslate"><span class="pre">Terminal</span></code> program. You can do this hitting <code class="docutils literal notranslate"><span class="pre">Command</span> <span class="pre">+</span> <span class="pre">space</span> <span class="pre">bar</span></code> and searching for “terminal.” Using Windows, you should launch PowerShell. You can do this by hitting <code class="docutils literal notranslate"><span class="pre">Windows</span> <span class="pre">+</span> <span class="pre">R</span></code> and typing <code class="docutils literal notranslate"><span class="pre">powershell</span></code> in the text box.</p>
 <p>Once you have a terminal or PowerShell window open, you will have a prompt. At the prompt, type</p>
@@ -500,8 +226,8 @@ interfacing with the command line, but many students find it convenient to do so
 </div>
 <p>on the command line.</p>
 <p>It is up to you if you want to launch JupyterLab from the Anaconda Navigator or command line.</p>
-</section>
-<section id="Data-sets">
+</div>
+<div class="section" id="Data-sets">
 <h2>Data sets<a class="headerlink" href="#Data-sets" title="Permalink to this heading"></a></h2>
 <p>You should make sure you have all of the data sets we will use in the workshop downloaded to your machine. You can <a class="reference external" href="http://bois.caltech.edu/data.zip">download all of the data sets from this link</a>. To match the notes for the workshop, I advise the following directory structure.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pol-stats-workshop/
@@ -511,8 +237,8 @@ interfacing with the command line, but many students find it convenient to do so
 </pre></div>
 </div>
 <p>That way, when you are working on a lesson or exercise, the path to the data directory is always <code class="docutils literal notranslate"><span class="pre">../data/</span></code>.</p>
-</section>
-<section id="Checking-your-distribution">
+</div>
+<div class="section" id="Checking-your-distribution">
 <h2>Checking your distribution<a class="headerlink" href="#Checking-your-distribution" title="Permalink to this heading"></a></h2>
 <p>We’ll now run a quick test to make sure things are working properly. = We will make a quick plot that requires some of the scientific libraries we will use in the workshop.</p>
 <p>Use the JupyterLab launcher (you can get a new launcher by clicking on the <code class="docutils literal notranslate"><span class="pre">+</span></code> icon on the left pane of your JupyterLab window) to launch a notebook. In the first cell (the box next to the <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]:</span></code> prompt), paste the code below. To run the code, press <code class="docutils literal notranslate"><span class="pre">Shift+Enter</span></code> while the cursor is active inside the cell. You should see a plot that looks like the one below. If you do, you have a functioning Python environment for scientific computing!</p>
@@ -883,8 +609,8 @@ var element = document.currentScript.previousSibling.previousSibling;
 })(window);
 </script></div>
 </div>
-</section>
-<section id="Computing-environment">
+</div>
+<div class="section" id="Computing-environment">
 <h2>Computing environment<a class="headerlink" href="#Computing-environment" title="Permalink to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -910,8 +636,8 @@ jupyterlab: 4.0.5
 
 </pre></div></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
@@ -929,7 +655,7 @@ jupyterlab: 4.0.5
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x7f8bf95d1730> 
+   <jinja2.runtime.BlockReference object at 0x117fbec90> 
 
 <p>© 2023 Justin Bois and BE/Bi 103 a course staff. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
