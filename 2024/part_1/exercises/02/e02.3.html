@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 2.3: Long-term trends in hybridization of Darwin finches &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 3. Working with probability distributions" href="../03/index.html" />
+    <link rel="prev" title="Exercise 2.2: Microtubule catastrophe and ECDFs" href="e02.2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 2. Exploratory plotting</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="e02.1.html">Exercise 2.1: Plotting with Palmer penguins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e02.2.html">Exercise 2.2: Microtubule catastrophe and ECDFs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 2.3: Long-term trends in hybridization of Darwin finches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 2. Exploratory plotting</a></li>
+      <li class="breadcrumb-item active">Exercise 2.3: Long-term trends in hybridization of Darwin finches</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part1/exercises/02/e02.3.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part1/exercises/02/e02.3.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exercise-2.3:-Long-term-trends-in-hybridization-of-Darwin-finches">
+<h1>Exercise 2.3: Long-term trends in hybridization of Darwin finches<a class="headerlink" href="#Exercise-2.3:-Long-term-trends-in-hybridization-of-Darwin-finches" title="Link to this heading"></a></h1>
+<hr><p><a class="reference external" href="https://en.wikipedia.org/wiki/Peter_and_Rosemary_Grant">Peter and Rosemary Grant</a> have been working on the Galápagos island of Daphne Major for over forty years. During this time, they have collected lots and lots of data about physiological features of finches. In 2014, they published a book with a summary of some of their major results (Grant P. R., Grant B. R., <em>40 years of evolution. Darwin’s finches on Daphne Major Island</em>, Princeton University Press, 2014). They made their data from
+the book publicly available via the <a class="reference external" href="http://dx.doi.org/10.5061/dryad.g6g3h">Dryad Digital Repository</a>.</p>
+<p>We will investigate their measurements of beak depth (the distance, top to bottom, of a closed beak) and beak length (base to tip on the top) of Darwin’s finches. We will look at data from two species, <em>Geospiza fortis</em> and <em>Geospiza scandens</em>. The Grants provided data on the finches of Daphne for the years 1973, 1975, 1987, 1991, and 2012. I have included the data in the files <code class="docutils literal notranslate"><span class="pre">grant_1973.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">grant_1975.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">grant_1987.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">grant_1991.csv</span></code>, and <code class="docutils literal notranslate"><span class="pre">grant_2012.csv</span></code>. They are in
+almost exactly the same format is in the Dryad repository; I have only deleted blank entries at the end of the files.</p>
+<p><strong>Note</strong>: If you want to skip the wrangling (which is very valuable experience), you can go directly to part (d). You can load in the data frame you generate in parts (a) through (c) from the file <code class="docutils literal notranslate"><span class="pre">~/git/bootcamp/data/grant_complete.csv</span></code>.</p>
+<p><strong>a)</strong> Load each of the files into separate Polars data frames. You might want to inspect the file first to make sure you know what character the comments start with and if there is a header row.</p>
+<p><strong>b)</strong> We would like to merge these all into one data frame. The problem is that they have different header names, and only the 1973 file has a year entry (called <code class="docutils literal notranslate"><span class="pre">yearband</span></code>). This is common with real data. It is often a bit messy and requires some wrangling.</p>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">First, change the name of the <code class="docutils literal notranslate"><span class="pre">yearband</span></code> column of the 1973 data to <code class="docutils literal notranslate"><span class="pre">year</span></code>. Also, make sure the year format is four digits, not two!</div>
+</div>
+</li>
+<li><p>Next, add a <code class="docutils literal notranslate"><span class="pre">year</span></code> column to the other four data frames. You want tidy data, so each row in the data frame should have an entry for the year.</p></li>
+<li><p>Change the column names so that all the data frames have the same column names. I would choose column names</p>
+<p><code class="docutils literal notranslate"><span class="pre">['band',</span> <span class="pre">'species',</span> <span class="pre">'beak</span> <span class="pre">length</span> <span class="pre">(mm)',</span> <span class="pre">'beak</span> <span class="pre">depth</span> <span class="pre">(mm)',</span> <span class="pre">'year']</span></code></p>
+</li>
+<li><p>Concatenate the data frames into a single data frame. <em>Hint</em>: You might want to use the <code class="docutils literal notranslate"><span class="pre">how='diagonal'</span></code> or <code class="docutils literal notranslate"><span class="pre">how='diagonal_relaxed'</span></code> kwargs.</p></li>
+</ol>
+<p><strong>c)</strong> The <code class="docutils literal notranslate"><span class="pre">band</span></code> field gives the number of the band on the bird’s leg that was used to tag it. Are some birds counted twice? Are they counted twice in the same year? Do you think you should drop duplicate birds from the same year? How about different years? My opinion is that you should drop duplicate birds from the same year and keep the others, but I would be open to discussion on that. To practice your Pandas skills, though, let’s delete only duplicate birds from the same year from the
+data frame. When you have made this data frame, save it as a CSV file.</p>
+<p><em>Hint</em>: The methods <code class="docutils literal notranslate"><span class="pre">is_duplicated()</span></code> and <code class="docutils literal notranslate"><span class="pre">unique()</span></code> will be useful.</p>
+<p>After doing this work, it is worth saving your tidy data frame in a CSV document. To this using the <code class="docutils literal notranslate"><span class="pre">to_csv()</span></code> method of your data frame. (I have already done this and saved it as <code class="docutils literal notranslate"><span class="pre">~/git/bootcamp/data/grant_complete.csv</span></code>, which will help you do the rest of the exercise if you have problems with this part.)</p>
+<p><strong>d)</strong> Make a plots exploring how beak depth changes over time for each species. Think about what might be effective ways to display the data.</p>
+<p><strong>e)</strong> It is informative to plot the measurement of each bird’s beak as a point in the beak depth-beak length plane. For the 1987 data, plot beak depth vs. beak width for <em>Geospiza fortis</em> and for <em>Geospiza scandens</em>.</p>
+<p><strong>f)</strong> Do part (d) again for all years. <em>Hint</em>: To display all of the plots, check out the <a class="reference external" href="https://bokeh.pydata.org/en/latest/docs/user_guide/layout.html">Bokeh documentation for layouts</a>. In your plots, make sure all plots have the same range on the axes. If you want to set two plots, say <code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> to have the same axis ranges, you can do the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span><span class="o">.</span><span class="n">x_range</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">x_range</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">y_range</span> <span class="o">=</span> <span class="n">p2</span><span class="o">.</span><span class="n">y_range</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="e02.2.html" class="btn btn-neutral float-left" title="Exercise 2.2: Microtubule catastrophe and ECDFs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../03/index.html" class="btn btn-neutral float-right" title="Exercise 3. Working with probability distributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x1365867b0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

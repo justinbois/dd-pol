@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model comparison with the AIC &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 1. Pandas and split-apply-combine" href="../../exercises/01/index.html" />
+    <link rel="prev" title="Graphical model assessment: Predictive regression" href="predictive_regression.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 8: Model assessment</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphical_model_assessment.html">Graphical model assessment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="information_criteria.html">Model comparison with the Akaike information criterion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation_of_graphical_model_selection.html">Q-Q plots and predictive ECDFs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predictive_regression.html">Predictive regressions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model comparison with the AIC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#AIC-for-mRNA-counts">AIC for mRNA counts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Caveat">Caveat</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#AIC-for-the-spindle-model">AIC for the spindle model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Computing-environment">Computing environment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 8: Model assessment</a></li>
+      <li class="breadcrumb-item active">Model comparison with the AIC</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part1/lessons/08/aic.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part1/lessons/08/aic.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Model-comparison-with-the-AIC">
+<h1>Model comparison with the AIC<a class="headerlink" href="#Model-comparison-with-the-AIC" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/singer_transcript_counts.csv">mRNA count dataset download</a></p>
+<p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/good_invitro_droplet_data.csv">Spindle length dataset download</a></p>
+<hr><div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+
+<span class="kn">import</span> <span class="nn">bebi103</span>
+
+<span class="kn">import</span> <span class="nn">iqplot</span>
+
+<span class="kn">import</span> <span class="nn">bokeh.io</span>
+<span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<style>
+    .bk-notebook-logo {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAOkSURBVDiNjZRtaJVlGMd/1/08zzln5zjP1LWcU9N0NkN8m2CYjpgQYQXqSs0I84OLIC0hkEKoPtiH3gmKoiJDU7QpLgoLjLIQCpEsNJ1vqUOdO7ppbuec5+V+rj4ctwzd8IIbbi6u+8f1539dt3A78eXC7QizUF7gyV1fD1Yqg4JWz84yffhm0qkFqBogB9rM8tZdtwVsPUhWhGcFJngGeWrPzHm5oaMmkfEg1usvLFyc8jLRqDOMru7AyC8saQr7GG7f5fvDeH7Ej8CM66nIF+8yngt6HWaKh7k49Soy9nXurCi1o3qUbS3zWfrYeQDTB/Qj6kX6Ybhw4B+bOYoLKCC9H3Nu/leUTZ1JdRWkkn2ldcCamzrcf47KKXdAJllSlxAOkRgyHsGC/zRday5Qld9DyoM4/q/rUoy/CXh3jzOu3bHUVZeU+DEn8FInkPBFlu3+nW3Nw0mk6vCDiWg8CeJaxEwuHS3+z5RgY+YBR6V1Z1nxSOfoaPa4LASWxxdNp+VWTk7+4vzaou8v8PN+xo+KY2xsw6une2frhw05CTYOmQvsEhjhWjn0bmXPjpE1+kplmmkP3suftwTubK9Vq22qKmrBhpY4jvd5afdRA3wGjFAgcnTK2s4hY0/GPNIb0nErGMCRxWOOX64Z8RAC4oCXdklmEvcL8o0BfkNK4lUg9HTl+oPlQxdNo3Mg4Nv175e/1LDGzZen30MEjRUtmXSfiTVu1kK8W4txyV6BMKlbgk3lMwYCiusNy9fVfvvwMxv8Ynl6vxoByANLTWplvuj/nF9m2+PDtt1eiHPBr1oIfhCChQMBw6Aw0UulqTKZdfVvfG7VcfIqLG9bcldL/+pdWTLxLUy8Qq38heUIjh4XlzZxzQm19lLFlr8vdQ97rjZVOLf8nclzckbcD4wxXMidpX30sFd37Fv/GtwwhzhxGVAprjbg0gCAEeIgwCZyTV2Z1REEW8O4py0wsjeloKoMr6iCY6dP92H6Vw/oTyICIthibxjm/DfN9lVz8IqtqKYLUXfoKVMVQVVJOElGjrnnUt9T9wbgp8AyYKaGlqingHZU/uG2NTZSVqwHQTWkx9hxjkpWDaCg6Ckj5qebgBVbT3V3NNXMSiWSDdGV3hrtzla7J+duwPOToIg42ChPQOQjspnSlp1V+Gjdged7+8UN5CRAV7a5EdFNwCjEaBR27b3W890TE7g24NAP/mMDXRWrGoFPQI9ls/MWO2dWFAar/xcOIImbbpA3zgAAAABJRU5ErkJggg==);
+    }
+</style>
+<div>
+    <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
+    <span id="e1ff8fb6-3479-43ad-9579-bd994e422588">Loading BokehJS ...</span>
+</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+'use strict';
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  const force = true;
+
+  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+const JS_MIME_TYPE = 'application/javascript';
+  const HTML_MIME_TYPE = 'text/html';
+  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  const CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    const script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    function drop(id) {
+      const view = Bokeh.index.get_by_id(id)
+      if (view != null) {
+        view.model.document.clear()
+        Bokeh.index.delete(view)
+      }
+    }
+
+    const cell = handle.cell;
+
+    const id = cell.output_area._bokeh_element_id;
+    const server_id = cell.output_area._bokeh_server_id;
+
+    // Clean up Bokeh references
+    if (id != null) {
+      drop(id)
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd_clean, {
+        iopub: {
+          output: function(msg) {
+            const id = msg.content.text.trim()
+            drop(id)
+          }
+        }
+      });
+      // Destroy server and session
+      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd_destroy);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    const output_area = handle.output_area;
+    const output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
+      return
+    }
+
+    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      const bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      const script_attrs = bk_div.children[0].attributes;
+      for (let i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      const toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    const events = require('base/js/events');
+    const OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  const NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded(error = null) {
+    const el = document.getElementById("e1ff8fb6-3479-43ad-9579-bd994e422588");
+    if (el != null) {
+      const html = (() => {
+        if (typeof root.Bokeh === "undefined") {
+          if (error == null) {
+            return "BokehJS is loading ...";
+          } else {
+            return "BokehJS failed to load.";
+          }
+        } else {
+          const prefix = `BokehJS ${root.Bokeh.version}`;
+          if (error == null) {
+            return `${prefix} successfully loaded.`;
+          } else {
+            return `${prefix} <b>encountered errors</b> while loading and may not function as expected.`;
+          }
+        }
+      })();
+      el.innerHTML = html;
+
+      if (error != null) {
+        const wrapper = document.createElement("div");
+        wrapper.style.overflow = "auto";
+        wrapper.style.height = "5em";
+        wrapper.style.resize = "vertical";
+        const content = document.createElement("div");
+        content.style.fontFamily = "monospace";
+        content.style.whiteSpace = "pre-wrap";
+        content.style.backgroundColor = "rgb(255, 221, 221)";
+        content.textContent = error.stack ?? error.toString();
+        wrapper.append(content);
+        el.append(wrapper);
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(() => display_loaded(error), 100);
+    }
+  }
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) {
+        if (callback != null)
+          callback();
+      });
+    } finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.debug("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(css_urls, js_urls, callback) {
+    if (css_urls == null) css_urls = [];
+    if (js_urls == null) js_urls = [];
+
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = css_urls.length + js_urls.length;
+
+    function on_load() {
+      root._bokeh_is_loading--;
+      if (root._bokeh_is_loading === 0) {
+        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
+        run_callbacks()
+      }
+    }
+
+    function on_error(url) {
+      console.error("failed to load " + url);
+    }
+
+    for (let i = 0; i < css_urls.length; i++) {
+      const url = css_urls[i];
+      const element = document.createElement("link");
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.rel = "stylesheet";
+      element.type = "text/css";
+      element.href = url;
+      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
+      document.body.appendChild(element);
+    }
+
+    for (let i = 0; i < js_urls.length; i++) {
+      const url = js_urls[i];
+      const element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.async = false;
+      element.src = url;
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+  };
+
+  function inject_raw_css(css) {
+    const element = document.createElement("style");
+    element.appendChild(document.createTextNode(css));
+    document.body.appendChild(element);
+  }
+
+  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.4.1.min.js", "https://unpkg.com/@holoviz/panel@1.4.4/dist/panel.min.js"];
+  const css_urls = [];
+
+  const inline_js = [    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+function(Bokeh) {
+    }
+  ];
+
+  function run_inline_js() {
+    if (root.Bokeh !== undefined || force === true) {
+      try {
+            for (let i = 0; i < inline_js.length; i++) {
+      inline_js[i].call(root, root.Bokeh);
+    }
+
+      } catch (error) {display_loaded(error);throw error;
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      const cell = $(document.getElementById("e1ff8fb6-3479-43ad-9579-bd994e422588")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(css_urls, js_urls, function() {
+      console.debug("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+<hr><p>We have <a class="reference external" href="../21/information_criteria.ipynb">previously introduced the Akaike information criterion</a>. Here, we will demonstrate its use in model comparison and the mechanics of how to calculated it.</p>
+<p>As a reminder, for a set of parameters <span class="math notranslate nohighlight">\(\theta\)</span> with MLE <span class="math notranslate nohighlight">\(\theta^*\)</span> and a model with log-likelihood <span class="math notranslate nohighlight">\(\ell(\theta;\text{data})\)</span>, the AIC is given by</p>
+<p><span class="math">\begin{align}
+\text{AIC} = -2\ell(\theta^*;\text{data}) + 2p,
+\end{align}</span></p>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is the number of free parameters in a model. The Akaike weight of model <span class="math notranslate nohighlight">\(i\)</span> in a collection of models is</p>
+<p><span class="math">\begin{align}
+w_i = \frac{\mathrm{e}^{-(\text{AIC}_i - \text{AIC}_\mathrm{max})/2}}{\sum_j\mathrm{e}^{-(\text{AIC}_j - \text{AIC}_\mathrm{max})/2}}.
+\end{align}</span></p>
+<p>To begin, we will use the AIC to compare a single Negative Binomial model to a mixture of two Negative Binomials for smFISH data from Singer, et al.</p>
+<section id="AIC-for-mRNA-counts">
+<h2>AIC for mRNA counts<a class="headerlink" href="#AIC-for-mRNA-counts" title="Link to this heading"></a></h2>
+<p>Let us now compare the single Negative Binomial to the mixture model for mRNA counts. We again need our functions for computing the MLE and computing the log-likelihood from previous lessons.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">log_like_iid_nbinom</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log likelihood for i.i.d. NBinom measurements, parametrized</span>
+<span class="sd">    by alpha, b=1/beta.&quot;&quot;&quot;</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">params</span>
+
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">nbinom</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">b</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">mle_iid_nbinom</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform maximum likelihood estimates for parameters for i.i.d.</span>
+<span class="sd">    NBinom measurements, parametrized by alpha, b=1/beta&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="n">fun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="o">-</span><span class="n">log_like_iid_nbinom</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Powell&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Convergence failed with message&#39;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">initial_guess_mix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_guess</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate initial guess for mixture model.&quot;&quot;&quot;</span>
+    <span class="n">n_low</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">w_guess</span><span class="p">)]</span>
+    <span class="n">n_high</span> <span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="n">n</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">w_guess</span><span class="p">)]</span>
+
+    <span class="n">alpha1</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">mle_iid_nbinom</span><span class="p">(</span><span class="n">n_low</span><span class="p">)</span>
+    <span class="n">alpha2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">mle_iid_nbinom</span><span class="p">(</span><span class="n">n_high</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">b2</span>
+
+
+<span class="k">def</span> <span class="nf">log_like_mix</span><span class="p">(</span><span class="n">alpha1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log-likeihood of binary Negative Binomial mixture model.&quot;&quot;&quot;</span>
+    <span class="c1"># Fix nonidentifiability be enforcing values of w</span>
+    <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="c1"># Physical bounds on parameters</span>
+    <span class="k">if</span> <span class="n">alpha1</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">alpha2</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">b1</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">b2</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">logx1</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">nbinom</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">b1</span><span class="p">))</span>
+    <span class="n">logx2</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">nbinom</span><span class="o">.</span><span class="n">logpmf</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">b2</span><span class="p">))</span>
+
+    <span class="c1"># Multipliers for log-sum-exp</span>
+    <span class="n">lse_coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">],</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="c1"># log-likelihood for each measurement</span>
+    <span class="n">log_likes</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">logx1</span><span class="p">,</span> <span class="n">logx2</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">lse_coeffs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">log_likes</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mle_mix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_guess</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Obtain MLE estimate for parameters for binary mixture</span>
+<span class="sd">    of Negative Binomials.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="n">fun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="o">-</span><span class="n">log_like_mix</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">initial_guess_mix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_guess</span><span class="p">),</span> <span class="n">w_guess</span><span class="p">],</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Powell&#39;</span><span class="p">,</span>
+            <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Convergence failed with message&#39;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can load in the data and compute the MLEs for each of the four genes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load in data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;singer_transcript_counts.csv&quot;</span><span class="p">),</span> <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">&quot;#&quot;</span>
+<span class="p">)</span>
+
+<span class="n">df_mle</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">schema</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;gene&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)]</span>
+    <span class="o">+</span> <span class="p">[(</span><span class="n">param</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha1&quot;</span><span class="p">,</span> <span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha2&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Nanog&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+    <span class="c1"># Single Negative Binomial MLE</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">mle_iid_nbinom</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+
+    <span class="c1"># Mixture model MLE</span>
+    <span class="n">alpha1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">mle_mix</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="c1"># Store results in data frame</span>
+    <span class="n">df_mle</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">df_mle</span><span class="p">,</span>
+            <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">[[</span><span class="n">gene</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">w</span><span class="p">]],</span>
+                <span class="n">schema</span><span class="o">=</span><span class="n">df_mle</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># Take a look</span>
+<span class="n">df_mle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4, 8)</small><table border="1" class="dataframe"><thead><tr><th>gene</th><th>alpha</th><th>b</th><th>alpha1</th><th>b1</th><th>alpha2</th><th>b2</th><th>w</th></tr><tr><td>str</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Rex1&quot;</td><td>1.634562</td><td>84.680915</td><td>3.49701</td><td>4.104915</td><td>5.089624</td><td>31.810372</td><td>0.160422</td></tr><tr><td>&quot;Rest&quot;</td><td>4.530335</td><td>16.543054</td><td>2.786599</td><td>12.395709</td><td>6.683424</td><td>11.953266</td><td>0.108772</td></tr><tr><td>&quot;Nanog&quot;</td><td>1.263097</td><td>69.347842</td><td>0.834853</td><td>66.534676</td><td>4.127551</td><td>28.132831</td><td>0.46665</td></tr><tr><td>&quot;Prdm14&quot;</td><td>0.552886</td><td>8.200636</td><td>2.385858</td><td>4.747278</td><td>0.558672</td><td>4.872748</td><td>0.210606</td></tr></tbody></table></div></div>
+</div>
+<p>For each of the two models, we can compute the log likelihood evaluated at the MLEs for the parameters.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define funcitons taking Polars structs for computing log likelihoods</span>
+<span class="k">def</span> <span class="nf">pl_log_like_iid_nbinom</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">log_like_iid_nbinom</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;alpha&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]),</span> <span class="n">df</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;gene&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">pl_log_like_mix</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">log_like_mix</span><span class="p">(</span>
+        <span class="n">s</span><span class="p">[</span><span class="s2">&quot;alpha1&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;b1&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;alpha2&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;b2&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;gene&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Apply the functions</span>
+<span class="n">df_mle</span> <span class="o">=</span> <span class="n">df_mle</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="c1"># Single negative binomial</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">struct</span><span class="p">([</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;gene&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">map_elements</span><span class="p">(</span><span class="n">pl_log_like_iid_nbinom</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;log_like_single&quot;</span><span class="p">),</span>
+
+    <span class="c1"># Mixture model</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">struct</span><span class="p">([</span><span class="s2">&quot;alpha1&quot;</span><span class="p">,</span> <span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha2&quot;</span><span class="p">,</span> <span class="s2">&quot;b2&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;gene&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">map_elements</span><span class="p">(</span><span class="n">pl_log_like_mix</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;log_like_mix&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Take a look</span>
+<span class="n">df_mle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4, 10)</small><table border="1" class="dataframe"><thead><tr><th>gene</th><th>alpha</th><th>b</th><th>alpha1</th><th>b1</th><th>alpha2</th><th>b2</th><th>w</th><th>log_like_single</th><th>log_like_mix</th></tr><tr><td>str</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Rex1&quot;</td><td>1.634562</td><td>84.680915</td><td>3.49701</td><td>4.104915</td><td>5.089624</td><td>31.810372</td><td>0.160422</td><td>-1638.678482</td><td>-1590.353744</td></tr><tr><td>&quot;Rest&quot;</td><td>4.530335</td><td>16.543054</td><td>2.786599</td><td>12.395709</td><td>6.683424</td><td>11.953266</td><td>0.108772</td><td>-1376.748398</td><td>-1372.108896</td></tr><tr><td>&quot;Nanog&quot;</td><td>1.263097</td><td>69.347842</td><td>0.834853</td><td>66.534676</td><td>4.127551</td><td>28.132831</td><td>0.46665</td><td>-1524.928918</td><td>-1512.444549</td></tr><tr><td>&quot;Prdm14&quot;</td><td>0.552886</td><td>8.200636</td><td>2.385858</td><td>4.747278</td><td>0.558672</td><td>4.872748</td><td>0.210606</td><td>-713.091587</td><td>-712.702876</td></tr></tbody></table></div></div>
+</div>
+<p>We can already see a very large difference between the log likelihood evaluated at the MLE for Rex1, but not much difference for Prdm14. The mixture model has <span class="math notranslate nohighlight">\(p = 5\)</span> parameters, while the single Negative Binomial model has <span class="math notranslate nohighlight">\(p = 2\)</span>. With these numbers, we can compute the AIC and then also the Akaike weights.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_mle</span> <span class="o">=</span> <span class="n">df_mle</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;log_like_single&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;AIC_single&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;log_like_mix&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;AIC_mix&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Take a look</span>
+<span class="n">df_mle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4, 12)</small><table border="1" class="dataframe"><thead><tr><th>gene</th><th>alpha</th><th>b</th><th>alpha1</th><th>b1</th><th>alpha2</th><th>b2</th><th>w</th><th>log_like_single</th><th>log_like_mix</th><th>AIC_single</th><th>AIC_mix</th></tr><tr><td>str</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Rex1&quot;</td><td>1.634562</td><td>84.680915</td><td>3.49701</td><td>4.104915</td><td>5.089624</td><td>31.810372</td><td>0.160422</td><td>-1638.678482</td><td>-1590.353744</td><td>3281.356963</td><td>3190.707487</td></tr><tr><td>&quot;Rest&quot;</td><td>4.530335</td><td>16.543054</td><td>2.786599</td><td>12.395709</td><td>6.683424</td><td>11.953266</td><td>0.108772</td><td>-1376.748398</td><td>-1372.108896</td><td>2757.496797</td><td>2754.217792</td></tr><tr><td>&quot;Nanog&quot;</td><td>1.263097</td><td>69.347842</td><td>0.834853</td><td>66.534676</td><td>4.127551</td><td>28.132831</td><td>0.46665</td><td>-1524.928918</td><td>-1512.444549</td><td>3053.857837</td><td>3034.889098</td></tr><tr><td>&quot;Prdm14&quot;</td><td>0.552886</td><td>8.200636</td><td>2.385858</td><td>4.747278</td><td>0.558672</td><td>4.872748</td><td>0.210606</td><td>-713.091587</td><td>-712.702876</td><td>1430.183173</td><td>1435.405751</td></tr></tbody></table></div></div>
+</div>
+<p>Finally, we can compute the Akaike weight for the model with a single Negative Binomial (the weight for the mixture model is <span class="math notranslate nohighlight">\(1-w_\mathrm{single}\)</span>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_mle</span> <span class="o">=</span> <span class="n">df_mle</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">max_AIC</span> <span class="o">:=</span> <span class="n">pl</span><span class="o">.</span><span class="n">max_horizontal</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;AIC_single&#39;</span><span class="p">,</span> <span class="s1">&#39;AIC_mix&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;max_AIC&#39;</span><span class="p">),</span>
+    <span class="n">num</span> <span class="o">:=</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;AIC_single&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">max_AIC</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;AIC_mix&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">max_AIC</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">exp</span><span class="p">()))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;w_single&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;max_AIC&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Look at Akaike weights</span>
+<span class="n">df_mle</span><span class="p">[[</span><span class="s1">&#39;gene&#39;</span><span class="p">,</span> <span class="s1">&#39;w_single&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4, 2)</small><table border="1" class="dataframe"><thead><tr><th>gene</th><th>w_single</th></tr><tr><td>str</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Rex1&quot;</td><td>2.0688e-20</td></tr><tr><td>&quot;Rest&quot;</td><td>0.162533</td></tr><tr><td>&quot;Nanog&quot;</td><td>0.000076</td></tr><tr><td>&quot;Prdm14&quot;</td><td>0.931585</td></tr></tbody></table></div></div>
+</div>
+<p>In looking at the Akaike weight for the mixture (1 – <code class="docutils literal notranslate"><span class="pre">w_single</span></code>), is it clear that the mixture model is strongly preferred for Rex1 and Nanog. There is not strong preference for Rest, and a preference for the single Negative Binomial model for Prdm14. Reminding ourselves of the ECDFs, this makes sense.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">genes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Nanog&quot;</span><span class="p">,</span> <span class="s2">&quot;Prdm14&quot;</span><span class="p">,</span> <span class="s2">&quot;Rest&quot;</span><span class="p">,</span> <span class="s2">&quot;Rex1&quot;</span><span class="p">]</span>
+
+<span class="n">plots</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">iqplot</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+        <span class="n">q</span><span class="o">=</span><span class="n">gene</span><span class="p">,</span>
+        <span class="n">x_axis_label</span><span class="o">=</span><span class="s2">&quot;mRNA count&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">gene</span><span class="p">,</span>
+        <span class="n">frame_height</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+        <span class="n">frame_width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">genes</span>
+<span class="p">]</span>
+
+<span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">show</span><span class="p">(</span>
+    <span class="n">bokeh</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">bokeh</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="o">*</span><span class="n">plots</span><span class="p">[:</span><span class="mi">2</span><span class="p">]),</span> <span class="n">bokeh</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="o">*</span><span class="n">plots</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="a5f15bea-1180-444e-a1dc-54531cac8a2e" data-root-id="p1244" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"220630e6-390f-4c82-bd7b-8e6f72f5c87b":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Column","id":"p1244","attributes":{"children":[{"type":"object","name":"Row","id":"p1242","attributes":{"children":[{"type":"object","name":"Figure","id":"p1002","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1003"},"y_range":{"type":"object","name":"DataRange1d","id":"p1004"},"x_scale":{"type":"object","name":"LinearScale","id":"p1012"},"y_scale":{"type":"object","name":"LinearScale","id":"p1013"},"title":{"type":"object","name":"Title","id":"p1005","attributes":{"text":"Nanog"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1041","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1035","attributes":{"selected":{"type":"object","name":"Selection","id":"p1036","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1037"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKkAAAAAAAAAqQAAAAAAAACxAAAAAAAAALEAAAAAAAAAsQAAAAAAAACxAAAAAAAAALEAAAAAAAAAsQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAyQAAAAAAAADJAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADNAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADNAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADRAAAAAAAAANEAAAAAAAAA0QAAAAAAAADRAAAAAAAAANUAAAAAAAAA1QAAAAAAAADVAAAAAAAAANUAAAAAAAAA2QAAAAAAAADZAAAAAAAAANkAAAAAAAAA2QAAAAAAAADdAAAAAAAAAN0AAAAAAAAA4QAAAAAAAADhAAAAAAAAAOEAAAAAAAAA4QAAAAAAAADhAAAAAAAAAOEAAAAAAAAA4QAAAAAAAADhAAAAAAAAAOUAAAAAAAAA5QAAAAAAAADpAAAAAAAAAOkAAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADxAAAAAAAAAPEAAAAAAAAA9QAAAAAAAAD1AAAAAAAAAPUAAAAAAAAA9QAAAAAAAAD1AAAAAAAAAPUAAAAAAAAA9QAAAAAAAAD1AAAAAAAAAPkAAAAAAAAA+QAAAAAAAAD5AAAAAAAAAPkAAAAAAAAA/QAAAAAAAAD9AAAAAAAAAQEAAAAAAAABAQAAAAAAAAEBAAAAAAAAAQEAAAAAAAABAQAAAAAAAAEBAAAAAAACAQEAAAAAAAIBAQAAAAAAAgEBAAAAAAACAQEAAAAAAAIBAQAAAAAAAgEBAAAAAAACAQEAAAAAAAIBAQAAAAAAAAEFAAAAAAAAAQUAAAAAAAIBBQAAAAAAAgEFAAAAAAACAQkAAAAAAAIBCQAAAAAAAgEJAAAAAAACAQkAAAAAAAABDQAAAAAAAAENAAAAAAAAAQ0AAAAAAAABDQAAAAAAAgENAAAAAAACAQ0AAAAAAAIBDQAAAAAAAgENAAAAAAACAQ0AAAAAAAIBDQAAAAAAAAERAAAAAAAAAREAAAAAAAABEQAAAAAAAAERAAAAAAACAREAAAAAAAIBEQAAAAAAAgERAAAAAAACAREAAAAAAAABGQAAAAAAAAEZAAAAAAAAARkAAAAAAAABGQAAAAAAAAEdAAAAAAAAAR0AAAAAAAIBHQAAAAAAAgEdAAAAAAAAASEAAAAAAAABIQAAAAAAAgEhAAAAAAACASEAAAAAAAIBIQAAAAAAAgEhAAAAAAAAASUAAAAAAAABJQAAAAAAAgElAAAAAAACASUAAAAAAAABKQAAAAAAAAEpAAAAAAACASkAAAAAAAIBKQAAAAAAAgEtAAAAAAACAS0AAAAAAAIBLQAAAAAAAgEtAAAAAAACATEAAAAAAAIBMQAAAAAAAAE1AAAAAAAAATUAAAAAAAIBNQAAAAAAAgE1AAAAAAACATUAAAAAAAIBNQAAAAAAAAE5AAAAAAAAATkAAAAAAAIBOQAAAAAAAgE5AAAAAAACATkAAAAAAAIBOQAAAAAAAAE9AAAAAAAAAT0AAAAAAAIBPQAAAAAAAgE9AAAAAAAAAUEAAAAAAAABQQAAAAAAAAFBAAAAAAAAAUEAAAAAAAABQQAAAAAAAAFBAAAAAAAAAUEAAAAAAAABQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAgFBAAAAAAACAUEAAAAAAAIBQQAAAAAAAgFBAAAAAAACAUEAAAAAAAIBQQAAAAAAAgFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAwFBAAAAAAADAUEAAAAAAAMBQQAAAAAAAwFBAAAAAAADAUEAAAAAAAMBQQAAAAAAAwFBAAAAAAAAAUUAAAAAAAABRQAAAAAAAAFFAAAAAAAAAUUAAAAAAAABRQAAAAAAAAFFAAAAAAABAUUAAAAAAAEBRQAAAAAAAQFFAAAAAAABAUUAAAAAAAMBRQAAAAAAAwFFAAAAAAAAAUkAAAAAAAABSQAAAAAAAAFJAAAAAAAAAUkAAAAAAAEBSQAAAAAAAQFJAAAAAAABAUkAAAAAAAEBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAAFNAAAAAAAAAU0AAAAAAAABTQAAAAAAAAFNAAAAAAABAU0AAAAAAAEBTQAAAAAAAQFNAAAAAAABAU0AAAAAAAEBTQAAAAAAAQFNAAAAAAABAU0AAAAAAAEBTQAAAAAAAgFNAAAAAAACAU0AAAAAAAIBTQAAAAAAAgFNAAAAAAADAU0AAAAAAAMBTQAAAAAAAwFNAAAAAAADAU0AAAAAAAABUQAAAAAAAAFRAAAAAAAAAVEAAAAAAAABUQAAAAAAAAFRAAAAAAAAAVEAAAAAAAEBUQAAAAAAAQFRAAAAAAACAVEAAAAAAAIBUQAAAAAAAgFRAAAAAAACAVEAAAAAAAMBUQAAAAAAAwFRAAAAAAADAVEAAAAAAAMBUQAAAAAAAAFVAAAAAAAAAVUAAAAAAAABVQAAAAAAAAFVAAAAAAAAAVUAAAAAAAABVQAAAAAAAQFVAAAAAAABAVUAAAAAAAIBVQAAAAAAAgFVAAAAAAACAVUAAAAAAAIBVQAAAAAAAwFVAAAAAAADAVUAAAAAAAMBVQAAAAAAAwFVAAAAAAAAAVkAAAAAAAABWQAAAAAAAAFZAAAAAAAAAVkAAAAAAAIBWQAAAAAAAgFZAAAAAAAAAV0AAAAAAAABXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAABYQAAAAAAAAFhAAAAAAABAWEAAAAAAAEBYQAAAAAAAAFlAAAAAAAAAWUAAAAAAAEBZQAAAAAAAQFlAAAAAAABAWUAAAAAAAEBZQAAAAAAAwFlAAAAAAADAWUAAAAAAAMBZQAAAAAAAwFlAAAAAAAAAWkAAAAAAAABaQAAAAAAAAFpAAAAAAAAAWkAAAAAAAABaQAAAAAAAAFpAAAAAAAAAWkAAAAAAAABaQAAAAAAAAFpAAAAAAAAAWkAAAAAAAABaQAAAAAAAAFpAAAAAAABAWkAAAAAAAEBaQAAAAAAAQFpAAAAAAABAWkAAAAAAAMBaQAAAAAAAwFpAAAAAAADAWkAAAAAAAMBaQAAAAAAAAFtAAAAAAAAAW0AAAAAAAEBbQAAAAAAAQFtAAAAAAACAW0AAAAAAAIBbQAAAAAAAQFxAAAAAAABAXEAAAAAAAIBcQAAAAAAAgFxAAAAAAADAXEAAAAAAAMBcQAAAAAAAAF1AAAAAAAAAXUAAAAAAAABdQAAAAAAAAF1AAAAAAABAXUAAAAAAAEBdQAAAAAAAgF1AAAAAAACAXUAAAAAAAIBdQAAAAAAAgF1AAAAAAADAXUAAAAAAAMBdQAAAAAAAAF5AAAAAAAAAXkAAAAAAAABeQAAAAAAAAF5AAAAAAAAAXkAAAAAAAABeQAAAAAAAQF5AAAAAAABAXkAAAAAAAMBeQAAAAAAAwF5AAAAAAAAAX0AAAAAAAABfQAAAAAAAQF9AAAAAAABAX0AAAAAAAMBfQAAAAAAAwF9AAAAAAADAX0AAAAAAAMBfQAAAAAAAwF9AAAAAAADAX0AAAAAAAABgQAAAAAAAAGBAAAAAAAAAYEAAAAAAAABgQAAAAAAAAGBAAAAAAAAAYEAAAAAAACBgQAAAAAAAIGBAAAAAAABAYEAAAAAAAEBgQAAAAAAAgGBAAAAAAACAYEAAAAAAAIBgQAAAAAAAgGBAAAAAAACAYEAAAAAAAIBgQAAAAAAAwGBAAAAAAADAYEAAAAAAAMBgQAAAAAAAwGBAAAAAAAAAYUAAAAAAAABhQAAAAAAAIGFAAAAAAAAgYUAAAAAAAEBhQAAAAAAAQGFAAAAAAABgYUAAAAAAAGBhQAAAAAAAgGFAAAAAAACAYUAAAAAAAIBhQAAAAAAAgGFAAAAAAACgYUAAAAAAAKBhQAAAAAAAoGFAAAAAAACgYUAAAAAAAOBhQAAAAAAA4GFAAAAAAADgYUAAAAAAAOBhQAAAAAAAAGJAAAAAAAAAYkAAAAAAACBiQAAAAAAAIGJAAAAAAACAYkAAAAAAAIBiQAAAAAAAoGJAAAAAAACgYkAAAAAAACBjQAAAAAAAIGNAAAAAAAAgY0AAAAAAACBjQAAAAAAAIGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAQGNAAAAAAABAY0AAAAAAAEBjQAAAAAAAYGNAAAAAAABgY0AAAAAAAIBjQAAAAAAAgGNAAAAAAACAY0AAAAAAAIBjQAAAAAAAgGNAAAAAAACAY0AAAAAAAABkQAAAAAAAAGRAAAAAAABAZEAAAAAAAEBkQAAAAAAAQGRAAAAAAABAZEAAAAAAAABlQAAAAAAAAGVAAAAAAABgZUAAAAAAAGBlQAAAAAAAwGVAAAAAAADAZUAAAAAAAOBlQAAAAAAA4GVAAAAAAADgZUAAAAAAAOBlQAAAAAAAAGZAAAAAAAAAZkAAAAAAACBmQAAAAAAAIGZAAAAAAACgZkAAAAAAAKBmQAAAAAAAQGdAAAAAAABAZ0AAAAAAAGBnQAAAAAAAYGdAAAAAAADAZ0AAAAAAAMBnQAAAAAAA4GdAAAAAAADgZ0AAAAAAACBoQAAAAAAAIGhAAAAAAABAaEAAAAAAAEBoQAAAAAAAYGhAAAAAAABgaEAAAAAAAIBoQAAAAAAAgGhAAAAAAADAaEAAAAAAAMBoQAAAAAAAAGlAAAAAAAAAaUAAAAAAAEBpQAAAAAAAQGlAAAAAAACAakAAAAAAAIBqQAAAAAAAAGtAAAAAAAAAa0AAAAAAAGBsQAAAAAAAYGxAAAAAAACAbEAAAAAAAIBsQAAAAAAA4GxAAAAAAADgbEAAAAAAAIBtQAAAAAAAgG1AAAAAAADgbUAAAAAAAOBtQAAAAAAAwG5AAAAAAADAbkAAAAAAAGBvQAAAAAAAYG9AAAAAAACAb0AAAAAAAIBvQAAAAAAAcHBAAAAAAABwcEAAAAAAAHBwQAAAAAAAcHBAAAAAAAAgcUAAAAAAACBxQAAAAAAAUHJAAAAAAABQckAAAAAAAIB5QAAAAAAAgHlA"},"shape":[558],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"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"},"shape":[558],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1042","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1043"}}},"glyph":{"type":"object","name":"Line","id":"p1038","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1039","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1040","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}},{"type":"object","name":"GlyphRenderer","id":"p1050","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1044","attributes":{"selected":{"type":"object","name":"Selection","id":"p1045","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1046"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1051","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1052"}}},"glyph":{"type":"object","name":"Ray","id":"p1047","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1048","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1049","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}},{"type":"object","name":"GlyphRenderer","id":"p1059","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1053","attributes":{"selected":{"type":"object","name":"Selection","id":"p1054","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1055"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1060","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1061"}}},"glyph":{"type":"object","name":"Ray","id":"p1056","attributes":{"x":{"type":"value","value":408.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1057","attributes":{"x":{"type":"value","value":408.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1058","attributes":{"x":{"type":"value","value":408.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1011","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1024"},{"type":"object","name":"WheelZoomTool","id":"p1025","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1026","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1027","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1032"},{"type":"object","name":"ResetTool","id":"p1033"},{"type":"object","name":"HelpTool","id":"p1034"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1019","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1020","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1021"},"axis_label":"ECDF","major_label_policy":{"type":"object","name":"AllLabels","id":"p1022"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1014","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1015","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1016"},"axis_label":"mRNA count","major_label_policy":{"type":"object","name":"AllLabels","id":"p1017"}}}],"center":[{"type":"object","name":"Grid","id":"p1018","attributes":{"axis":{"id":"p1014"}}},{"type":"object","name":"Grid","id":"p1023","attributes":{"dimension":1,"axis":{"id":"p1019"}}}],"frame_width":200,"frame_height":150}},{"type":"object","name":"Figure","id":"p1062","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1063"},"y_range":{"type":"object","name":"DataRange1d","id":"p1064"},"x_scale":{"type":"object","name":"LinearScale","id":"p1072"},"y_scale":{"type":"object","name":"LinearScale","id":"p1073"},"title":{"type":"object","name":"Title","id":"p1065","attributes":{"text":"Prdm14"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1101","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1095","attributes":{"selected":{"type":"object","name":"Selection","id":"p1096","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1097"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAQQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAFEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAHEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAiQAAAAAAAACJAAAAAAAAAIkAAAAAAAAAiQAAAAAAAACJAAAAAAAAAIkAAAAAAAAAiQAAAAAAAACJAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACpAAAAAAAAAKkAAAAAAAAAqQAAAAAAAACpAAAAAAAAAKkAAAAAAAAAsQAAAAAAAACxAAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAwQAAAAAAAADBAAAAAAAAAMEAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAyQAAAAAAAADJAAAAAAAAAMkAAAAAAAAAyQAAAAAAAADJAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADNAAAAAAAAAM0AAAAAAAAA0QAAAAAAAADRAAAAAAAAANUAAAAAAAAA1QAAAAAAAADZAAAAAAAAANkAAAAAAAAA4QAAAAAAAADhAAAAAAAAAOUAAAAAAAAA5QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAP0AAAAAAAAA/QAAAAAAAAEBAAAAAAAAAQEAAAAAAAABAQAAAAAAAAEBA"},"shape":[558],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"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"},"shape":[558],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1102","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1103"}}},"glyph":{"type":"object","name":"Line","id":"p1098","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1099","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1100","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}},{"type":"object","name":"GlyphRenderer","id":"p1110","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1104","attributes":{"selected":{"type":"object","name":"Selection","id":"p1105","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1106"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1111","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1112"}}},"glyph":{"type":"object","name":"Ray","id":"p1107","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1108","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1109","attributes":{"x":{"type":"value","value":0.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}},{"type":"object","name":"GlyphRenderer","id":"p1119","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1113","attributes":{"selected":{"type":"object","name":"Selection","id":"p1114","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1115"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1120","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1121"}}},"glyph":{"type":"object","name":"Ray","id":"p1116","attributes":{"x":{"type":"value","value":32.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1117","attributes":{"x":{"type":"value","value":32.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1118","attributes":{"x":{"type":"value","value":32.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1071","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1084"},{"type":"object","name":"WheelZoomTool","id":"p1085","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1086","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1087","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1092"},{"type":"object","name":"ResetTool","id":"p1093"},{"type":"object","name":"HelpTool","id":"p1094"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1079","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1080","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1081"},"axis_label":"ECDF","major_label_policy":{"type":"object","name":"AllLabels","id":"p1082"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1074","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1075","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1076"},"axis_label":"mRNA count","major_label_policy":{"type":"object","name":"AllLabels","id":"p1077"}}}],"center":[{"type":"object","name":"Grid","id":"p1078","attributes":{"axis":{"id":"p1074"}}},{"type":"object","name":"Grid","id":"p1083","attributes":{"dimension":1,"axis":{"id":"p1079"}}}],"frame_width":200,"frame_height":150}}]}},{"type":"object","name":"Row","id":"p1243","attributes":{"children":[{"type":"object","name":"Figure","id":"p1122","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1123"},"y_range":{"type":"object","name":"DataRange1d","id":"p1124"},"x_scale":{"type":"object","name":"LinearScale","id":"p1132"},"y_scale":{"type":"object","name":"LinearScale","id":"p1133"},"title":{"type":"object","name":"Title","id":"p1125","attributes":{"text":"Rest"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1161","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1155","attributes":{"selected":{"type":"object","name":"Selection","id":"p1156","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1157"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAAFEAAAAAAAAAUQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAmQAAAAAAAACZAAAAAAAAAKEAAAAAAAAAoQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACpAAAAAAAAALkAAAAAAAAAuQAAAAAAAADBAAAAAAAAAMEAAAAAAAAAxQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAyQAAAAAAAADVAAAAAAAAANUAAAAAAAAA4QAAAAAAAADhAAAAAAAAAOUAAAAAAAAA5QAAAAAAAADpAAAAAAAAAOkAAAAAAAAA6QAAAAAAAADpAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA8QAAAAAAAADxAAAAAAAAAPUAAAAAAAAA9QAAAAAAAAD1AAAAAAAAAPUAAAAAAAAA+QAAAAAAAAD5AAAAAAAAAPkAAAAAAAAA+QAAAAAAAAD9AAAAAAAAAP0AAAAAAAAA/QAAAAAAAAD9AAAAAAAAAP0AAAAAAAAA/QAAAAAAAAEBAAAAAAAAAQEAAAAAAAABAQAAAAAAAAEBAAAAAAACAQEAAAAAAAIBAQAAAAAAAgEBAAAAAAACAQEAAAAAAAABBQAAAAAAAAEFAAAAAAAAAQUAAAAAAAABBQAAAAAAAAEFAAAAAAAAAQUAAAAAAAABBQAAAAAAAAEFAAAAAAACAQUAAAAAAAIBBQAAAAAAAgEFAAAAAAACAQUAAAAAAAABCQAAAAAAAAEJAAAAAAACAQkAAAAAAAIBCQAAAAAAAgEJAAAAAAACAQkAAAAAAAIBDQAAAAAAAgENAAAAAAACAQ0AAAAAAAIBDQAAAAAAAgENAAAAAAACAQ0AAAAAAAABEQAAAAAAAAERAAAAAAAAAREAAAAAAAABEQAAAAAAAAERAAAAAAAAAREAAAAAAAABEQAAAAAAAAERAAAAAAACAREAAAAAAAIBEQAAAAAAAAEVAAAAAAAAARUAAAAAAAABFQAAAAAAAAEVAAAAAAACARUAAAAAAAIBFQAAAAAAAgEVAAAAAAACARUAAAAAAAABGQAAAAAAAAEZAAAAAAAAARkAAAAAAAABGQAAAAAAAAEZAAAAAAAAARkAAAAAAAIBGQAAAAAAAgEZAAAAAAAAAR0AAAAAAAABHQAAAAAAAAEdAAAAAAAAAR0AAAAAAAABHQAAAAAAAAEdAAAAAAAAAR0AAAAAAAABHQAAAAAAAAEhAAAAAAAAASEAAAAAAAABIQAAAAAAAAEhAAAAAAAAASEAAAAAAAABIQAAAAAAAgEhAAAAAAACASEAAAAAAAIBIQAAAAAAAgEhAAAAAAAAASUAAAAAAAABJQAAAAAAAAElAAAAAAAAASUAAAAAAAIBJQAAAAAAAgElAAAAAAACASUAAAAAAAIBJQAAAAAAAgElAAAAAAACASUAAAAAAAIBJQAAAAAAAgElAAAAAAAAASkAAAAAAAABKQAAAAAAAAEpAAAAAAAAASkAAAAAAAIBKQAAAAAAAgEpAAAAAAACASkAAAAAAAIBKQAAAAAAAgEpAAAAAAACASkAAAAAAAIBKQAAAAAAAgEpAAAAAAACASkAAAAAAAIBKQAAAAAAAgEpAAAAAAACASkAAAAAAAIBKQAAAAAAAgEpAAAAAAAAAS0AAAAAAAABLQAAAAAAAAEtAAAAAAAAAS0AAAAAAAABLQAAAAAAAAEtAAAAAAAAAS0AAAAAAAABLQAAAAAAAgEtAAAAAAACAS0AAAAAAAIBLQAAAAAAAgEtAAAAAAAAATEAAAAAAAABMQAAAAAAAAExAAAAAAAAATEAAAAAAAIBMQAAAAAAAgExAAAAAAACATEAAAAAAAIBMQAAAAAAAgExAAAAAAACATEAAAAAAAIBMQAAAAAAAgExAAAAAAAAATUAAAAAAAABNQAAAAAAAAE1AAAAAAAAATUAAAAAAAIBNQAAAAAAAgE1AAAAAAACATUAAAAAAAIBNQAAAAAAAgE1AAAAAAACATUAAAAAAAIBNQAAAAAAAgE1AAAAAAACATUAAAAAAAIBNQAAAAAAAAE5AAAAAAAAATkAAAAAAAABOQAAAAAAAAE5AAAAAAAAATkAAAAAAAABOQAAAAAAAAE5AAAAAAAAATkAAAAAAAIBOQAAAAAAAgE5AAAAAAACATkAAAAAAAIBOQAAAAAAAAE9AAAAAAAAAT0AAAAAAAABPQAAAAAAAAE9AAAAAAAAAT0AAAAAAAABPQAAAAAAAAE9AAAAAAAAAT0AAAAAAAABPQAAAAAAAAE9AAAAAAAAAT0AAAAAAAABPQAAAAAAAAE9AAAAAAAAAT0AAAAAAAIBPQAAAAAAAgE9AAAAAAAAAUEAAAAAAAABQQAAAAAAAAFBAAAAAAAAAUEAAAAAAAABQQAAAAAAAAFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAQFBAAAAAAABAUEAAAAAAAEBQQAAAAAAAgFBAAAAAAACAUEAAAAAAAMBQQAAAAAAAwFBAAAAAAADAUEAAAAAAAMBQQAAAAAAAwFBAAAAAAADAUEAAAAAAAABRQAAAAAAAAFFAAAAAAAAAUUAAAAAAAABRQAAAAAAAAFFAAAAAAAAAUUAAAAAAAABRQAAAAAAAAFFAAAAAAAAAUUAAAAAAAABRQAAAAAAAQFFAAAAAAABAUUAAAAAAAIBRQAAAAAAAgFFAAAAAAACAUUAAAAAAAIBRQAAAAAAAgFFAAAAAAACAUUAAAAAAAIBRQAAAAAAAgFFAAAAAAACAUUAAAAAAAIBRQAAAAAAAAFJAAAAAAAAAUkAAAAAAAABSQAAAAAAAAFJAAAAAAAAAUkAAAAAAAABSQAAAAAAAQFJAAAAAAABAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAACAUkAAAAAAAIBSQAAAAAAAgFJAAAAAAADAUkAAAAAAAMBSQAAAAAAAwFJAAAAAAADAUkAAAAAAAMBSQAAAAAAAwFJAAAAAAADAUkAAAAAAAMBSQAAAAAAAAFNAAAAAAAAAU0AAAAAAAABTQAAAAAAAAFNAAAAAAABAU0AAAAAAAEBTQAAAAAAAQFNAAAAAAABAU0AAAAAAAIBTQAAAAAAAgFNAAAAAAACAU0AAAAAAAIBTQAAAAAAAgFNAAAAAAACAU0AAAAAAAIBTQAAAAAAAgFNAAAAAAADAU0AAAAAAAMBTQAAAAAAAwFNAAAAAAADAU0AAAAAAAMBTQAAAAAAAwFNAAAAAAAAAVEAAAAAAAABUQAAAAAAAAFRAAAAAAAAAVEAAAAAAAABUQAAAAAAAAFRAAAAAAAAAVEAAAAAAAABUQAAAAAAAgFRAAAAAAACAVEAAAAAAAIBUQAAAAAAAgFRAAAAAAACAVEAAAAAAAIBUQAAAAAAAgFRAAAAAAACAVEAAAAAAAIBUQAAAAAAAgFRAAAAAAACAVEAAAAAAAIBUQAAAAAAAgFRAAAAAAACAVEAAAAAAAMBUQAAAAAAAwFRAAAAAAADAVEAAAAAAAMBUQAAAAAAAwFRAAAAAAADAVEAAAAAAAMBUQAAAAAAAwFRAAAAAAAAAVUAAAAAAAABVQAAAAAAAAFVAAAAAAAAAVUAAAAAAAEBVQAAAAAAAQFVAAAAAAABAVUAAAAAAAEBVQAAAAAAAQFVAAAAAAABAVUAAAAAAAIBVQAAAAAAAgFVAAAAAAACAVUAAAAAAAIBVQAAAAAAAwFVAAAAAAADAVUAAAAAAAMBVQAAAAAAAwFVAAAAAAADAVUAAAAAAAMBVQAAAAAAAAFZAAAAAAAAAVkAAAAAAAABWQAAAAAAAAFZAAAAAAABAVkAAAAAAAEBWQAAAAAAAQFZAAAAAAABAVkAAAAAAAIBWQAAAAAAAgFZAAAAAAACAVkAAAAAAAIBWQAAAAAAAwFZAAAAAAADAVkAAAAAAAMBWQAAAAAAAwFZAAAAAAADAVkAAAAAAAMBWQAAAAAAAwFZAAAAAAADAVkAAAAAAAMBWQAAAAAAAwFZAAAAAAADAVkAAAAAAAMBWQAAAAAAAwFZAAAAAAADAVkAAAAAAAABXQAAAAAAAAFdAAAAAAAAAV0AAAAAAAABXQAAAAAAAAFdAAAAAAAAAV0AAAAAAAABXQAAAAAAAAFdAAAAAAAAAV0AAAAAAAABXQAAAAAAAAFdAAAAAAAAAV0AAAAAAAEBXQAAAAAAAQFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAADAV0AAAAAAAMBXQAAAAAAAwFdAAAAAAADAV0AAAAAAAMBXQAAAAAAAwFdAAAAAAAAAWEAAAAAAAABYQAAAAAAAAFhAAAAAAAAAWEAAAAAAAEBYQAAAAAAAQFhAAAAAAACAWEAAAAAAAIBYQAAAAAAAgFhAAAAAAACAWEAAAAAAAIBYQAAAAAAAgFhAAAAAAADAWEAAAAAAAMBYQAAAAAAAAFlAAAAAAAAAWUAAAAAAAEBZQAAAAAAAQFlAAAAAAACAWUAAAAAAAIBZQAAAAAAAwFlAAAAAAADAWUAAAAAAAMBZQAAAAAAAwFlAAAAAAADAWUAAAAAAAMBZQAAAAAAAwFlAAAAAAADAWUAAAAAAAABaQAAAAAAAAFpAAAAAAAAAWkAAAAAAAABaQAAAAAAAAFpAAAAAAAAAWkAAAAAAAEBaQAAAAAAAQFpAAAAAAACAWkAAAAAAAIBaQAAAAAAAgFpAAAAAAACAWkAAAAAAAIBaQAAAAAAAgFpAAAAAAADAWkAAAAAAAMBaQAAAAAAAwFpAAAAAAADAWkAAAAAAAABbQAAAAAAAAFtAAAAAAAAAW0AAAAAAAABbQAAAAAAAAFtAAAAAAAAAW0AAAAAAAEBbQAAAAAAAQFtAAAAAAABAW0AAAAAAAEBbQAAAAAAAgFtAAAAAAACAW0AAAAAAAIBbQAAAAAAAgFtAAAAAAAAAXEAAAAAAAABcQAAAAAAAAFxAAAAAAAAAXEAAAAAAAIBcQAAAAAAAgFxAAAAAAAAAXUAAAAAAAABdQAAAAAAAQF1AAAAAAABAXUAAAAAAAIBdQAAAAAAAgF1AAAAAAABAXkAAAAAAAEBeQAAAAAAAAF9AAAAAAAAAX0AAAAAAAEBfQAAAAAAAQF9AAAAAAABAX0AAAAAAAEBfQAAAAAAAQF9AAAAAAABAX0AAAAAAACBgQAAAAAAAIGBAAAAAAAAgYEAAAAAAACBgQAAAAAAAQGBAAAAAAABAYEAAAAAAAEBgQAAAAAAAQGBAAAAAAADAYEAAAAAAAMBgQAAAAAAAwGBAAAAAAADAYEAAAAAAACBhQAAAAAAAIGFAAAAAAAAgYUAAAAAAACBhQAAAAAAAQGFAAAAAAABAYUAAAAAAAIBhQAAAAAAAgGFAAAAAAADAYUAAAAAAAMBhQAAAAAAAAGJAAAAAAAAAYkAAAAAAAIBiQAAAAAAAgGJAAAAAAAAAY0AAAAAAAABjQAAAAAAAIGNAAAAAAAAgY0AAAAAAAGBjQAAAAAAAYGNAAAAAAADgY0AAAAAAAOBjQAAAAAAAQGRAAAAAAABAZEAAAAAAAEBkQAAAAAAAQGRAAAAAAABAZUAAAAAAAEBlQAAAAAAAwGZAAAAAAADAZkAAAAAAAMBuQAAAAAAAwG5A"},"shape":[558],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"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"},"shape":[558],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1162","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1163"}}},"glyph":{"type":"object","name":"Line","id":"p1158","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1159","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1160","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}},{"type":"object","name":"GlyphRenderer","id":"p1170","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1164","attributes":{"selected":{"type":"object","name":"Selection","id":"p1165","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1166"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1171","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1172"}}},"glyph":{"type":"object","name":"Ray","id":"p1167","attributes":{"x":{"type":"value","value":5.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1168","attributes":{"x":{"type":"value","value":5.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1169","attributes":{"x":{"type":"value","value":5.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}},{"type":"object","name":"GlyphRenderer","id":"p1179","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1173","attributes":{"selected":{"type":"object","name":"Selection","id":"p1174","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1175"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1180","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1181"}}},"glyph":{"type":"object","name":"Ray","id":"p1176","attributes":{"x":{"type":"value","value":246.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1177","attributes":{"x":{"type":"value","value":246.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1178","attributes":{"x":{"type":"value","value":246.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1131","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1144"},{"type":"object","name":"WheelZoomTool","id":"p1145","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1146","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1147","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1152"},{"type":"object","name":"ResetTool","id":"p1153"},{"type":"object","name":"HelpTool","id":"p1154"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1139","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1140","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1141"},"axis_label":"ECDF","major_label_policy":{"type":"object","name":"AllLabels","id":"p1142"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1134","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1135","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1136"},"axis_label":"mRNA count","major_label_policy":{"type":"object","name":"AllLabels","id":"p1137"}}}],"center":[{"type":"object","name":"Grid","id":"p1138","attributes":{"axis":{"id":"p1134"}}},{"type":"object","name":"Grid","id":"p1143","attributes":{"dimension":1,"axis":{"id":"p1139"}}}],"frame_width":200,"frame_height":150}},{"type":"object","name":"Figure","id":"p1182","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1183"},"y_range":{"type":"object","name":"DataRange1d","id":"p1184"},"x_scale":{"type":"object","name":"LinearScale","id":"p1192"},"y_scale":{"type":"object","name":"LinearScale","id":"p1193"},"title":{"type":"object","name":"Title","id":"p1185","attributes":{"text":"Rex1"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1221","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1215","attributes":{"selected":{"type":"object","name":"Selection","id":"p1216","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1217"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAACEAAAAAAAAAIQAAAAAAAABBAAAAAAAAAEEAAAAAAAAAUQAAAAAAAABRAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAYQAAAAAAAABhAAAAAAAAAGEAAAAAAAAAcQAAAAAAAABxAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIEAAAAAAAAAgQAAAAAAAACBAAAAAAAAAIkAAAAAAAAAiQAAAAAAAACJAAAAAAAAAIkAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAACZAAAAAAAAAJkAAAAAAAAAmQAAAAAAAAChAAAAAAAAAKEAAAAAAAAAqQAAAAAAAACpAAAAAAAAALEAAAAAAAAAsQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAAMEAAAAAAAAAwQAAAAAAAADFAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADFAAAAAAAAAMkAAAAAAAAAyQAAAAAAAADNAAAAAAAAAM0AAAAAAAAAzQAAAAAAAADNAAAAAAAAAN0AAAAAAAAA3QAAAAAAAADdAAAAAAAAAN0AAAAAAAAA5QAAAAAAAADlAAAAAAAAAPUAAAAAAAAA9QAAAAAAAAD1AAAAAAAAAPUAAAAAAAAA+QAAAAAAAAD5AAAAAAAAAP0AAAAAAAAA/QAAAAAAAAEBAAAAAAAAAQEAAAAAAAABAQAAAAAAAAEBAAAAAAAAAQ0AAAAAAAABDQAAAAAAAAERAAAAAAAAAREAAAAAAAABEQAAAAAAAAERAAAAAAAAARUAAAAAAAABFQAAAAAAAgEdAAAAAAACAR0AAAAAAAIBHQAAAAAAAgEdAAAAAAAAASEAAAAAAAABIQAAAAAAAgElAAAAAAACASUAAAAAAAABKQAAAAAAAAEpAAAAAAACASkAAAAAAAIBKQAAAAAAAAEtAAAAAAAAAS0AAAAAAAABLQAAAAAAAAEtAAAAAAAAATEAAAAAAAABMQAAAAAAAgE5AAAAAAACATkAAAAAAAIBOQAAAAAAAgE5AAAAAAAAAT0AAAAAAAABPQAAAAAAAgE9AAAAAAACAT0AAAAAAAMBQQAAAAAAAwFBAAAAAAAAAUUAAAAAAAABRQAAAAAAAQFFAAAAAAABAUUAAAAAAAABSQAAAAAAAAFJAAAAAAAAAU0AAAAAAAABTQAAAAAAAAFNAAAAAAAAAU0AAAAAAAIBTQAAAAAAAgFNAAAAAAADAU0AAAAAAAMBTQAAAAAAAAFRAAAAAAAAAVEAAAAAAAEBUQAAAAAAAQFRAAAAAAABAVEAAAAAAAEBUQAAAAAAAgFVAAAAAAACAVUAAAAAAAEBWQAAAAAAAQFZAAAAAAABAVkAAAAAAAEBWQAAAAAAAgFZAAAAAAACAVkAAAAAAAIBWQAAAAAAAgFZAAAAAAABAV0AAAAAAAEBXQAAAAAAAgFdAAAAAAACAV0AAAAAAAIBXQAAAAAAAgFdAAAAAAADAV0AAAAAAAMBXQAAAAAAAAFhAAAAAAAAAWEAAAAAAAABYQAAAAAAAAFhAAAAAAABAWEAAAAAAAEBYQAAAAAAAQFhAAAAAAABAWEAAAAAAAIBYQAAAAAAAgFhAAAAAAACAWEAAAAAAAIBYQAAAAAAAgFhAAAAAAACAWEAAAAAAAIBYQAAAAAAAgFhAAAAAAACAWEAAAAAAAIBYQAAAAAAAwFhAAAAAAADAWEAAAAAAAABZQAAAAAAAAFlAAAAAAAAAWUAAAAAAAABZQAAAAAAAgFlAAAAAAACAWUAAAAAAAIBZQAAAAAAAgFlAAAAAAADAWUAAAAAAAMBZQAAAAAAAAFpAAAAAAAAAWkAAAAAAAEBaQAAAAAAAQFpAAAAAAAAAW0AAAAAAAABbQAAAAAAAAFtAAAAAAAAAW0AAAAAAAIBbQAAAAAAAgFtAAAAAAADAW0AAAAAAAMBbQAAAAAAAwFtAAAAAAADAW0AAAAAAAEBcQAAAAAAAQFxAAAAAAABAXEAAAAAAAEBcQAAAAAAAAF1AAAAAAAAAXUAAAAAAAABdQAAAAAAAAF1AAAAAAAAAXUAAAAAAAABdQAAAAAAAAF1AAAAAAAAAXUAAAAAAAIBdQAAAAAAAgF1AAAAAAACAXUAAAAAAAIBdQAAAAAAAgF1AAAAAAACAXUAAAAAAAABeQAAAAAAAAF5AAAAAAAAAXkAAAAAAAABeQAAAAAAAQF5AAAAAAABAXkAAAAAAAIBeQAAAAAAAgF5AAAAAAACAXkAAAAAAAIBeQAAAAAAAgF5AAAAAAACAXkAAAAAAAABfQAAAAAAAAF9AAAAAAAAAX0AAAAAAAABfQAAAAAAAAF9AAAAAAAAAX0AAAAAAAEBfQAAAAAAAQF9AAAAAAABAX0AAAAAAAEBfQAAAAAAAgF9AAAAAAACAX0AAAAAAAIBfQAAAAAAAgF9AAAAAAAAAYEAAAAAAAABgQAAAAAAAIGBAAAAAAAAgYEAAAAAAACBgQAAAAAAAIGBAAAAAAABAYEAAAAAAAEBgQAAAAAAAYGBAAAAAAABgYEAAAAAAAGBgQAAAAAAAYGBAAAAAAABgYEAAAAAAAGBgQAAAAAAAgGBAAAAAAACAYEAAAAAAAKBgQAAAAAAAoGBAAAAAAADAYEAAAAAAAMBgQAAAAAAA4GBAAAAAAADgYEAAAAAAAABhQAAAAAAAAGFAAAAAAAAgYUAAAAAAACBhQAAAAAAAIGFAAAAAAAAgYUAAAAAAAIBhQAAAAAAAgGFAAAAAAACAYUAAAAAAAIBhQAAAAAAAgGFAAAAAAACAYUAAAAAAAMBhQAAAAAAAwGFAAAAAAADAYUAAAAAAAMBhQAAAAAAAwGFAAAAAAADAYUAAAAAAAOBhQAAAAAAA4GFAAAAAAAAAYkAAAAAAAABiQAAAAAAAAGJAAAAAAAAAYkAAAAAAAABiQAAAAAAAAGJAAAAAAAAgYkAAAAAAACBiQAAAAAAAIGJAAAAAAAAgYkAAAAAAAGBiQAAAAAAAYGJAAAAAAACAYkAAAAAAAIBiQAAAAAAAwGJAAAAAAADAYkAAAAAAAOBiQAAAAAAA4GJAAAAAAADgYkAAAAAAAOBiQAAAAAAA4GJAAAAAAADgYkAAAAAAAABjQAAAAAAAAGNAAAAAAAAgY0AAAAAAACBjQAAAAAAAIGNAAAAAAAAgY0AAAAAAAEBjQAAAAAAAQGNAAAAAAABAY0AAAAAAAEBjQAAAAAAAYGNAAAAAAABgY0AAAAAAAGBjQAAAAAAAYGNAAAAAAABgY0AAAAAAAGBjQAAAAAAAgGNAAAAAAACAY0AAAAAAAKBjQAAAAAAAoGNAAAAAAACgY0AAAAAAAKBjQAAAAAAAwGNAAAAAAADAY0AAAAAAAOBjQAAAAAAA4GNAAAAAAAAAZEAAAAAAAABkQAAAAAAAAGRAAAAAAAAAZEAAAAAAAABkQAAAAAAAAGRAAAAAAABgZEAAAAAAAGBkQAAAAAAAYGRAAAAAAABgZEAAAAAAAGBkQAAAAAAAYGRAAAAAAADAZEAAAAAAAMBkQAAAAAAAwGRAAAAAAADAZEAAAAAAAMBkQAAAAAAAwGRAAAAAAADAZEAAAAAAAMBkQAAAAAAAwGRAAAAAAADAZEAAAAAAAOBkQAAAAAAA4GRAAAAAAAAgZUAAAAAAACBlQAAAAAAAQGVAAAAAAABAZUAAAAAAAEBlQAAAAAAAQGVAAAAAAABgZUAAAAAAAGBlQAAAAAAAgGVAAAAAAACAZUAAAAAAAIBlQAAAAAAAgGVAAAAAAACAZUAAAAAAAIBlQAAAAAAAoGVAAAAAAACgZUAAAAAAAMBlQAAAAAAAwGVAAAAAAADAZUAAAAAAAMBlQAAAAAAAAGZAAAAAAAAAZkAAAAAAACBmQAAAAAAAIGZAAAAAAABAZkAAAAAAAEBmQAAAAAAAYGZAAAAAAABgZkAAAAAAAIBmQAAAAAAAgGZAAAAAAADAZkAAAAAAAMBmQAAAAAAAQGdAAAAAAABAZ0AAAAAAAEBnQAAAAAAAQGdAAAAAAABAZ0AAAAAAAEBnQAAAAAAAwGdAAAAAAADAZ0AAAAAAAOBnQAAAAAAA4GdAAAAAAADgZ0AAAAAAAOBnQAAAAAAA4GdAAAAAAADgZ0AAAAAAAABoQAAAAAAAAGhAAAAAAAAAaEAAAAAAAABoQAAAAAAAIGhAAAAAAAAgaEAAAAAAAEBoQAAAAAAAQGhAAAAAAABAaEAAAAAAAEBoQAAAAAAAYGhAAAAAAABgaEAAAAAAAGBoQAAAAAAAYGhAAAAAAADAaEAAAAAAAMBoQAAAAAAAIGlAAAAAAAAgaUAAAAAAACBpQAAAAAAAIGlAAAAAAABAaUAAAAAAAEBpQAAAAAAAYGlAAAAAAABgaUAAAAAAAIBpQAAAAAAAgGlAAAAAAACAaUAAAAAAAIBpQAAAAAAAgGlAAAAAAACAaUAAAAAAAKBpQAAAAAAAoGlAAAAAAACgaUAAAAAAAKBpQAAAAAAAwGlAAAAAAADAaUAAAAAAACBqQAAAAAAAIGpAAAAAAABAakAAAAAAAEBqQAAAAAAAwGpAAAAAAADAakAAAAAAAOBqQAAAAAAA4GpAAAAAAAAga0AAAAAAACBrQAAAAAAAIGtAAAAAAAAga0AAAAAAAEBrQAAAAAAAQGtAAAAAAABAa0AAAAAAAEBrQAAAAAAAYGtAAAAAAABga0AAAAAAAKBrQAAAAAAAoGtAAAAAAABAbEAAAAAAAEBsQAAAAAAAYGxAAAAAAABgbEAAAAAAAGBsQAAAAAAAYGxAAAAAAAAgbUAAAAAAACBtQAAAAAAAYG1AAAAAAABgbUAAAAAAAMBtQAAAAAAAwG1AAAAAAADAbUAAAAAAAMBtQAAAAAAA4G1AAAAAAADgbUAAAAAAAOBtQAAAAAAA4G1AAAAAAAAgbkAAAAAAACBuQAAAAAAAQG5AAAAAAABAbkAAAAAAAIBuQAAAAAAAgG5AAAAAAACgbkAAAAAAAKBuQAAAAAAAoG5AAAAAAACgbkAAAAAAAOBuQAAAAAAA4G5AAAAAAABAb0AAAAAAAEBvQAAAAAAAgG9AAAAAAACAb0AAAAAAAMBvQAAAAAAAwG9AAAAAAADgb0AAAAAAAOBvQAAAAAAAIHBAAAAAAAAgcEAAAAAAAEBwQAAAAAAAQHBAAAAAAABQcEAAAAAAAFBwQAAAAAAAYHBAAAAAAABgcEAAAAAAAIBwQAAAAAAAgHBAAAAAAACQcEAAAAAAAJBwQAAAAAAAkHBAAAAAAACQcEAAAAAAAKBwQAAAAAAAoHBAAAAAAADwcEAAAAAAAPBwQAAAAAAAQHFAAAAAAABAcUAAAAAAAIBxQAAAAAAAgHFAAAAAAACQcUAAAAAAAJBxQAAAAAAAwHFAAAAAAADAcUAAAAAAAAByQAAAAAAAAHJAAAAAAAAQckAAAAAAABByQAAAAAAAIHJAAAAAAAAgckAAAAAAADByQAAAAAAAMHJAAAAAAACQckAAAAAAAJByQAAAAAAA4HJAAAAAAADgckAAAAAAABB0QAAAAAAAEHRAAAAAAABgdEAAAAAAAGB0QAAAAAAAsHRAAAAAAACwdEAAAAAAALB0QAAAAAAAsHRAAAAAAAAQdkAAAAAAABB2QAAAAAAAoHZAAAAAAACgdkAAAAAAAEB6QAAAAAAAQHpA"},"shape":[558],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"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"},"shape":[558],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1222","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1223"}}},"glyph":{"type":"object","name":"Line","id":"p1218","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1219","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1220","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}},{"type":"object","name":"GlyphRenderer","id":"p1230","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1224","attributes":{"selected":{"type":"object","name":"Selection","id":"p1225","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1226"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1231","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1232"}}},"glyph":{"type":"object","name":"Ray","id":"p1227","attributes":{"x":{"type":"value","value":3.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1228","attributes":{"x":{"type":"value","value":3.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1229","attributes":{"x":{"type":"value","value":3.0},"y":{"type":"value","value":0},"angle":{"type":"value","value":3.141592653589793},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}},{"type":"object","name":"GlyphRenderer","id":"p1239","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1233","attributes":{"selected":{"type":"object","name":"Selection","id":"p1234","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1235"},"data":{"type":"map"}}},"view":{"type":"object","name":"CDSView","id":"p1240","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1241"}}},"glyph":{"type":"object","name":"Ray","id":"p1236","attributes":{"x":{"type":"value","value":420.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_width":{"type":"value","value":2}}},"nonselection_glyph":{"type":"object","name":"Ray","id":"p1237","attributes":{"x":{"type":"value","value":420.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.1},"line_width":{"type":"value","value":2}}},"muted_glyph":{"type":"object","name":"Ray","id":"p1238","attributes":{"x":{"type":"value","value":420.0},"y":{"type":"value","value":1},"line_color":{"type":"value","value":"#1f77b3"},"line_alpha":{"type":"value","value":0.2},"line_width":{"type":"value","value":2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1191","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1204"},{"type":"object","name":"WheelZoomTool","id":"p1205","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1206","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1207","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1212"},{"type":"object","name":"ResetTool","id":"p1213"},{"type":"object","name":"HelpTool","id":"p1214"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1199","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1200","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1201"},"axis_label":"ECDF","major_label_policy":{"type":"object","name":"AllLabels","id":"p1202"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1194","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1195","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1196"},"axis_label":"mRNA count","major_label_policy":{"type":"object","name":"AllLabels","id":"p1197"}}}],"center":[{"type":"object","name":"Grid","id":"p1198","attributes":{"axis":{"id":"p1194"}}},{"type":"object","name":"Grid","id":"p1203","attributes":{"dimension":1,"axis":{"id":"p1199"}}}],"frame_width":200,"frame_height":150}}]}}]}}],"defs":[{"type":"model","name":"ReactiveHTML1"},{"type":"model","name":"FlexBox1","properties":[{"name":"align_content","kind":"Any","default":"flex-start"},{"name":"align_items","kind":"Any","default":"flex-start"},{"name":"flex_direction","kind":"Any","default":"row"},{"name":"flex_wrap","kind":"Any","default":"wrap"},{"name":"gap","kind":"Any","default":""},{"name":"justify_content","kind":"Any","default":"flex-start"}]},{"type":"model","name":"FloatPanel1","properties":[{"name":"config","kind":"Any","default":{"type":"map"}},{"name":"contained","kind":"Any","default":true},{"name":"position","kind":"Any","default":"right-top"},{"name":"offsetx","kind":"Any","default":null},{"name":"offsety","kind":"Any","default":null},{"name":"theme","kind":"Any","default":"primary"},{"name":"status","kind":"Any","default":"normalized"}]},{"type":"model","name":"GridStack1","properties":[{"name":"mode","kind":"Any","default":"warn"},{"name":"ncols","kind":"Any","default":null},{"name":"nrows","kind":"Any","default":null},{"name":"allow_resize","kind":"Any","default":true},{"name":"allow_drag","kind":"Any","default":true},{"name":"state","kind":"Any","default":[]}]},{"type":"model","name":"drag1","properties":[{"name":"slider_width","kind":"Any","default":5},{"name":"slider_color","kind":"Any","default":"black"},{"name":"value","kind":"Any","default":50}]},{"type":"model","name":"click1","properties":[{"name":"terminal_output","kind":"Any","default":""},{"name":"debug_name","kind":"Any","default":""},{"name":"clears","kind":"Any","default":0}]},{"type":"model","name":"FastWrapper1","properties":[{"name":"object","kind":"Any","default":null},{"name":"style","kind":"Any","default":null}]},{"type":"model","name":"NotificationAreaBase1","properties":[{"name":"js_events","kind":"Any","default":{"type":"map"}},{"name":"position","kind":"Any","default":"bottom-right"},{"name":"_clear","kind":"Any","default":0}]},{"type":"model","name":"NotificationArea1","properties":[{"name":"js_events","kind":"Any","default":{"type":"map"}},{"name":"notifications","kind":"Any","default":[]},{"name":"position","kind":"Any","default":"bottom-right"},{"name":"_clear","kind":"Any","default":0},{"name":"types","kind":"Any","default":[{"type":"map","entries":[["type","warning"],["background","#ffc107"],["icon",{"type":"map","entries":[["className","fas fa-exclamation-triangle"],["tagName","i"],["color","white"]]}]]},{"type":"map","entries":[["type","info"],["background","#007bff"],["icon",{"type":"map","entries":[["className","fas fa-info-circle"],["tagName","i"],["color","white"]]}]]}]}]},{"type":"model","name":"Notification","properties":[{"name":"background","kind":"Any","default":null},{"name":"duration","kind":"Any","default":3000},{"name":"icon","kind":"Any","default":null},{"name":"message","kind":"Any","default":""},{"name":"notification_type","kind":"Any","default":null},{"name":"_destroyed","kind":"Any","default":false}]},{"type":"model","name":"TemplateActions1","properties":[{"name":"open_modal","kind":"Any","default":0},{"name":"close_modal","kind":"Any","default":0}]},{"type":"model","name":"BootstrapTemplateActions1","properties":[{"name":"open_modal","kind":"Any","default":0},{"name":"close_modal","kind":"Any","default":0}]},{"type":"model","name":"TemplateEditor1","properties":[{"name":"layout","kind":"Any","default":[]}]},{"type":"model","name":"MaterialTemplateActions1","properties":[{"name":"open_modal","kind":"Any","default":0},{"name":"close_modal","kind":"Any","default":0}]},{"type":"model","name":"copy_to_clipboard1","properties":[{"name":"fill","kind":"Any","default":"none"},{"name":"value","kind":"Any","default":null}]}]}};
+  const render_items = [{"docid":"220630e6-390f-4c82-bd7b-8e6f72f5c87b","roots":{"p1244":"a5f15bea-1180-444e-a1dc-54531cac8a2e"},"root_ids":["p1244"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+<p>Rex1 clearly is bimodal, and Nanog appears to have a second inflection point where the ECDF reaches a value of about 0.4, which is what we see in the MLE estimates in the mixture model. Rest and Prdm14 both appear to be unimodal, agreeing with what we saw with the AIC analysis.</p>
+<p>Note that this underscores something we’ve been stressing all term. You should do good exploratory data analysis first, and the EDA often tells much of the story!</p>
+<section id="Caveat">
+<h3>Caveat<a class="headerlink" href="#Caveat" title="Link to this heading"></a></h3>
+<p>Remember, though, that we did <em>not</em> take into account that the measurements of the four genes were done in the same cells. We modeled that when we presented the mixture models at the beginning of this lesson. The analysis of a more complicated model with MLE proved to be out of reach due to computational difficulty. So, we should not make strong conclusions about what the relative quality of the mixture of single Negative Binomial models mean in this context. We will address these kinds of
+modeling issues in the sequel of this course.</p>
+</section>
+</section>
+<section id="AIC-for-the-spindle-model">
+<h2>AIC for the spindle model<a class="headerlink" href="#AIC-for-the-spindle-model" title="Link to this heading"></a></h2>
+<p>We can do a similar analysis for the two competing models for mitotic spindle size. We need our functions from earlier.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">theor_spindle_length</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute spindle length using mathematical model&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">d</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cbrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">d</span> <span class="o">/</span> <span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">log_likelihood</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log likelihood of spindle length model.&quot;&quot;&quot;</span>
+    <span class="n">gamma</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">params</span>
+
+    <span class="k">if</span> <span class="n">gamma</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">gamma</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">phi</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">theor_spindle_length</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">ell</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">spindle_mle</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ell</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute MLE for parameters in spindle length model.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="n">fun</span><span class="o">=</span><span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ell</span><span class="p">:</span> <span class="o">-</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">ell</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ell</span><span class="p">),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Powell&#39;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Convergence failed with message&#39;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can now perform MLE to get the parameters for each model and store the results.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;good_invitro_droplet_data.csv&quot;</span><span class="p">),</span> <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+
+<span class="n">mle_1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Spindle Length (um)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;phi_1&#39;</span><span class="p">),</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Spindle Length (um)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;sigma_1&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">mle_2</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">spindle_mle</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Droplet Diameter (um)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Spindle Length (um)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+    <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;row&#39;</span><span class="p">,</span>
+    <span class="n">schema</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;phi_2&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma_2&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we can compute the log likelihood evaluated at the MLE.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">log_like_1</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Spindle Length (um)&quot;</span><span class="p">],</span>
+    <span class="n">mle_1</span><span class="p">[</span><span class="s2">&quot;phi_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+    <span class="n">mle_1</span><span class="p">[</span><span class="s2">&quot;sigma_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">log_like_2</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="p">(</span>
+    <span class="n">mle_2</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Droplet Diameter (um)&quot;</span><span class="p">],</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Spindle Length (um)&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Take a look</span>
+<span class="n">log_like_1</span><span class="p">,</span> <span class="n">log_like_2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(-1999.5179249272933, -1837.1589821363168)
+</pre></div></div>
+</div>
+<p>The log likeihood for model 2, with spindle size depending on droplet diameter, is much greater than for model 1. And now we can compute the AIC,noting that there are two parameters for model 1 and three for model 2.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">AIC_1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">log_like_1</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">AIC_2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">log_like_2</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Look at the AICs</span>
+<span class="n">AIC_1</span><span class="p">,</span> <span class="n">AIC_2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(4003.0358498545866, 3680.3179642726336)
+</pre></div></div>
+</div>
+<p>There is a massive disparity in the AICs, so we know that model 2 is strongly preferred. Nonetheless, we can compute the Akaike weight for model 1 to compare.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">AIC_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">AIC_1</span><span class="p">,</span> <span class="n">AIC_2</span><span class="p">)</span>
+<span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">AIC_1</span> <span class="o">-</span> <span class="n">AIC_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">denominator</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">AIC_2</span> <span class="o">-</span> <span class="n">AIC_max</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">w_single</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+
+<span class="c1"># Check the Akaike weight</span>
+<span class="n">w_single</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+8.369539052514859e-71
+</pre></div></div>
+</div>
+<p>Model 1 is completely out of the question, with a tiny Akaike weight!</p>
+</section>
+<section id="Computing-environment">
+<h2>Computing environment<a class="headerlink" href="#Computing-environment" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="o">%</span><span class="k">watermark</span> -v -p numpy,polars,scipy,bokeh,iqplot,bebi103,jupyterlab
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Python implementation: CPython
+Python version       : 3.12.4
+IPython version      : 8.25.0
+
+numpy     : 1.26.4
+polars    : 1.2.1
+scipy     : 1.13.1
+bokeh     : 3.4.1
+iqplot    : 0.3.6
+bebi103   : 0.1.20
+jupyterlab: 4.0.13
+
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="predictive_regression.html" class="btn btn-neutral float-left" title="Graphical model assessment: Predictive regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../exercises/01/index.html" class="btn btn-neutral float-right" title="Exercise 1. Pandas and split-apply-combine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x1368d46b0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

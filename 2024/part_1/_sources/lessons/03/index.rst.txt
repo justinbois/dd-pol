@@ -1,0 +1,11 @@
+*************************************************************
+Lesson 3: Probability distributions and the plug-in principle
+*************************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   definition_and_interpretation_of_probability
+   definition_of_distributions
+   point_estimates
+   bias

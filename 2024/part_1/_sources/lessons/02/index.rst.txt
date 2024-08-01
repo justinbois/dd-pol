@@ -1,0 +1,10 @@
+****************************************
+Lesson 2: Exploratory plotting
+****************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   Plotting with Bokeh <plotting.ipynb>
+   High level plotting with iqplot <iqplot.ipynb>
+   Styling Bokeh plots (omitted in live session) <styling_bokeh.ipynb>

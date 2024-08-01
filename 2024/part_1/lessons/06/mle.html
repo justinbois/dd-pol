@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theoretical maximum likelihood estimation &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Numerical maximum likelihood estimation" href="numerical_mle.html" />
+    <link rel="prev" title="Lesson 6: Maximum likelihood estimation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 6: Maximum likelihood estimation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Theoretical maximum likelihood estimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-likelihood-function">The likelihood function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-likelihood-estimate">Maximum likelihood estimate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#confidence-intervals-for-mles">Confidence intervals for MLEs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-an-mle">Computing an MLE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mle-for-rate-of-arrival-of-a-poisson-process">MLE for rate of arrival of a Poisson process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mle-for-the-mean-and-variance-of-a-normal-distribution">MLE for the mean and variance of a Normal distribution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="numerical_mle.html">Numerical MLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mle_confidence_intervals.html">MLE confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parallel_conf_ints.html">Parallelization of MLE bootstrap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 6: Maximum likelihood estimation</a></li>
+      <li class="breadcrumb-item active">Theoretical maximum likelihood estimation</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/06/mle.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theoretical-maximum-likelihood-estimation">
+<h1>Theoretical maximum likelihood estimation<a class="headerlink" href="#theoretical-maximum-likelihood-estimation" title="Link to this heading"></a></h1>
+<p>Once we have written down our statistical model, we would like to get estimates for the parameters of the model. By far the most often used method for parameter estimation is <strong>maximum likelihood estimation</strong>. (The second-most widely used is probably the <a class="reference external" href="https://en.wikipedia.org/wiki/Method_of_moments_(statistics)">method of moments</a>, which we will not discuss.) To understand how this works, we first need to define what a <strong>likelihood</strong> is. <em>Note: Here we are specifically talking about the likelihood function in a frequentist setting, not the likelihood in a Bayesian context.</em></p>
+<section id="the-likelihood-function">
+<h2>The likelihood function<a class="headerlink" href="#the-likelihood-function" title="Link to this heading"></a></h2>
+<p>Say we have some data <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> that we are modeling parametrically. The generative distribution is parametrized by a set of parameters <span class="math notranslate nohighlight">\(\theta\)</span>. Thus, the PDF for the generative distribution of all of the data is <span class="math notranslate nohighlight">\(f(\mathbf{y};\theta)\)</span>.</p>
+<p>We define the <strong>likelihood function</strong> <span class="math notranslate nohighlight">\(L(\theta;\mathbf{y})\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+L(\theta;\mathbf{y}) = f(\mathbf{y}; \theta).
+\end{align}\]</div>
+<p>This may look weird, but it is easier understood as the PDF of the generative distribution, except where it is a function of the parameters <span class="math notranslate nohighlight">\(\theta\)</span> and not of the data <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. The likelihood is therefore not a probability nor is it a probability density.</p>
+<p>We can define <span class="math notranslate nohighlight">\(\ell(\theta;\mathbf{y}) = \ln L(\theta;\mathbf{y})\)</span> as the <strong>log-likelihood function</strong>, which we will find is often useful to work with.</p>
+</section>
+<section id="maximum-likelihood-estimate">
+<h2>Maximum likelihood estimate<a class="headerlink" href="#maximum-likelihood-estimate" title="Link to this heading"></a></h2>
+<p>The set of parameter values <span class="math notranslate nohighlight">\(\theta^*\)</span> for which the likelihood function (and therefore also the log-likelihood function) is maximal is called the <strong>maximum likelihood estimate</strong>, or <strong>MLE</strong>. Generically, we can denote the parameter values that maximize the likelihood function as <span class="math notranslate nohighlight">\(\theta^*\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\theta^* = \mathrm{arg\;max}_\theta\; L(\theta;\mathbf{y}) = \mathrm{arg\;max}_\theta \;\ell(\theta;\mathbf{y}).
+\end{align}\]</div>
+<p>The MLE is <strong>not</strong> the true value of the parameter. Instead, it is an <em>estimate</em> of the true parameter acquired by the procedure of finding the maximizer of the likelihood function.</p>
+<p>The MLE has some nice properties, which is probably why it is so widely used to estimate parameters. We will not prove these properties here, but will instead state them.</p>
+<ol class="arabic simple">
+<li><p>As the number of measurements gets very large, the MLE converges to the true parameter value. This is called <strong>consistency</strong>.</p></li>
+<li><p>Also as the number of measurements gets large, the MLE has the smallest variance among all well-behaved estimators for parameters. This is called <strong>asymptotic optimality</strong>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\theta^*\)</span> is an MLE for the parameters <span class="math notranslate nohighlight">\(\theta\)</span>, then <span class="math notranslate nohighlight">\(g(\theta^*)\)</span> is the MLE for the parameters <span class="math notranslate nohighlight">\(g(\theta)\)</span>, where <span class="math notranslate nohighlight">\(g\)</span> is an arbitrary function. This is called <strong>equivariance</strong>.</p></li>
+</ol>
+</section>
+<section id="confidence-intervals-for-mles">
+<h2>Confidence intervals for MLEs<a class="headerlink" href="#confidence-intervals-for-mles" title="Link to this heading"></a></h2>
+<p>The MLE is not the true value of the parameter, but it is rather an estimate of it computed from data. Therefore, the MLE <em>is</em> a random variable. It can vary meaningfully from experiment to experiment, so we can compute confidence intervals for the MLE using bootstrapping. In essence, we can resample the data set to get a bootstrap sample. We use this bootstrap sample in our procedure for computing the MLE. The MLE computed from the bootstrap sample is a replicate. We gather many replicates and can then compute a bootstrap confidence interval as we have done in the nonparametric setting.</p>
+<p>We will explore the practicalities of computing confidence intervals for MLEs in detail in forthcoming lessons.</p>
+</section>
+<section id="computing-an-mle">
+<h2>Computing an MLE<a class="headerlink" href="#computing-an-mle" title="Link to this heading"></a></h2>
+<p>Computing an MLE involves writing down the likelihood function (or, more often the log-likelihood function) and finding its maximizer. For all but the simplest of models, this is done numerically, and we will learn about how to do that in coming lessons.</p>
+<p>However, it is often quite useful to make analytical progress in characterizing or computing MLEs. The numerical calculation can be difficult for many reasons, including high-dimensionality of the likelihood function, or multiple local maxima. In some cases, we can directly compute the MLE analytically, which can save numerical headaches. We will compute the MLE for two of the models we considered earlier in this lecture.</p>
+<section id="mle-for-rate-of-arrival-of-a-poisson-process">
+<h3>MLE for rate of arrival of a Poisson process<a class="headerlink" href="#mle-for-rate-of-arrival-of-a-poisson-process" title="Link to this heading"></a></h3>
+<p>We modeled the time to catastrophe as Exponentially distributed when we considered it to be the result of the arrival of a single Poisson process. So, imagine we have a data set containing <span class="math notranslate nohighlight">\(n\)</span> times to catastrophe. Assuming that these times are i.i.d. and Exponentially distributed, the joint PDF is</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f(\mathbf{t};\beta) = \prod_{i=1}^n \beta\,\mathrm{e}^{-\beta t_i} = \beta^n\,\exp\left[-\beta\sum_{i=1}^n t_i\right].
+\end{align}\]</div>
+<p>The log-likelihood function is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\ell(\beta; \mathbf{t}) =  n\ln \beta - \beta\sum_{i=1}^n t_i =  n\ln \beta - n \, \beta\,\bar{t},
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bar{t}\)</span> is the arithmetic mean of the measured catastrophe times. The log-likelihood is maximal when its first derivative vanishes, or</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\frac{\mathrm{d}}{\mathrm{d}\beta}\,\ell(\beta; \mathbf{t}) = \frac{n}{\beta^*} - n \bar{t} = 0.
+\end{align}\]</div>
+<p>This tells us that the MLE is <span class="math notranslate nohighlight">\(\beta^* = 1/\bar{t}\)</span>.</p>
+<p>Recall that the mean of an Exponential distribution is <span class="math notranslate nohighlight">\(1/\beta\)</span>, and also that the plug-in estimate for the mean is <span class="math notranslate nohighlight">\(\bar{t}\)</span>. This means that for the Exponential distribution, the plug-in estimate for the mean also gives the maximum likelihood estimate for <span class="math notranslate nohighlight">\(\beta\)</span> via the equivariance property of the MLE.  (That is, the MLE of <span class="math notranslate nohighlight">\(1/\beta\)</span> is <span class="math notranslate nohighlight">\(1/\beta^*\)</span>.)</p>
+<p>Note that this may not be a good model. We assume the model is true, and <em>under that assumption</em>, we find the parameters that maximize the likelihood function. Within the context of the model, we get the (possibly scientifically irrelevant if the model is wrong) maximum likelihood estimate.</p>
+</section>
+<section id="mle-for-the-mean-and-variance-of-a-normal-distribution">
+<h3>MLE for the mean and variance of a Normal distribution<a class="headerlink" href="#mle-for-the-mean-and-variance-of-a-normal-distribution" title="Link to this heading"></a></h3>
+<p>As a second example, consider the length of <em>C. elegans</em> eggs, modeled as Normally distributed and i.i.d.. In this case, the generative joint PDF, as we have previously written down, is</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+   f(\mathbf{y}; \mu, \sigma) &amp;= \left(\frac{1}{2\pi \sigma^2}\right)^{n/2}\,\exp\left[-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-\mu)^2\right].
+\end{align}\]</div>
+<p>After some algebraic grunge, which I will skip here, it can be shown that</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\sum_{i=1}^n(y_i-\mu)^2 = n(\bar{y} - \mu)^2 + n\hat{\sigma}^2,
+\end{align}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (y_i - \bar{y})^2
+\end{align}\]</div>
+<p>is the plug-in estimate for the variance. Thus, the joint PDF is</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+   f(\mathbf{y}; \mu, \sigma) &amp;= \left(\frac{1}{2\pi \sigma^2}\right)^{n/2}\,\exp\left[-\frac{n(\bar{y} - \mu)^2 + n\hat{\sigma}^2}{2\sigma^2}\right].
+\end{align}\]</div>
+<p>The log-likelihood function is then</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+   \ell(\mu, \sigma; \mathbf{y}) &amp;= \text{constant} -n\ln \sigma - \frac{n(\bar{y} - \mu)^2 + n\hat{\sigma}^2}{2\sigma^2}.
+\end{align}\]</div>
+<p>The log-likelihood is maximal when</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+   \frac{\partial\ell}{\partial \mu} &amp;= 0 ,\\
+   \frac{\partial\ell}{\partial \sigma} &amp;= 0.
+\end{align}\end{split}\]</div>
+<p>Evaluating the first expression,</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+   \frac{\partial\ell}{\partial \mu} = -\frac{n}{(\sigma^*)^2}(\bar{y}-\mu^*) = 0.
+\end{align}\]</div>
+<p>The only solution is <span class="math notranslate nohighlight">\(\mu^* = \bar{y}\)</span>. So, as was the case with the Exponential distribution, the plug-in estimate for the mean gives the MLE for the mean of the Normal distribution.</p>
+<p>Next, to compute the MLE for <span class="math notranslate nohighlight">\(\sigma\)</span>, we consider the second equation.</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+   \frac{\partial\ell}{\partial \sigma} &amp;= - \frac{n}{\sigma^*} + \frac{n(\bar{y} - \mu^*)^2 + n\hat{\sigma}^2}{(\sigma^*)^3} = 0.
+\end{align}\]</div>
+<p>We already found, though, that <span class="math notranslate nohighlight">\(\mu^* = \bar{y}\)</span>, so we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+- \frac{n}{\sigma^*} + \frac{n\hat{\sigma}^2}{(\sigma^*)^3} = 0.
+\end{align}\]</div>
+<p>Solving, we get that <span class="math notranslate nohighlight">\((\sigma^*)^2 = \hat{\sigma}^2\)</span>, which says that the MLE of the variance is also given by its plug-in estimate. This result reveals that the MLE can have bias, as did the plug-in estimate.</p>
+<p>In all three parameters we estimated (the rate parameter of the Exponential, and the location and scale parameters of the Normal), the MLE was given by the plug-in estimate for the statistical functional whose value is given by the parameter. <em>Note, though, that this is not generally the case</em>.</p>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>In the next lessons, you will learn how to numerically compute MLEs for more complicated models, as well as bootstrap confidence intervals for the MLE. We will then proceed to learn about checking validity of models.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Lesson 6: Maximum likelihood estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="numerical_mle.html" class="btn btn-neutral float-right" title="Numerical maximum likelihood estimation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x136725c10> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

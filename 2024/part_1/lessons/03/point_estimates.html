@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plug-in estimates &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Bias" href="bias.html" />
+    <link rel="prev" title="Probability distributions" href="definition_of_distributions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 3: Probability distributions and the plug-in principle</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definition_and_interpretation_of_probability.html">Probability: definitions and interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="definition_of_distributions.html">Probability distributions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plug-in estimates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-plug-in-principle">The plug-in principle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bias.html">Bias</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+      <li class="breadcrumb-item active">Plug-in estimates</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/03/point_estimates.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plug-in-estimates">
+<h1>Plug-in estimates<a class="headerlink" href="#plug-in-estimates" title="Link to this heading"></a></h1>
+<p>When we make measurements, we are observing samples out of an underlying, typically unknown, <strong>generative distribution</strong>. Take as an example measurements of the count of RNA transcripts of a given gene in individual cells. We are likely to observe counts where the probability mass function of the generative distribution are is high and unlikely to observe counts where the PMF of the generative distribution is low.</p>
+<p>If we have a full understanding of the generative distribution, we have learned how the data were generated, and thereby have an understanding of the physical, chemical, or biological phenomena we are studying. <strong>Statistical inference</strong> involves deducing properties of these (unknown) generative distributions.</p>
+<p>In this lecture, we will start with <strong>nonparametric inference</strong>, which is statistical inference where no model is assumed; conclusions are drawn from the data alone. The approach we will take is heavily inspired by Allen Downey’s
+wonderful book, <a class="reference external" href="http://greenteapress.com/thinkstats2/index.html">Think Stats</a> and from
+Larry Wasserman’s book <a class="reference external" href="https://link.springer.com/book/10.1007/978-0-387-21736-9">All of Statistics</a>.</p>
+<section id="the-plug-in-principle">
+<h2>The plug-in principle<a class="headerlink" href="#the-plug-in-principle" title="Link to this heading"></a></h2>
+<p>Let’s first think about how to get an estimate for a parameter
+value, given the data. While what we are about to do is general, for now
+it is useful to have in your mind a concrete example. Imagine we have a
+data set that is a set of repeated measurements, such as the repeated
+measurements of lengths of eggs laid by <em>C. elegans</em> worms of a given
+genotype.</p>
+<p>We <em>could</em> have a generative model in mind, and we will do this in coming lessons. Instead, we will assume we only know that there <em>is</em> a generative distribution, but nothing about what it may be. Let <span class="math notranslate nohighlight">\(F(x)\)</span> be the cumulative distribution function (CDF) for the generative distribution.</p>
+<p>A <strong>statistical functional</strong> is a functional of the CDF, <span class="math notranslate nohighlight">\(T(F)\)</span>. A
+parameter <span class="math notranslate nohighlight">\(\theta\)</span> of a probability distribution can be defined
+from a functional, <span class="math notranslate nohighlight">\(\theta = T(F)\)</span>. For example, the mean,
+variance, and median are all statistical functionals.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    &amp;\text{mean} \equiv \mu = \int_{-\infty}^\infty \mathrm{d}x\,x\,f(x) = \int_{-\infty}^\infty \mathrm{d}F(x)\,x, \\[1em]
+    &amp;\text{variance} \equiv \sigma^2 = \int_{-\infty}^\infty \mathrm{d}x\,(x-\mu)^2\,f(x) = \int_{-\infty}^\infty \mathrm{d}F(x)\,(x-\mu)^2, \\[1em]
+    &amp;\text{median} \equiv m = F^{-1}(1/2).\end{aligned}\end{split}\]</div>
+<p>Now, say we made a set of <span class="math notranslate nohighlight">\(n\)</span> measurements,
+<span class="math notranslate nohighlight">\(\{x_1, x_2, \ldots x_n\}\)</span>. You can think of this as a set of <em>C. elegans</em> egg lengths if you want to have an example in your mind. We define the <strong>empirical cumulative distribution function</strong>,
+<span class="math notranslate nohighlight">\(\hat{F}(x)\)</span> from our data as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{F}(x) = \frac{1}{n}\sum_{i=1}^n I(x_i \le x),
+\end{aligned}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+   I(x_i \le x) = \left\{
+   \begin{array}{ccl}
+       1 &amp;&amp; x_i \le x \\[0.5em]
+       0 &amp;&amp; x_i &gt; x.
+   \end{array}
+   \right.
+\end{aligned}\end{split}\]</div>
+<p>We have already seen this form of the ECDF when we were studying
+exploratory data analysis. Remember that the probability density function (PDF), <span class="math notranslate nohighlight">\(f(x)\)</span>, is related to the CDF by</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   f(x) = \frac{\mathrm{d}F}{\mathrm{d}x}.
+\end{aligned}\]</div>
+<p>We can then differentiate the ECDF to get the <strong>empirical density function</strong>, <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{f}(x) = \frac{1}{n}\sum_{i=1}^n \delta(x - x_i),
+\end{aligned}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta(x)\)</span> is the Dirac delta function.</p>
+<p>With the ECDF (and empirical density function), we have now defined an empirical distribution that is dependent only on the data. We now define a <strong>plug-in estimate</strong> of a parameter
+<span class="math notranslate nohighlight">\(\theta\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{\theta} = T(\hat{F}).
+\end{aligned}\]</div>
+<p>In other words, to get a plug-in estimate a parameter <span class="math notranslate nohighlight">\(\theta\)</span>,
+we need only to compute the functional using the <em>empirical</em>
+distribution. That is, we simply “plug in” the empirical CDF for the
+actual CDF.</p>
+<p>The plug-in estimate for the median is easy to calculate.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{m} = \hat{F}^{-1}(1/2),
+\end{aligned}\]</div>
+<p>or the middle-ranked data point. The plug-in estimate for the mean or
+variance seem at face to be a bit more difficult to calculate, but the
+following general theorem will help. Consider a functional of the form of an expectation value, <span class="math notranslate nohighlight">\(r(x)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+   \int\mathrm{d}\hat{F}(x)\,r(x) &amp;= \int \mathrm{d}x \,r(x)\, \hat{f}(x)
+   = \int \mathrm{d}x\, r(x) \left[\frac{1}{n}\sum_{i=1}^n\delta(x - x_i)\right] \nonumber \\[1em]
+   &amp;= \frac{1}{n}\sum_{i=1}^n\int \mathrm{d}x \,r(x) \delta(x-x_i)
+   = \frac{1}{n}\sum_{i=1}^n r(x_i).
+\end{aligned}\end{split}\]</div>
+<p>A functional of this form is called a <strong>linear statistical functional</strong>. The result above means that the plug-in estimate for a linear functional of a
+distribution is the arithmetic mean of the observed <span class="math notranslate nohighlight">\(r(x)\)</span> themselves.
+The plug-in estimate of the mean, which has <span class="math notranslate nohighlight">\(r(x) = x\)</span>, is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{\mu} = \frac{1}{n}\sum_{i=1}^n x_i \equiv \bar{x},
+\end{aligned}\]</div>
+<p>where we have defined <span class="math notranslate nohighlight">\(\bar{x}\)</span> as the traditional sample mean
+(the arithmetic mean of the measured data), which we have just shown is
+the plug-in estimate. This plug-in estimate is implemented in the
+<code class="docutils literal notranslate"><span class="pre">np.mean()</span></code> function. The plug-in estimate for the variance is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (x_i - \bar{x})^2
+   = \frac{1}{n}\sum_{i=1}^n x_i^2 - \bar{x}^2.
+\end{aligned}\]</div>
+<p>This plug-in estimate is implemented in the <code class="docutils literal notranslate"><span class="pre">np.var()</span></code> function.</p>
+<p>Note that we are denoting the mean and variance as <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span>, but these are <em>not</em> in general the parameters with the same common name and symbols from a Normal distribution. Any distribution has a first moment (called a mean) and a second central moment (called a variance), unless they do not exist, as is the case, e.g., with a Cauchy distribution. In this context, we denote by <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span> the mean and variance of the unknown underlying univariate generative distribution.</p>
+<p>We can compute plug-in estimates for more complicated parameters as
+well. For example, for a bivariate distribution, the correlation between
+the two variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, is defined with</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \rho = \frac{\left\langle (x-\mu_x)(y-\mu_y)\right\rangle}{\sigma_x \sigma_y},
+\end{aligned}\]</div>
+<p>where the expectation in the numerator is called the <strong>covariance</strong> between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>. It is of large magnitude of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> vary together and close to zero if they are nearly independent of each other. The plug-in estimate for the correlation is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+   \hat{\rho} = \frac{\sum_i(x_i - \bar{x})(y_i-\bar{y})}{\sqrt{\left(\sum_i(x_i-\bar{x})^2\right)\left(\sum_i(y_i-\bar{y})^2\right)}}.
+\end{aligned}\]</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="definition_of_distributions.html" class="btn btn-neutral float-left" title="Probability distributions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bias.html" class="btn btn-neutral float-right" title="Bias" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x13667c1a0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

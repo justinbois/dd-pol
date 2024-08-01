@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probability distributions &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plug-in estimates" href="point_estimates.html" />
+    <link rel="prev" title="Probability: definitions and interpretations" href="definition_and_interpretation_of_probability.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 3: Probability distributions and the plug-in principle</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definition_and_interpretation_of_probability.html">Probability: definitions and interpretations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Probability distributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#joint-and-conditional-distributions-and-bayess-theorem-for-pdfs">Joint and conditional distributions and Bayes’s theorem for PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#change-of-variables-formula-for-continuous-distributions">Change of variables formula for continuous distributions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#an-example-of-change-of-variables">An example of change of variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#another-example-of-change-of-variables-the-log-normal-distribution">Another example of change of variables: the Log-Normal distribution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="point_estimates.html">Plug-in estimates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias.html">Bias</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+      <li class="breadcrumb-item active">Probability distributions</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/03/definition_of_distributions.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="probability-distributions">
+<h1>Probability distributions<a class="headerlink" href="#probability-distributions" title="Link to this heading"></a></h1>
+<p>So far we have talked about probability of events, and we have in mind
+measurements and, in the Bayesian case, parameter values as the events.
+We have a bit of a problem, though, if the sample space consists of real
+numbers, which we often encounter in our experiments and modeling. The
+probability of getting a single real value is identically zero. This is
+my motivation for introducing <strong>probability distributions</strong>, but the
+concept is more general and has much more utility than just dealing with
+sample spaces containing real numbers. Importantly, probability
+distributions provide the link between outcomes in the sample space to
+probability. Probability distributions describe both <strong>discrete</strong>
+quantities (like integers) and <strong>continuous</strong> quantities (like real
+numbers).</p>
+<p>Though we cannot assign a nonzero the probability for an outcome from a
+sample space containing all of the real numbers, we can assign a
+probability that the outcome is less than some real number.
+Notationally, we write this as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(\text{having outcome that is}\le y) = F(y).
+\end{aligned}\]</div>
+<p>The function <span class="math notranslate nohighlight">\(F(y)\)</span>, which returns a probability, is called a
+<strong>cumulative distribution function</strong> (CDF), or just <strong>distribution
+function</strong>. It contains all of the information we need to know about how
+probability is assigned to <span class="math notranslate nohighlight">\(y\)</span>. A CDF for a Normal distribution is shown in the left panel of the figure below.</p>
+<figure class="align-default" id="id3">
+<img alt="normal distribution" src="../../_images/normal_height_dist.png" />
+<figcaption>
+<p><span class="caption-text">a) The cumulative distribution function for a Normal distribution
+that could describe, for example, the heights of men in centimeters
+in a given country. b) The corresponding probability density
+function.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Related to the CDF for a continuous quantity is the <strong>probability
+density function</strong>, or PDF. The PDF is given by the derivative of the
+CDF,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y) = \frac{\mathrm{d}F(y)}{\mathrm{d}y}.
+\end{aligned}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(f(y)\)</span> is <em>not</em> the probability of outcome <span class="math notranslate nohighlight">\(y\)</span>.
+Rather, the probability that of outcome <span class="math notranslate nohighlight">\(y\)</span> lying between
+<span class="math notranslate nohighlight">\(y_0\)</span> and <span class="math notranslate nohighlight">\(y_1\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(y_0\le y \le y_1) = F(y_1) - F(y_0) = \int_{y_0}^{y_1}\mathrm{d}y\,f(y).
+\end{aligned}\]</div>
+<p>Note that with this defintion of the probability density function, satisfaction of the axiom that all probabilities sum to one (equivalently stated as <span class="math notranslate nohighlight">\(F(y\to\infty) = 1\)</span>) necessitates that the probability density function is <strong>normalized</strong>. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+\int_{-\infty}^\infty \mathrm{d}y\, f(y) = 1.
+\end{aligned}\]</div>
+<p>Conversely, for a discrete quantity, we have a <strong>probability mass
+function</strong>, or PMF,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y) = P(y).
+\end{aligned}\]</div>
+<p>The PMF is a probability, unlike the PDF. An example of a CDF and a PMF
+for a discrete distribution are shown in the figure below. In this
+example, <span class="math notranslate nohighlight">\(n\)</span> is the outcome of the roll of a fair die
+(<span class="math notranslate nohighlight">\(n\in\{1,2,3,4,5,6\}\)</span>).</p>
+<figure class="align-default" id="id4">
+<img alt="Die roll distribution." src="../../_images/dice_roll_dist.png" />
+<figcaption>
+<p><span class="caption-text">a) The cumulative distribution function for the outcome of a fair
+die roll. b) The corresponding probability mass function.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="joint-and-conditional-distributions-and-bayess-theorem-for-pdfs">
+<h2>Joint and conditional distributions and Bayes’s theorem for PDFs<a class="headerlink" href="#joint-and-conditional-distributions-and-bayess-theorem-for-pdfs" title="Link to this heading"></a></h2>
+<p>We have defined a CDF as <span class="math notranslate nohighlight">\(F(x)\)</span>, that is, describing a single
+variable <span class="math notranslate nohighlight">\(x\)</span>. We can have <strong>joint distributions</strong> with a CDF
+<span class="math notranslate nohighlight">\(F(x,y)\)</span>, defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+F(x, y) = P(\text{having outcome that is both } \le x\text{ and } \le y).
+\end{aligned}\]</div>
+<p>We can conversely have joint PDFs and PMFs, <span class="math notranslate nohighlight">\(f(x, y)\)</span>, such that, for the case of continuous <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+F(x, y) = \int_{-\infty}^x \mathrm{d}x'\,\int_{-\infty}^y \mathrm{d}y' \, f(x', y'),
+\end{aligned}\]</div>
+<p>with integrals replaced by sums for the discrete case.</p>
+<p>We may also have <strong>conditional distributions</strong> that have PDF
+<span class="math notranslate nohighlight">\(f(x\mid y)\)</span>. This is interpreted similarly to conditional
+probabilities we have already seen. <span class="math notranslate nohighlight">\(f(x\mid y)\)</span> is the
+probability density function for <span class="math notranslate nohighlight">\(x\)</span>, <em>given</em> <span class="math notranslate nohighlight">\(y\)</span>. As
+similar relation between joint and conditional PDFs holds as in the case
+of joint and conditional probabilities.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(x\mid y) = \frac{f(x,y)}{f(y)}.
+\end{aligned}\]</div>
+<p>That this holds is not at all obvious. One immediate issue is that we
+are conditioning on an event <span class="math notranslate nohighlight">\(y\)</span> that has zero probability. We
+will not carefully derive why this holds, but state it without proof.</p>
+<p>As a consequence, Bayes’s theorem also holds for PDFs, as it does for
+probabilities. <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(x\mid y) = \frac{f(y\mid x)\,f(x)}{f(y)}.
+\end{aligned}\]</div>
+</section>
+<section id="change-of-variables-formula-for-continuous-distributions">
+<h2>Change of variables formula for continuous distributions<a class="headerlink" href="#change-of-variables-formula-for-continuous-distributions" title="Link to this heading"></a></h2>
+<p>As a last note about probability distributions, I discuss the change of variables formula. Say I have a continuous probability distribution with PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span>. I have included the subscript <span class="math notranslate nohighlight">\(X\)</span> to denote that this is a PDF describing the random variable <span class="math notranslate nohighlight">\(X\)</span>. If I wish to change variables to instead get a continuous distribution in <span class="math notranslate nohighlight">\(y=g(x)\)</span>, or <span class="math notranslate nohighlight">\(f_Y(y) = f_Y(g(x))\)</span>, how do I get <span class="math notranslate nohighlight">\(f_Y\)</span>? We must enforce that the distributions be normalized;</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\int \mathrm{d}x\, f_X(x) =  \int \mathrm{d}y\, f_Y(y) = 1.
+\end{align}\]</div>
+<p>Thus, we must have <span class="math notranslate nohighlight">\(\left|\mathrm{d}y\,f_Y(y)\right| = \left|\mathrm{d}x\,f_x(x)\right|\)</span>. Equivalently, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f_Y(y) = \left|\frac{\mathrm{d} g^{-1}(y)}{\mathrm{d}y}\right|\,f_X(g^{-1}(y)).
+\end{align}\]</div>
+<p>This is the <strong>change of variables formula</strong>.</p>
+<section id="an-example-of-change-of-variables">
+<h3>An example of change of variables<a class="headerlink" href="#an-example-of-change-of-variables" title="Link to this heading"></a></h3>
+<p>Imagine I have a random variable that is Exponentially distributed, such that</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f_X(x) = \beta \, \mathrm{e}^{-\beta x}.
+\end{align}\]</div>
+<p>Now saw that I want to rescale <span class="math notranslate nohighlight">\(x\)</span> so that I instead get a distribution in <span class="math notranslate nohighlight">\(y = a x\)</span>. Here, <span class="math notranslate nohighlight">\(g(x) = a x\)</span> and <span class="math notranslate nohighlight">\(g^{-1}(y) = y/a\)</span>. So, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f_Y(y) = \left|\frac{\mathrm{d}}{\mathrm{d}y}\,\frac{y}{a}\right|\,f_X(y/a)
+= \frac{1}{a}\,\beta\,\mathrm{e}^{-\beta y / a}.
+\end{align}\]</div>
+<p>The distribution is again Exponential, but the rate has been rescaled, <span class="math notranslate nohighlight">\(\beta \to \beta/a\)</span>. This makes sense; we have rescaled <span class="math notranslate nohighlight">\(x\)</span> by our change of variables, so the rate should be rescaled accordingly.</p>
+</section>
+<section id="another-example-of-change-of-variables-the-log-normal-distribution">
+<h3>Another example of change of variables: the Log-Normal distribution<a class="headerlink" href="#another-example-of-change-of-variables-the-log-normal-distribution" title="Link to this heading"></a></h3>
+<p>Now imagine I have a random variable that is Normally distributed and I wish to determine how <span class="math notranslate nohighlight">\(y = \mathrm{e}^{x}\)</span> is distributed.</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f_X(x) = \frac{1}{\sqrt{2\pi \sigma^2}}\,\mathrm{e}^{-(x-\mu)^2/2\sigma^2}.
+\end{align}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(g(x) = \mathrm{e}^x\)</span> and <span class="math notranslate nohighlight">\(g^{-1}(y) = \ln y\)</span>. Again applying the change of variables formula,</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f_Y(y) = \left|\frac{\mathrm{d}\,\ln y}{\mathrm{d}y}\right|\,f_X(\ln y)
+= \frac{1}{y\sqrt{2\pi \sigma^2}}\,\mathrm{e}^{-(\ln y-\mu)^2/2\sigma^2},
+\end{align}\]</div>
+<p>which is indeed the PDF of the Log-Normal distribution.</p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This is very subtle. Jaynes’s book, <em>Probability: The Logic of
+Science</em>, Cambridge University Press, 2003, for more one these
+subtleties.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="definition_and_interpretation_of_probability.html" class="btn btn-neutral float-left" title="Probability: definitions and interpretations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="point_estimates.html" class="btn btn-neutral float-right" title="Plug-in estimates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x1367267b0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

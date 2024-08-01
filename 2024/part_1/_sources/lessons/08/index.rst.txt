@@ -1,0 +1,12 @@
+**************************************
+Lesson 8: Model assessment
+**************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   graphical_model_assessment
+   information_criteria
+   Q-Q plots and predictive ECDFs <implementation_of_graphical_model_selection.ipynb>
+   Predictive regressions <predictive_regression.ipynb>
+   Model comparison with the AIC <aic.ipynb>

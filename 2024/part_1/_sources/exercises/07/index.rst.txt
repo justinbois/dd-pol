@@ -1,0 +1,9 @@
+*********************************************
+Exercise 7: MLE with variate-covariate models
+*********************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e07.1.ipynb
+   e07.2.ipynb

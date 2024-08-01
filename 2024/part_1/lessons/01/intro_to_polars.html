@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to data frames and Polars &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tidy data and split-apply-combine" href="tidy_data.html" />
+    <link rel="prev" title="Lesson 1: Polars and split-apply-combine" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 1: Polars and split-apply-combine</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to Polars</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#The-data-set">The data set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Data-frames">Data frames</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Pandas">Pandas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-the-data">Loading the data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Using-polars.read_csv()-to-read-in-data">Using polars.read_csv() to read in data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Exploring-the-DataFrame">Exploring the DataFrame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Indexing-data-frames">Indexing data frames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Boolean-indexing-of-data-frames">Boolean indexing of data frames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Contexts-and-expressions">Contexts and expressions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#The-filter-context">The filter context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-selection-context">The selection context</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Polars-selectors">Polars selectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Computing-summary-statistics">Computing summary statistics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Outputting-a-new-CSV-file">Outputting a new CSV file</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Renaming-columns">Renaming columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#A-note-on-indexing-and-speed">A note on indexing and speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Computing-environment">Computing environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tidy_data.html">Tidy data and split-apply-combine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="styling_data_frames.html">Styling data frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 1: Polars and split-apply-combine</a></li>
+      <li class="breadcrumb-item active">Introduction to data frames and Polars</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part1/lessons/01/intro_to_polars.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part1/lessons/01/intro_to_polars.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Introduction-to-data-frames-and-Polars">
+<h1>Introduction to data frames and Polars<a class="headerlink" href="#Introduction-to-data-frames-and-Polars" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/gfmt_sleep.csv">Data set download</a></p>
+<hr><div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Polars, conventionally imported as pl</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="c1"># A subset of Polars  used for selecting columns</span>
+<span class="kn">import</span> <span class="nn">polars.selectors</span> <span class="k">as</span> <span class="nn">cs</span>
+</pre></div>
+</div>
+</div>
+<hr><p>Throughout your research career, you will undoubtedly need to handle data, possibly lots of data. Once in a usable form, you are empowered to rapidly make graphics and perform statistical inference. <strong>Tidy data</strong> is an important format and we will discuss that in subsequent sections of this lesson. In an ideal world, data sets would be stored in tidy format and be ready to use. The data comes in lots of formats, and you may have to spend much of your time <strong>wrangling</strong> the data to get it into a
+usable format. Wrangling is the topic of the next lesson; for now all data sets will be in tidy format from the get-go.</p>
+<section id="The-data-set">
+<h2>The data set<a class="headerlink" href="#The-data-set" title="Link to this heading"></a></h2>
+<p>We will explore using data frames with a real data set. We will use a data set published in <a class="reference external" href="https://doi.org/10.1098/rsos.160321">Beattie, et al., Perceptual impairment in face identification with poor sleep, Royal Society Open Science, 3, 160321, 2016</a>. In this paper, researchers used the <a class="reference external" href="https://doi.org/10.3758/BRM.42.1.286">Glasgow Facial Matching Test</a> (GMFT) to investigate how sleep deprivation affects a subject’s ability to match faces, as well as the confidence the subject has in
+those matches. Briefly, the test works by having subjects look at a pair of faces. Two such pairs are shown below.</p>
+<div style="width: 300px; margin: auto;"><p><img alt="GFMT faces" src="../../_images/gfmt_faces.png" /></p>
+</div><p>The top two pictures are the same person, the bottom two pictures are different people. For each pair of faces, the subject gets as much time as he or she needs and then says whether or not they are the same person. The subject then rates his or her confidence in the choice.</p>
+<p>In this study, subjects also took surveys to determine properties about their sleep. The Sleep Condition Indicator (SCI) is a measure of insomnia disorder over the past month (scores of 16 and below indicate insomnia). The Pittsburgh Sleep Quality Index (PSQI) quantifies how well a subject sleeps in terms of interruptions, latency, etc. A higher score indicates poorer sleep. The Epworth Sleepiness Scale (ESS) assesses daytime drowsiness.</p>
+<p>The data set can be downloaded <a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/gfmt_sleep.csv">here</a>. The contents of this file were adapted from <a class="reference external" href="https://doi.org/10.5061/dryad.r620r">the Excel file posted on the public Dryad repository</a>. (<em>Note this: if you want other people to use and explore your data, make it publicly available.</em>) I’ll say it more boldly.</p>
+<div class="admonition note">
+<p>If at all possible, share your data freely.</p>
+</div>
+<p>The data file is a <strong>CSV file</strong>, where CSV stands for comma-separated value. This is a text file that is easily read into data structures in many programming languages. You should generally always store your data in such a format, not necessarily CSV, but a format that is open, has a well-defined specification, and is readable in many contexts. Excel files do not meet these criteria. Neither do <code class="docutils literal notranslate"><span class="pre">.mat</span></code> files. There are other good ways to store data, such as <a class="reference external" href="http://json.org">JSON</a>, but we
+will almost exclusively use CSV files in this class.</p>
+<p>Let’s take a look at the CSV file. We will use the command line program <code class="docutils literal notranslate"><span class="pre">head</span></code> to look at the first 20 lines of the file.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;gfmt_sleep.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># This will not work in Colab because the file is not local</span>
+<span class="o">!</span>head<span class="w"> </span><span class="o">{</span>fname<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+﻿participant number,gender,age,correct hit percentage,correct reject percentage,percent correct,confidence when correct hit,confidence incorrect hit,confidence correct reject,confidence incorrect reject,confidence when correct,confidence when incorrect,sci,psqi,ess
+8,f,39,65,80,72.5,91,90,93,83.5,93,90,9,13,2
+16,m,42,90,90,90,75.5,55.5,70.5,50,75,50,4,11,7
+18,f,31,90,95,92.5,89.5,90,86,81,89,88,10,9,3
+22,f,35,100,75,87.5,89.5,*,71,80,88,80,13,8,20
+27,f,74,60,65,62.5,68.5,49,61,49,65,49,13,9,12
+28,f,61,80,20,50,71,63,31,72.5,64.5,70.5,15,14,2
+30,m,32,90,75,82.5,67,56.5,66,65,66,64,16,9,3
+33,m,62,45,90,67.5,54,37,65,81.5,62,61,14,9,9
+34,f,33,80,100,90,70.5,76.5,64.5,*,68,76.5,14,12,10
+</pre></div></div>
+</div>
+<p>The first line contains the <strong>headers</strong> for each column. They are participant number, gender, age, etc. The data follow. There are two important things to note here. First, notice that the <code class="docutils literal notranslate"><span class="pre">gender</span></code> column has string data (<code class="docutils literal notranslate"><span class="pre">m</span></code> or <code class="docutils literal notranslate"><span class="pre">f</span></code>), while the rest of the data are numeric. Note also that there are some <strong>missing data</strong>, denoted by the <code class="docutils literal notranslate"><span class="pre">*</span></code>s in the file.</p>
+<p>Given the file I/O skills you recently learned, you could write some functions to parse this file and extract the data you want. You can imagine that this might be kind of painful. However, if the file format is nice and clean, like we more or less have here, we can use pre-built tools to read in the data from the file and put it in a convenient data structure. Those structures are <strong>data frames</strong>.</p>
+</section>
+<section id="Data-frames">
+<h2>Data frames<a class="headerlink" href="#Data-frames" title="Link to this heading"></a></h2>
+<p>Though we will use the word “data frame” over and over again, what a data frame <em>is</em> is actually a bit nebulous. Our working definition of a data frame is that it is a representation of two-dimensional tabular data where each column has a label. We will restrict ourselves to the case where each column has a specific data type (e.g., strings, ints, floats, or even lists).</p>
+<p>One can think of a data frame as a collection of labeled columns, each one called a <strong>series</strong>. (A series may be thought of as a single column of data.) Alternatively, it is sometimes convenient to think of a data frame as a collection of <strong>rows</strong>, where each entry in the row is labeled with the column heading.</p>
+<p>For more reading on the history of data frames and an attempt (in my opinion a very good attempt) at clearly defining them see section 4 of <a class="reference external" href="https://dl.acm.org/doi/10.14778/3407790.3407807">this paper by Petersohn, et al</a>.</p>
+<section id="Pandas">
+<h3>Pandas<a class="headerlink" href="#Pandas" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://pandas.pydata.org">Pandas</a> is one of the most widely used tools in the Python ecosystem for handling data. It is worth knowing about. We will, however, not be using Pandas, but instead will use <a class="reference external" href="https://pola.rs">Polars</a>. I prefer Polars because its API is cleaner, in my opinion, but it has the added benefit of generally being much faster than Pandas.</p>
+</section>
+</section>
+<section id="Loading-the-data">
+<h2>Loading the data<a class="headerlink" href="#Loading-the-data" title="Link to this heading"></a></h2>
+<section id="Using-polars.read_csv()-to-read-in-data">
+<h3>Using polars.read_csv() to read in data<a class="headerlink" href="#Using-polars.read_csv()-to-read-in-data" title="Link to this heading"></a></h3>
+<p>We have imported Polars with the alias <code class="docutils literal notranslate"><span class="pre">pl</span></code> as is customary. We will use <code class="docutils literal notranslate"><span class="pre">pl.read_csv()</span></code> to load the data set. The data are stored in a <strong>data frame</strong> (data type <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>), which is one of the data types that makes Polars so convenient for use in data analysis. Data frames offer mixed data types, including incomplete columns, and convenient slicing, among many, many other convenient features. We will use the data frame to look at the data, at the same time demonstrating some of the
+power of data frames. They are like spreadsheets, only a lot better.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">null_values</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Notice that we used the kwarg <code class="docutils literal notranslate"><span class="pre">null_values=*</span></code> to specify that entries marked with a <code class="docutils literal notranslate"><span class="pre">*</span></code> are missing. The resulting data frame is populated with <strong>null</strong>, wherever this character is present in the file. In this case, we want <code class="docutils literal notranslate"><span class="pre">null_values='*'</span></code>. So, let’s load in the data set.</p>
+<p>If you check out the doc string for <code class="docutils literal notranslate"><span class="pre">pl.read_csv()</span></code>, you will see there are <em>lots</em> of options for reading in the data.</p>
+</section>
+</section>
+<section id="Exploring-the-DataFrame">
+<h2>Exploring the DataFrame<a class="headerlink" href="#Exploring-the-DataFrame" title="Link to this heading"></a></h2>
+<p>Let’s jump right in and look at the contents of the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. We can look at the first several rows using the <code class="docutils literal notranslate"><span class="pre">df.head()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Look at the contents (first 5 rows)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>8</td><td>&quot;f&quot;</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td></tr><tr><td>16</td><td>&quot;m&quot;</td><td>42</td><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td></tr><tr><td>18</td><td>&quot;f&quot;</td><td>31</td><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td></tr><tr><td>22</td><td>&quot;f&quot;</td><td>35</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td></tr><tr><td>27</td><td>&quot;f&quot;</td><td>74</td><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td></tr></tbody></table></div></div>
+</div>
+<p>We see that the column headings were automatically assigned, as have the data types of the columns, where <code class="docutils literal notranslate"><span class="pre">i64</span></code>, <code class="docutils literal notranslate"><span class="pre">f64</span></code>, and <code class="docutils literal notranslate"><span class="pre">str</span></code> respectively denote integers, floats and strings. Also note (in row 3) that the missing data are denoted as <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+</section>
+<section id="Indexing-data-frames">
+<h2>Indexing data frames<a class="headerlink" href="#Indexing-data-frames" title="Link to this heading"></a></h2>
+<p>The data frame is a convenient data structure for many reasons that will become clear as we start exploring. Let’s start by looking at how data frames are indexed. The rows in Polars data frames are indexed by integers, starting with zero as usual for Python. So, the first row of the data frame may be accessed as follows.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>8</td><td>&quot;f&quot;</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td></tr></tbody></table></div></div>
+</div>
+<p>In practice you will almost never use row indices, but rather use <strong>Boolean indexing</strong>, which is accomplished using Polars’s <code class="docutils literal notranslate"><span class="pre">filter()</span></code> method.</p>
+<p>Because row indices in Polars data frames are always integers and column indices are not allowed to be integers (they must be strings), columns are accessed in the same way. If you choose to index with a string, Polars knows you are asking for a column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;percent correct&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102,)</small><table border="1" class="dataframe"><thead><tr><th>percent correct</th></tr><tr><td>f64</td></tr></thead><tbody><tr><td>72.5</td></tr><tr><td>90.0</td></tr><tr><td>92.5</td></tr><tr><td>87.5</td></tr><tr><td>62.5</td></tr><tr><td>&hellip;</td></tr><tr><td>77.5</td></tr><tr><td>87.5</td></tr><tr><td>75.0</td></tr><tr><td>70.0</td></tr><tr><td>62.5</td></tr></tbody></table></div></div>
+</div>
+<p>For accessing a single column, I prefer the <code class="docutils literal notranslate"><span class="pre">get_column()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;percent correct&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102,)</small><table border="1" class="dataframe"><thead><tr><th>percent correct</th></tr><tr><td>f64</td></tr></thead><tbody><tr><td>72.5</td></tr><tr><td>90.0</td></tr><tr><td>92.5</td></tr><tr><td>87.5</td></tr><tr><td>62.5</td></tr><tr><td>&hellip;</td></tr><tr><td>77.5</td></tr><tr><td>87.5</td></tr><tr><td>75.0</td></tr><tr><td>70.0</td></tr><tr><td>62.5</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section id="Boolean-indexing-of-data-frames">
+<h2>Boolean indexing of data frames<a class="headerlink" href="#Boolean-indexing-of-data-frames" title="Link to this heading"></a></h2>
+<p>Let’s say I wanted the record for participant number 42. I can use Boolean indexing to specify the row. This is accomplished using the <code class="docutils literal notranslate"><span class="pre">filter()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;participant number&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>42</td><td>&quot;m&quot;</td><td>29</td><td>100</td><td>70</td><td>85.0</td><td>75.0</td><td>null</td><td>64.5</td><td>43.0</td><td>74.0</td><td>43.0</td><td>32</td><td>1</td><td>6</td></tr></tbody></table></div></div>
+</div>
+<p>The argument of the <code class="docutils literal notranslate"><span class="pre">filter()</span></code> method is an <strong>expression</strong>, <code class="docutils literal notranslate"><span class="pre">pl.col('participant</span> <span class="pre">number')</span> <span class="pre">==</span> <span class="pre">42</span></code>, which gives the rows (in this case, one row) for which the value of the <code class="docutils literal notranslate"><span class="pre">'participant</span> <span class="pre">number'</span></code> column is 42.</p>
+<p>If I just wanted the percent correct, I can first filter to get the row I want, then extract the <code class="docutils literal notranslate"><span class="pre">'percent</span> <span class="pre">correct'</span></code> column, and then use the <code class="docutils literal notranslate"><span class="pre">item()</span></code> method to extract the scalar value.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">df</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;participant number&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;percent correct&#39;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+85.0
+</pre></div></div>
+</div>
+<p>Note how I expressed this code snippet stylistically. I am doing method chaining, and having each method on its own line adds readability.</p>
+<p>Now, let’s pull out all records of females under the age of 21. We can again use Boolean indexing, but we need to use an <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> operator, taken to mean logical AND. We did not cover this bitwise operator before, but the syntax is self-explanatory in the example below. Note that it is important that each Boolean operation you are doing is in parentheses because of the precedence of the operators involved. The other bitwise operators you may wish to use for Boolean indexing in data frames are <code class="docutils literal notranslate"><span class="pre">|</span></code>
+for OR and <code class="docutils literal notranslate"><span class="pre">~</span></code> for NOT.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>3</td><td>&quot;f&quot;</td><td>16</td><td>70</td><td>80</td><td>75.0</td><td>70.0</td><td>57.0</td><td>54.0</td><td>53.0</td><td>57.0</td><td>54.5</td><td>23</td><td>1</td><td>3</td></tr><tr><td>5</td><td>&quot;f&quot;</td><td>18</td><td>90</td><td>100</td><td>95.0</td><td>76.5</td><td>83.0</td><td>80.0</td><td>null</td><td>80.0</td><td>83.0</td><td>21</td><td>7</td><td>5</td></tr><tr><td>58</td><td>&quot;f&quot;</td><td>16</td><td>85</td><td>85</td><td>85.0</td><td>55.0</td><td>30.0</td><td>50.0</td><td>40.0</td><td>52.5</td><td>35.0</td><td>29</td><td>2</td><td>11</td></tr><tr><td>72</td><td>&quot;f&quot;</td><td>18</td><td>80</td><td>75</td><td>77.5</td><td>67.5</td><td>51.5</td><td>66.0</td><td>57.0</td><td>67.0</td><td>53.0</td><td>29</td><td>4</td><td>6</td></tr><tr><td>85</td><td>&quot;f&quot;</td><td>18</td><td>85</td><td>85</td><td>85.0</td><td>93.0</td><td>92.0</td><td>91.0</td><td>89.0</td><td>91.5</td><td>91.0</td><td>25</td><td>4</td><td>21</td></tr></tbody></table></div></div>
+</div>
+<p>We can do something even more complicated, like pull out all females under 30 who got more than 85% of the face matching tasks correct.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+      <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;percent correct&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">85.0</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (8, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>93</td><td>&quot;f&quot;</td><td>28</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>67.0</td><td>60.0</td><td>80.0</td><td>60.0</td><td>16</td><td>7</td><td>4</td></tr><tr><td>5</td><td>&quot;f&quot;</td><td>18</td><td>90</td><td>100</td><td>95.0</td><td>76.5</td><td>83.0</td><td>80.0</td><td>null</td><td>80.0</td><td>83.0</td><td>21</td><td>7</td><td>5</td></tr><tr><td>6</td><td>&quot;f&quot;</td><td>28</td><td>95</td><td>80</td><td>87.5</td><td>100.0</td><td>85.0</td><td>94.0</td><td>61.0</td><td>99.0</td><td>65.0</td><td>19</td><td>7</td><td>12</td></tr><tr><td>10</td><td>&quot;f&quot;</td><td>25</td><td>100</td><td>100</td><td>100.0</td><td>90.0</td><td>null</td><td>85.0</td><td>null</td><td>90.0</td><td>null</td><td>17</td><td>10</td><td>11</td></tr><tr><td>44</td><td>&quot;f&quot;</td><td>21</td><td>85</td><td>90</td><td>87.5</td><td>66.0</td><td>29.0</td><td>70.0</td><td>29.0</td><td>67.0</td><td>29.0</td><td>26</td><td>7</td><td>18</td></tr><tr><td>48</td><td>&quot;f&quot;</td><td>23</td><td>90</td><td>85</td><td>87.5</td><td>67.0</td><td>47.0</td><td>69.0</td><td>40.0</td><td>67.0</td><td>40.0</td><td>18</td><td>6</td><td>8</td></tr><tr><td>51</td><td>&quot;f&quot;</td><td>24</td><td>85</td><td>95</td><td>90.0</td><td>97.0</td><td>41.0</td><td>74.0</td><td>73.0</td><td>83.0</td><td>55.5</td><td>29</td><td>1</td><td>7</td></tr><tr><td>67</td><td>&quot;f&quot;</td><td>25</td><td>100</td><td>100</td><td>100.0</td><td>61.5</td><td>null</td><td>58.5</td><td>null</td><td>60.5</td><td>null</td><td>28</td><td>8</td><td>9</td></tr></tbody></table></div></div>
+</div>
+<p>Of interest in this exercise in Boolean indexing is that we never had to write a loop. To produce our indices, we could have done the following.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize array of Boolean indices</span>
+<span class="n">inds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Iterate over the rows of the DataFrame to check if the row should be included</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iter_rows</span><span class="p">(</span><span class="n">named</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">inds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">30</span>
+        <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span>
+        <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;percent correct&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">85</span>
+    <span class="p">)</span>
+
+<span class="c1"># Look at inds</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, True, True, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, True, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+</pre></div></div>
+</div>
+<p>If we wanted, we could use this <code class="docutils literal notranslate"><span class="pre">inds</span></code> list of <code class="docutils literal notranslate"><span class="pre">True</span></code>s and <code class="docutils literal notranslate"><span class="pre">False</span></code>s to filter our values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (8, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>93</td><td>&quot;f&quot;</td><td>28</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>67.0</td><td>60.0</td><td>80.0</td><td>60.0</td><td>16</td><td>7</td><td>4</td></tr><tr><td>5</td><td>&quot;f&quot;</td><td>18</td><td>90</td><td>100</td><td>95.0</td><td>76.5</td><td>83.0</td><td>80.0</td><td>null</td><td>80.0</td><td>83.0</td><td>21</td><td>7</td><td>5</td></tr><tr><td>6</td><td>&quot;f&quot;</td><td>28</td><td>95</td><td>80</td><td>87.5</td><td>100.0</td><td>85.0</td><td>94.0</td><td>61.0</td><td>99.0</td><td>65.0</td><td>19</td><td>7</td><td>12</td></tr><tr><td>10</td><td>&quot;f&quot;</td><td>25</td><td>100</td><td>100</td><td>100.0</td><td>90.0</td><td>null</td><td>85.0</td><td>null</td><td>90.0</td><td>null</td><td>17</td><td>10</td><td>11</td></tr><tr><td>44</td><td>&quot;f&quot;</td><td>21</td><td>85</td><td>90</td><td>87.5</td><td>66.0</td><td>29.0</td><td>70.0</td><td>29.0</td><td>67.0</td><td>29.0</td><td>26</td><td>7</td><td>18</td></tr><tr><td>48</td><td>&quot;f&quot;</td><td>23</td><td>90</td><td>85</td><td>87.5</td><td>67.0</td><td>47.0</td><td>69.0</td><td>40.0</td><td>67.0</td><td>40.0</td><td>18</td><td>6</td><td>8</td></tr><tr><td>51</td><td>&quot;f&quot;</td><td>24</td><td>85</td><td>95</td><td>90.0</td><td>97.0</td><td>41.0</td><td>74.0</td><td>73.0</td><td>83.0</td><td>55.5</td><td>29</td><td>1</td><td>7</td></tr><tr><td>67</td><td>&quot;f&quot;</td><td>25</td><td>100</td><td>100</td><td>100.0</td><td>61.5</td><td>null</td><td>58.5</td><td>null</td><td>60.5</td><td>null</td><td>28</td><td>8</td><td>9</td></tr></tbody></table></div></div>
+</div>
+<p>This feature, where the looping is done automatically on Polars objects like data frames, is very powerful and saves us writing lots of lines of code. This example also showed how to use the <code class="docutils literal notranslate"><span class="pre">iter_rows()</span></code> method of a data frame. It is actually rare that you will need to do that, and you should generally avoid it, since it is also slow.</p>
+</section>
+<section id="Contexts-and-expressions">
+<h2>Contexts and expressions<a class="headerlink" href="#Contexts-and-expressions" title="Link to this heading"></a></h2>
+<p>We will now be a bit more formal in discussing how to work with Polars data frames. Specifically, Polars features the concepts of <strong>expressions</strong> and <strong>contexts</strong>.</p>
+<section id="The-filter-context">
+<h3>The filter context<a class="headerlink" href="#The-filter-context" title="Link to this heading"></a></h3>
+<p>As an example, let us consider our above task of filtering the data frame to extract females under the age of 21. The syntax was</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Consider first <code class="docutils literal notranslate"><span class="pre">pl.col('gender')</span> <span class="pre">==</span> <span class="pre">'f'</span></code>. This is an example of an expression. An expression consists of a calculation or transformation that can be applied to a series and returns a series. In this case, we are taking a column called <code class="docutils literal notranslate"><span class="pre">'gender'</span></code> and we are evaluating whether each element in that column is <code class="docutils literal notranslate"><span class="pre">'f'</span></code>. Indeed, if we ask the Python interpreter to tell us the type of the above expression, it is a Polars <code class="docutils literal notranslate"><span class="pre">Expr</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+polars.expr.expr.Expr
+</pre></div></div>
+</div>
+<p>Similarly, <code class="docutils literal notranslate"><span class="pre">pl.col('age')</span> <span class="pre">&lt;</span> <span class="pre">21</span></code> is also an expression, as is the result when we apply the <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> bitwise operator.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+polars.expr.expr.Expr
+</pre></div></div>
+</div>
+<p>So, an expression says what we want to <em>do</em> to data. But now we ask, in what way, i.e., in what <em>context</em>, do we want to <em>use</em> the result of the expression? One way we may wish to use the above expression is to filter the rows in a data frame. The <strong>filter context</strong> is established by <code class="docutils literal notranslate"><span class="pre">df.filter()</span></code>. The argument of <code class="docutils literal notranslate"><span class="pre">df.filter()</span></code> is an expression (or expressions) that evaluate to Booleans. That is how we got our result; in the context of filtering, the expression is evaluated and only entries
+where the expression gives <code class="docutils literal notranslate"><span class="pre">True</span></code> are retained.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 15)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>3</td><td>&quot;f&quot;</td><td>16</td><td>70</td><td>80</td><td>75.0</td><td>70.0</td><td>57.0</td><td>54.0</td><td>53.0</td><td>57.0</td><td>54.5</td><td>23</td><td>1</td><td>3</td></tr><tr><td>5</td><td>&quot;f&quot;</td><td>18</td><td>90</td><td>100</td><td>95.0</td><td>76.5</td><td>83.0</td><td>80.0</td><td>null</td><td>80.0</td><td>83.0</td><td>21</td><td>7</td><td>5</td></tr><tr><td>58</td><td>&quot;f&quot;</td><td>16</td><td>85</td><td>85</td><td>85.0</td><td>55.0</td><td>30.0</td><td>50.0</td><td>40.0</td><td>52.5</td><td>35.0</td><td>29</td><td>2</td><td>11</td></tr><tr><td>72</td><td>&quot;f&quot;</td><td>18</td><td>80</td><td>75</td><td>77.5</td><td>67.5</td><td>51.5</td><td>66.0</td><td>57.0</td><td>67.0</td><td>53.0</td><td>29</td><td>4</td><td>6</td></tr><tr><td>85</td><td>&quot;f&quot;</td><td>18</td><td>85</td><td>85</td><td>85.0</td><td>93.0</td><td>92.0</td><td>91.0</td><td>89.0</td><td>91.5</td><td>91.0</td><td>25</td><td>4</td><td>21</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section id="The-selection-context">
+<h3>The selection context<a class="headerlink" href="#The-selection-context" title="Link to this heading"></a></h3>
+<p>The simplest way we can use an expression is simply to evaluate the expression and give its result as a new data frame. This is the <strong>selection</strong> context, in which we get the output of the expression. It can be invoked with <code class="docutils literal notranslate"><span class="pre">df.select()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102, 1)</small><table border="1" class="dataframe"><thead><tr><th>gender</th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>&hellip;</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr></tbody></table></div></div>
+</div>
+<p>Note that this is a data frame and not a series; it is a data frame containing one column. In this case, the column is named after the first column used in our Boolean expression. We can adjust the column label by applying the <code class="docutils literal notranslate"><span class="pre">alias()</span></code> method, which does a renaming transformation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_under_21</span> <span class="o">=</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">21</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">f_under_21</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;female under 21&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102, 1)</small><table border="1" class="dataframe"><thead><tr><th>female under 21</th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>&hellip;</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr></tbody></table></div></div>
+</div>
+<p>If we wanted a series instead of a new data frame, we can apply the <code class="docutils literal notranslate"><span class="pre">get_column()</span></code> method to the data frame returned by <code class="docutils literal notranslate"><span class="pre">df.select()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Result of expression as a series</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">f_under_21</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;female under 21&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;female under 21&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102,)</small><table border="1" class="dataframe"><thead><tr><th>female under 21</th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>&hellip;</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>false</td></tr></tbody></table></div></div>
+</div>
+<p>We can also select with multiple expressions. For example, let’s say we additionally wanted to compute the ratio of confidence when correct to confidence when incorrect. First, we can make an expression for that.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conf_ratio</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;confidence when correct&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;confidence when incorrect&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now, we can select that as well as the <code class="docutils literal notranslate"><span class="pre">'female</span> <span class="pre">under</span> <span class="pre">21'</span></code> column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">f_under_21</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;female under 21&#39;</span><span class="p">),</span>
+    <span class="n">conf_ratio</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;confidence ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102, 2)</small><table border="1" class="dataframe"><thead><tr><th>female under 21</th><th>confidence ratio</th></tr><tr><td>bool</td><td>f64</td></tr></thead><tbody><tr><td>false</td><td>1.033333</td></tr><tr><td>false</td><td>1.5</td></tr><tr><td>false</td><td>1.011364</td></tr><tr><td>false</td><td>1.1</td></tr><tr><td>false</td><td>1.326531</td></tr><tr><td>&hellip;</td><td>&hellip;</td></tr><tr><td>false</td><td>1.040541</td></tr><tr><td>false</td><td>0.925</td></tr><tr><td>false</td><td>0.802469</td></tr><tr><td>false</td><td>1.588235</td></tr><tr><td>false</td><td>1.109589</td></tr></tbody></table></div></div>
+</div>
+<p>Notice that <code class="docutils literal notranslate"><span class="pre">df.select()</span></code> returns a new data frame containing only the columns that are given by the expressions and the original data frame is discarded. If we want the results of the expressions to instead be added to the data frame (keeping all of its original columns), we use the <code class="docutils literal notranslate"><span class="pre">df.with_columns()</span></code> method. This is still a selection context; the output is just different, comprising of the original data frame with added columns. (In the output of the cell below, you will find the columns
+added to the far right of the data frame.)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">f_under_21</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;female under 21&#39;</span><span class="p">),</span>
+    <span class="n">conf_ratio</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;confidence ratio&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (102, 17)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th><th>female under 21</th><th>confidence ratio</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td><td>bool</td><td>f64</td></tr></thead><tbody><tr><td>8</td><td>&quot;f&quot;</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td><td>false</td><td>1.033333</td></tr><tr><td>16</td><td>&quot;m&quot;</td><td>42</td><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td><td>false</td><td>1.5</td></tr><tr><td>18</td><td>&quot;f&quot;</td><td>31</td><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td><td>false</td><td>1.011364</td></tr><tr><td>22</td><td>&quot;f&quot;</td><td>35</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td><td>false</td><td>1.1</td></tr><tr><td>27</td><td>&quot;f&quot;</td><td>74</td><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td><td>false</td><td>1.326531</td></tr><tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr><tr><td>97</td><td>&quot;f&quot;</td><td>23</td><td>70</td><td>85</td><td>77.5</td><td>77.0</td><td>66.5</td><td>77.0</td><td>77.5</td><td>77.0</td><td>74.0</td><td>20</td><td>8</td><td>10</td><td>false</td><td>1.040541</td></tr><tr><td>98</td><td>&quot;f&quot;</td><td>70</td><td>90</td><td>85</td><td>87.5</td><td>65.5</td><td>85.5</td><td>87.0</td><td>80.0</td><td>74.0</td><td>80.0</td><td>19</td><td>8</td><td>7</td><td>false</td><td>0.925</td></tr><tr><td>99</td><td>&quot;f&quot;</td><td>24</td><td>70</td><td>80</td><td>75.0</td><td>61.5</td><td>81.0</td><td>70.0</td><td>61.0</td><td>65.0</td><td>81.0</td><td>31</td><td>2</td><td>15</td><td>false</td><td>0.802469</td></tr><tr><td>102</td><td>&quot;f&quot;</td><td>40</td><td>75</td><td>65</td><td>70.0</td><td>53.0</td><td>37.0</td><td>84.0</td><td>52.0</td><td>81.0</td><td>51.0</td><td>22</td><td>4</td><td>7</td><td>false</td><td>1.588235</td></tr><tr><td>103</td><td>&quot;f&quot;</td><td>33</td><td>85</td><td>40</td><td>62.5</td><td>80.0</td><td>27.0</td><td>31.0</td><td>82.5</td><td>81.0</td><td>73.0</td><td>24</td><td>5</td><td>7</td><td>false</td><td>1.109589</td></tr></tbody></table></div></div>
+</div>
+<p>Finally, we will do something we’ll want to use going forward. Recall that a subject is said to suffer from insomnia if he or she has an SCI of 16 or below. We might like to add a column to the data frame that specifies whether or not the subject suffers from insomnia, which we do in the code cell below. Note that until now, we have not updated our data frame. To actually update the data frame, we need an assignment operation, <code class="docutils literal notranslate"><span class="pre">df</span> <span class="pre">=</span> <span class="pre">...</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a column with `True` for insomnia</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">((</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;sci&#39;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;insomnia&#39;</span><span class="p">))</span>
+
+<span class="c1"># Take a look (.head() gives first five rows)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 16)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th><th>insomnia</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td><td>bool</td></tr></thead><tbody><tr><td>8</td><td>&quot;f&quot;</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td><td>true</td></tr><tr><td>16</td><td>&quot;m&quot;</td><td>42</td><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td><td>true</td></tr><tr><td>18</td><td>&quot;f&quot;</td><td>31</td><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td><td>true</td></tr><tr><td>22</td><td>&quot;f&quot;</td><td>35</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td><td>true</td></tr><tr><td>27</td><td>&quot;f&quot;</td><td>74</td><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td><td>true</td></tr></tbody></table></div></div>
+</div>
+</section>
+</section>
+<section id="Polars-selectors">
+<h2>Polars selectors<a class="headerlink" href="#Polars-selectors" title="Link to this heading"></a></h2>
+<p>We have seen that we can choose which columns we want to work with in expressions using <code class="docutils literal notranslate"><span class="pre">pl.col()</span></code>. Thus far, we have used a single string as an argument, but <code class="docutils literal notranslate"><span class="pre">pl.col()</span></code> is more capable than that. For example, to select three columns of interest, we can do the following.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;percent correct&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 3)</small><table border="1" class="dataframe"><thead><tr><th>age</th><th>gender</th><th>percent correct</th></tr><tr><td>i64</td><td>str</td><td>f64</td></tr></thead><tbody><tr><td>39</td><td>&quot;f&quot;</td><td>72.5</td></tr><tr><td>42</td><td>&quot;m&quot;</td><td>90.0</td></tr><tr><td>31</td><td>&quot;f&quot;</td><td>92.5</td></tr><tr><td>35</td><td>&quot;f&quot;</td><td>87.5</td></tr><tr><td>74</td><td>&quot;f&quot;</td><td>62.5</td></tr></tbody></table></div></div>
+</div>
+<p>We can also pass regular expressions into <code class="docutils literal notranslate"><span class="pre">pl.col()</span></code>. If we want all columns, for example, we can use <code class="docutils literal notranslate"><span class="pre">pl.col('*')</span></code>. To get all columns containing the string <code class="docutils literal notranslate"><span class="pre">'confidence'</span></code>, we can use <code class="docutils literal notranslate"><span class="pre">pl.col('^.*confidence.*$')</span></code>.</p>
+<p>Personally, I always struggle with regular expressions. Fortunately, Polars has powerful <strong>selectors</strong> which help specify which columns are of interest. In addition to facilitating selection based on the names of the columns, selectors allow selection based on the data type of the column as well (actually, so does <code class="docutils literal notranslate"><span class="pre">pl.col()</span></code>, but it is simplified with selectors).</p>
+<p>We have to import the selectors separately, which we have done in the top cell of this notebook via <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">polars.selectors</span> <span class="pre">as</span> <span class="pre">cs</span></code>. The <code class="docutils literal notranslate"><span class="pre">cs</span></code> alias is suggested by the Polars developers.</p>
+<p>As an example, we can select all columns that have a column heading containing the string <code class="docutils literal notranslate"><span class="pre">'confidence'</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;confidence&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 6)</small><table border="1" class="dataframe"><thead><tr><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th></tr><tr><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td></tr><tr><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td></tr><tr><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td></tr><tr><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td></tr><tr><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td></tr></tbody></table></div></div>
+</div>
+<p>Or, perhaps we want to exclude all columns that are not indicators of performance on a test (participant number, age, and gender). We can specifically exclude columns with <code class="docutils literal notranslate"><span class="pre">cs.exclude()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;participant number&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 13)</small><table border="1" class="dataframe"><thead><tr><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th><th>insomnia</th></tr><tr><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td><td>bool</td></tr></thead><tbody><tr><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td><td>true</td></tr><tr><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td><td>true</td></tr><tr><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td><td>true</td></tr><tr><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td><td>true</td></tr><tr><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td><td>true</td></tr></tbody></table></div></div>
+</div>
+<p>What if we want columns with only a float data type?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 7)</small><table border="1" class="dataframe"><thead><tr><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th></tr><tr><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td></tr><tr><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td></tr><tr><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td></tr><tr><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td></tr><tr><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td></tr></tbody></table></div></div>
+</div>
+<p>Note that the sleep measures were omitted because they are integer data types. We could select everything that is numeric if we want to include those.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">numeric</span><span class="p">())</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 14)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>8</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td></tr><tr><td>16</td><td>42</td><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td></tr><tr><td>18</td><td>31</td><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td></tr><tr><td>22</td><td>35</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td></tr><tr><td>27</td><td>74</td><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td></tr></tbody></table></div></div>
+</div>
+<p>Unfortunately, this still gave us participant number and age again. We could exclude those explicitly by chaining methods.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">numeric</span><span class="p">()</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;participant number&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 12)</small><table border="1" class="dataframe"><thead><tr><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th></tr><tr><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td></tr><tr><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td></tr><tr><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td></tr><tr><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td></tr><tr><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td></tr></tbody></table></div></div>
+</div>
+<p>Selectors also allow for set algebra. As a (contrived) example, let say we want all columns that are not of string data type that have spaces in the column heading and that we also want to exclude the participant number.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">((</span><span class="o">~</span><span class="n">cs</span><span class="o">.</span><span class="n">string</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">cs</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;participant number&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 9)</small><table border="1" class="dataframe"><thead><tr><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th></tr><tr><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td></tr><tr><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td></tr><tr><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td></tr><tr><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td></tr><tr><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td></tr></tbody></table></div></div>
+</div>
+<p>Notice that we used the complement operator <code class="docutils literal notranslate"><span class="pre">~</span></code> and the intersection operator <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>. Selectors also support the union operator <code class="docutils literal notranslate"><span class="pre">|</span></code> and the difference operator <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p>
+<p>To close our discussion on selectors, we note that selectors are their own data type:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">string</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+polars.selectors._selector_proxy_
+</pre></div></div>
+</div>
+<p>Selectors can be converted to expressions so you can continue computing with the <code class="docutils literal notranslate"><span class="pre">as_expr()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">string</span><span class="p">()</span><span class="o">.</span><span class="n">as_expr</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+polars.expr.expr.Expr
+</pre></div></div>
+</div>
+</section>
+<section id="Computing-summary-statistics">
+<h2>Computing summary statistics<a class="headerlink" href="#Computing-summary-statistics" title="Link to this heading"></a></h2>
+<p>To demonstrate a use of what we have learned so far, we can compute the mean percent correct for insomniacs and normal sleepers. We can filter the data frame according to the <code class="docutils literal notranslate"><span class="pre">insomnia</span></code> column, select the <code class="docutils literal notranslate"><span class="pre">percent</span> <span class="pre">correct</span></code> column and compute the mean.</p>
+<p>To put them together in a new data frame, we make a dictionary and convert it to a data frame, which is one of the ways to make a Polars data frame. E.g.,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 3)</small><table border="1" class="dataframe"><thead><tr><th>a</th><th>b</th><th>c</th></tr><tr><td>i64</td><td>f64</td><td>str</td></tr></thead><tbody><tr><td>1</td><td>4.5</td><td>&quot;one&quot;</td></tr><tr><td>2</td><td>5.5</td><td>&quot;two&quot;</td></tr><tr><td>3</td><td>6.5</td><td>&quot;three&quot;</td></tr></tbody></table></div></div>
+</div>
+<p>Now to make our data frame of means for insomniacs and normal sleepers.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;insomniacs&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;insomnia&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;percent correct&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="s1">&#39;normal sleepers&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">~</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;insomnia&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;percent correct&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 2)</small><table border="1" class="dataframe"><thead><tr><th>insomniacs</th><th>normal sleepers</th></tr><tr><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>76.1</td><td>81.461039</td></tr></tbody></table></div></div>
+</div>
+<p>Notice that I used the <code class="docutils literal notranslate"><span class="pre">~</span></code> operator, which is a bit switcher, to get the normal sleepers from the <code class="docutils literal notranslate"><span class="pre">insomnia</span></code> column. It changes all <code class="docutils literal notranslate"><span class="pre">True</span></code>s to <code class="docutils literal notranslate"><span class="pre">False</span></code>s and vice versa. In this case, it functions like NOT.</p>
+<p>It appears as though normal sleepers score better than insomniacs. We will learn techniques to more quantitatively assess that claim when we learn about statistical inference.</p>
+<p>As we will soon see, what we have done is a split-apply-combine operation, for which there are more elegant and efficient methods using Polars. You will probably never use the approach in the above code cell again.</p>
+<p>We will do a lot more computing with Polars data frames as the course goes on. For a nifty demonstration demonstration in this lesson, we can quickly compute summary statistics about each column of a data frame using its <code class="docutils literal notranslate"><span class="pre">describe()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (9, 17)</small><table border="1" class="dataframe"><thead><tr><th>statistic</th><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>sci</th><th>psqi</th><th>ess</th><th>insomnia</th></tr><tr><td>str</td><td>f64</td><td>str</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;count&quot;</td><td>102.0</td><td>&quot;102&quot;</td><td>102.0</td><td>102.0</td><td>102.0</td><td>102.0</td><td>102.0</td><td>84.0</td><td>102.0</td><td>93.0</td><td>102.0</td><td>99.0</td><td>102.0</td><td>102.0</td><td>102.0</td><td>102.0</td></tr><tr><td>&quot;null_count&quot;</td><td>0.0</td><td>&quot;0&quot;</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>18.0</td><td>0.0</td><td>9.0</td><td>0.0</td><td>3.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr><tr><td>&quot;mean&quot;</td><td>52.04902</td><td>null</td><td>37.921569</td><td>83.088235</td><td>77.205882</td><td>80.147059</td><td>74.990196</td><td>58.565476</td><td>71.137255</td><td>61.22043</td><td>74.642157</td><td>61.979798</td><td>22.245098</td><td>5.27451</td><td>7.294118</td><td>0.245098</td></tr><tr><td>&quot;std&quot;</td><td>30.020909</td><td>null</td><td>14.02945</td><td>15.09121</td><td>17.569854</td><td>12.047881</td><td>14.165916</td><td>19.560653</td><td>14.987479</td><td>17.671283</td><td>13.619725</td><td>15.92167</td><td>7.547128</td><td>3.404007</td><td>4.426715</td><td>null</td></tr><tr><td>&quot;min&quot;</td><td>1.0</td><td>&quot;f&quot;</td><td>16.0</td><td>35.0</td><td>20.0</td><td>40.0</td><td>29.5</td><td>7.0</td><td>19.0</td><td>17.0</td><td>24.0</td><td>24.5</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr><tr><td>&quot;25%&quot;</td><td>26.0</td><td>null</td><td>26.0</td><td>75.0</td><td>70.0</td><td>72.5</td><td>66.0</td><td>47.0</td><td>64.5</td><td>50.0</td><td>66.0</td><td>51.0</td><td>17.0</td><td>3.0</td><td>4.0</td><td>null</td></tr><tr><td>&quot;50%&quot;</td><td>53.0</td><td>null</td><td>37.0</td><td>90.0</td><td>80.0</td><td>85.0</td><td>75.0</td><td>56.5</td><td>71.5</td><td>61.0</td><td>76.0</td><td>61.5</td><td>24.0</td><td>5.0</td><td>7.0</td><td>null</td></tr><tr><td>&quot;75%&quot;</td><td>78.0</td><td>null</td><td>45.0</td><td>95.0</td><td>90.0</td><td>87.5</td><td>87.0</td><td>73.0</td><td>80.0</td><td>74.0</td><td>82.5</td><td>73.0</td><td>29.0</td><td>7.0</td><td>10.0</td><td>null</td></tr><tr><td>&quot;max&quot;</td><td>103.0</td><td>&quot;m&quot;</td><td>74.0</td><td>100.0</td><td>100.0</td><td>100.0</td><td>100.0</td><td>92.0</td><td>100.0</td><td>100.0</td><td>100.0</td><td>100.0</td><td>32.0</td><td>15.0</td><td>21.0</td><td>1.0</td></tr></tbody></table></div></div>
+</div>
+<p>This gives us a data frame with summary statistics.</p>
+<section id="Outputting-a-new-CSV-file">
+<h3>Outputting a new CSV file<a class="headerlink" href="#Outputting-a-new-CSV-file" title="Link to this heading"></a></h3>
+<p>Now that we added the insomniac column, we might like to save our data frame as a new CSV that we can reload later. We use <code class="docutils literal notranslate"><span class="pre">df.write_csv()</span></code> for this.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="s2">&quot;gfmt_sleep_with_insomnia.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s take a look at what this file looks like.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head<span class="w"> </span>gfmt_sleep_with_insomnia.csv
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+participant number,gender,age,correct hit percentage,correct reject percentage,percent correct,confidence when correct hit,confidence incorrect hit,confidence correct reject,confidence incorrect reject,confidence when correct,confidence when incorrect,sci,psqi,ess,insomnia
+8,f,39,65,80,72.5,91.0,90.0,93.0,83.5,93.0,90.0,9,13,2,true
+16,m,42,90,90,90.0,75.5,55.5,70.5,50.0,75.0,50.0,4,11,7,true
+18,f,31,90,95,92.5,89.5,90.0,86.0,81.0,89.0,88.0,10,9,3,true
+22,f,35,100,75,87.5,89.5,,71.0,80.0,88.0,80.0,13,8,20,true
+27,f,74,60,65,62.5,68.5,49.0,61.0,49.0,65.0,49.0,13,9,12,true
+28,f,61,80,20,50.0,71.0,63.0,31.0,72.5,64.5,70.5,15,14,2,true
+30,m,32,90,75,82.5,67.0,56.5,66.0,65.0,66.0,64.0,16,9,3,true
+33,m,62,45,90,67.5,54.0,37.0,65.0,81.5,62.0,61.0,14,9,9,true
+34,f,33,80,100,90.0,70.5,76.5,64.5,,68.0,76.5,14,12,10,true
+</pre></div></div>
+</div>
+<p>Very nice. Notice that by default Polars leaves an empty field for null values, and we do not need the <code class="docutils literal notranslate"><span class="pre">null_values</span></code> kwarg when we load in this CSV file.</p>
+</section>
+</section>
+<section id="Renaming-columns">
+<h2>Renaming columns<a class="headerlink" href="#Renaming-columns" title="Link to this heading"></a></h2>
+<p>You may be annoyed with the rather lengthy syntax of access column names and wish to change them. Actually, you probably do not want to do this. Explicit is better than implicit! And furthermore, high level plotting libraries, as we will soon see, often automatically use column names for axis labels. So, let’s instead lengthen a column name. Say we keep forgetting what ESS stands for an want to rename the ess column to “Epworth Sleepiness Scale.”</p>
+<p>Data frames have a nice <code class="docutils literal notranslate"><span class="pre">rename</span></code> method to do this. To rename the columns, we provide a dictionary where the keys are current column names and the corresponding values are the names we which to check them to. While we are at it, we will choose descriptive names for all three of the sleep quality indices.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a dictionary to rename columns</span>
+<span class="n">rename_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ess&quot;</span><span class="p">:</span> <span class="s2">&quot;Epworth Sleepiness Scale&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sci&quot;</span><span class="p">:</span> <span class="s2">&quot;Sleep Condition Indicator&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;psqi&quot;</span><span class="p">:</span> <span class="s2">&quot;Pittsburgh Sleep Quality Index&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Rename the columns</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">rename_dict</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 16)</small><table border="1" class="dataframe"><thead><tr><th>participant number</th><th>gender</th><th>age</th><th>correct hit percentage</th><th>correct reject percentage</th><th>percent correct</th><th>confidence when correct hit</th><th>confidence incorrect hit</th><th>confidence correct reject</th><th>confidence incorrect reject</th><th>confidence when correct</th><th>confidence when incorrect</th><th>Sleep Condition Indicator</th><th>Pittsburgh Sleep Quality Index</th><th>Epworth Sleepiness Scale</th><th>insomnia</th></tr><tr><td>i64</td><td>str</td><td>i64</td><td>i64</td><td>i64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>f64</td><td>i64</td><td>i64</td><td>i64</td><td>bool</td></tr></thead><tbody><tr><td>8</td><td>&quot;f&quot;</td><td>39</td><td>65</td><td>80</td><td>72.5</td><td>91.0</td><td>90.0</td><td>93.0</td><td>83.5</td><td>93.0</td><td>90.0</td><td>9</td><td>13</td><td>2</td><td>true</td></tr><tr><td>16</td><td>&quot;m&quot;</td><td>42</td><td>90</td><td>90</td><td>90.0</td><td>75.5</td><td>55.5</td><td>70.5</td><td>50.0</td><td>75.0</td><td>50.0</td><td>4</td><td>11</td><td>7</td><td>true</td></tr><tr><td>18</td><td>&quot;f&quot;</td><td>31</td><td>90</td><td>95</td><td>92.5</td><td>89.5</td><td>90.0</td><td>86.0</td><td>81.0</td><td>89.0</td><td>88.0</td><td>10</td><td>9</td><td>3</td><td>true</td></tr><tr><td>22</td><td>&quot;f&quot;</td><td>35</td><td>100</td><td>75</td><td>87.5</td><td>89.5</td><td>null</td><td>71.0</td><td>80.0</td><td>88.0</td><td>80.0</td><td>13</td><td>8</td><td>20</td><td>true</td></tr><tr><td>27</td><td>&quot;f&quot;</td><td>74</td><td>60</td><td>65</td><td>62.5</td><td>68.5</td><td>49.0</td><td>61.0</td><td>49.0</td><td>65.0</td><td>49.0</td><td>13</td><td>9</td><td>12</td><td>true</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section id="A-note-on-indexing-and-speed">
+<h2>A note on indexing and speed<a class="headerlink" href="#A-note-on-indexing-and-speed" title="Link to this heading"></a></h2>
+<p>As we have seen Boolean indexing is very convenient and fits nicely into a logical framework which allows us to extract data according to criteria we want. The trade-off is speed. Slicing by Boolean indexing is essentially doing a reverse lookup in a dictionary. We have to loop through all values to find keys that match. This is much slower than directly indexing. Compare the difference in speed for indexing the percent correct by participant number 42 by Boolean indexing versus direct indexing
+(it’s row 54).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean indexing:&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> df.filter(pl.col(&#39;participant number&#39;) == 42)[&#39;percent correct&#39;].item()
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Direct indexing:&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> df[54, &#39;percent correct&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Boolean indexing:
+140 μs ± 6.34 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+
+Direct indexing:
+1.64 μs ± 12.4 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+</pre></div></div>
+</div>
+<p>The speed difference is stark, differing by almost two orders of magnitude. For larger data sets, or for analyses that require repeated indexing, this speed consideration may be important. However, Polars does optimization that takes full advantage of parallelization that will accelerate Boolean indexing.</p>
+</section>
+<section id="Computing-environment">
+<h2>Computing environment<a class="headerlink" href="#Computing-environment" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="o">%</span><span class="k">watermark</span> -v -p numpy,polars,jupyterlab
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Python implementation: CPython
+Python version       : 3.12.4
+IPython version      : 8.25.0
+
+numpy     : 1.26.4
+polars    : 1.2.1
+jupyterlab: 4.0.13
+
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Lesson 1: Polars and split-apply-combine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tidy_data.html" class="btn btn-neutral float-right" title="Tidy data and split-apply-combine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x136726000> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

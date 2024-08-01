@@ -1,0 +1,12 @@
+.. _parametric:
+
+******************************************************
+Lesson 5: Generative modeling and parametric inference
+******************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   why_models
+   statistical_modeling
+   building_a_generative_model

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 3.1: Exploring and sampling probability distributions &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 3.2: Simulating distributions" href="e03.2.html" />
+    <link rel="prev" title="Exercise 3. Working with probability distributions" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 3. Working with probability distributions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 3.1: Exploring and sampling probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e03.2.html">Exercise 3.2: Simulating distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 3. Working with probability distributions</a></li>
+      <li class="breadcrumb-item active">Exercise 3.1: Exploring and sampling probability distributions</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part1/exercises/03/e03.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part1/exercises/03/e03.1.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exercise-3.1:-Exploring-and-sampling-probability-distributions">
+<h1>Exercise 3.1: Exploring and sampling probability distributions<a class="headerlink" href="#Exercise-3.1:-Exploring-and-sampling-probability-distributions" title="Link to this heading"></a></h1>
+<hr /><div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+
+<span class="kn">import</span> <span class="nn">iqplot</span>
+
+<span class="kn">import</span> <span class="nn">bokeh.io</span>
+<span class="kn">import</span> <span class="nn">bokeh.plotting</span>
+<span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<style>
+    .bk-notebook-logo {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAOkSURBVDiNjZRtaJVlGMd/1/08zzln5zjP1LWcU9N0NkN8m2CYjpgQYQXqSs0I84OLIC0hkEKoPtiH3gmKoiJDU7QpLgoLjLIQCpEsNJ1vqUOdO7ppbuec5+V+rj4ctwzd8IIbbi6u+8f1539dt3A78eXC7QizUF7gyV1fD1Yqg4JWz84yffhm0qkFqBogB9rM8tZdtwVsPUhWhGcFJngGeWrPzHm5oaMmkfEg1usvLFyc8jLRqDOMru7AyC8saQr7GG7f5fvDeH7Ej8CM66nIF+8yngt6HWaKh7k49Soy9nXurCi1o3qUbS3zWfrYeQDTB/Qj6kX6Ybhw4B+bOYoLKCC9H3Nu/leUTZ1JdRWkkn2ldcCamzrcf47KKXdAJllSlxAOkRgyHsGC/zRday5Qld9DyoM4/q/rUoy/CXh3jzOu3bHUVZeU+DEn8FInkPBFlu3+nW3Nw0mk6vCDiWg8CeJaxEwuHS3+z5RgY+YBR6V1Z1nxSOfoaPa4LASWxxdNp+VWTk7+4vzaou8v8PN+xo+KY2xsw6une2frhw05CTYOmQvsEhjhWjn0bmXPjpE1+kplmmkP3suftwTubK9Vq22qKmrBhpY4jvd5afdRA3wGjFAgcnTK2s4hY0/GPNIb0nErGMCRxWOOX64Z8RAC4oCXdklmEvcL8o0BfkNK4lUg9HTl+oPlQxdNo3Mg4Nv175e/1LDGzZen30MEjRUtmXSfiTVu1kK8W4txyV6BMKlbgk3lMwYCiusNy9fVfvvwMxv8Ynl6vxoByANLTWplvuj/nF9m2+PDtt1eiHPBr1oIfhCChQMBw6Aw0UulqTKZdfVvfG7VcfIqLG9bcldL/+pdWTLxLUy8Qq38heUIjh4XlzZxzQm19lLFlr8vdQ97rjZVOLf8nclzckbcD4wxXMidpX30sFd37Fv/GtwwhzhxGVAprjbg0gCAEeIgwCZyTV2Z1REEW8O4py0wsjeloKoMr6iCY6dP92H6Vw/oTyICIthibxjm/DfN9lVz8IqtqKYLUXfoKVMVQVVJOElGjrnnUt9T9wbgp8AyYKaGlqingHZU/uG2NTZSVqwHQTWkx9hxjkpWDaCg6Ckj5qebgBVbT3V3NNXMSiWSDdGV3hrtzla7J+duwPOToIg42ChPQOQjspnSlp1V+Gjdged7+8UN5CRAV7a5EdFNwCjEaBR27b3W890TE7g24NAP/mMDXRWrGoFPQI9ls/MWO2dWFAar/xcOIImbbpA3zgAAAABJRU5ErkJggg==);
+    }
+</style>
+<div>
+    <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
+    <span id="c953030c-760c-4af8-9c32-f5e807d5f92b">Loading BokehJS ...</span>
+</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+'use strict';
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  const force = true;
+
+  if (typeof root._bokeh_onload_callbacks === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+const JS_MIME_TYPE = 'application/javascript';
+  const HTML_MIME_TYPE = 'text/html';
+  const EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  const CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    const script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    function drop(id) {
+      const view = Bokeh.index.get_by_id(id)
+      if (view != null) {
+        view.model.document.clear()
+        Bokeh.index.delete(view)
+      }
+    }
+
+    const cell = handle.cell;
+
+    const id = cell.output_area._bokeh_element_id;
+    const server_id = cell.output_area._bokeh_server_id;
+
+    // Clean up Bokeh references
+    if (id != null) {
+      drop(id)
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      const cmd_clean = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd_clean, {
+        iopub: {
+          output: function(msg) {
+            const id = msg.content.text.trim()
+            drop(id)
+          }
+        }
+      });
+      // Destroy server and session
+      const cmd_destroy = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd_destroy);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    const output_area = handle.output_area;
+    const output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!Object.prototype.hasOwnProperty.call(output.data, EXEC_MIME_TYPE))) {
+      return
+    }
+
+    const toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      const bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      const script_attrs = bk_div.children[0].attributes;
+      for (let i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+        toinsert[toinsert.length - 1].firstChild.textContent = bk_div.children[0].textContent
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      const toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      const props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    const events = require('base/js/events');
+    const OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  const NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded(error = null) {
+    const el = document.getElementById("c953030c-760c-4af8-9c32-f5e807d5f92b");
+    if (el != null) {
+      const html = (() => {
+        if (typeof root.Bokeh === "undefined") {
+          if (error == null) {
+            return "BokehJS is loading ...";
+          } else {
+            return "BokehJS failed to load.";
+          }
+        } else {
+          const prefix = `BokehJS ${root.Bokeh.version}`;
+          if (error == null) {
+            return `${prefix} successfully loaded.`;
+          } else {
+            return `${prefix} <b>encountered errors</b> while loading and may not function as expected.`;
+          }
+        }
+      })();
+      el.innerHTML = html;
+
+      if (error != null) {
+        const wrapper = document.createElement("div");
+        wrapper.style.overflow = "auto";
+        wrapper.style.height = "5em";
+        wrapper.style.resize = "vertical";
+        const content = document.createElement("div");
+        content.style.fontFamily = "monospace";
+        content.style.whiteSpace = "pre-wrap";
+        content.style.backgroundColor = "rgb(255, 221, 221)";
+        content.textContent = error.stack ?? error.toString();
+        wrapper.append(content);
+        el.append(wrapper);
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(() => display_loaded(error), 100);
+    }
+  }
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) {
+        if (callback != null)
+          callback();
+      });
+    } finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.debug("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(css_urls, js_urls, callback) {
+    if (css_urls == null) css_urls = [];
+    if (js_urls == null) js_urls = [];
+
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.debug("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.debug("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = css_urls.length + js_urls.length;
+
+    function on_load() {
+      root._bokeh_is_loading--;
+      if (root._bokeh_is_loading === 0) {
+        console.debug("Bokeh: all BokehJS libraries/stylesheets loaded");
+        run_callbacks()
+      }
+    }
+
+    function on_error(url) {
+      console.error("failed to load " + url);
+    }
+
+    for (let i = 0; i < css_urls.length; i++) {
+      const url = css_urls[i];
+      const element = document.createElement("link");
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.rel = "stylesheet";
+      element.type = "text/css";
+      element.href = url;
+      console.debug("Bokeh: injecting link tag for BokehJS stylesheet: ", url);
+      document.body.appendChild(element);
+    }
+
+    for (let i = 0; i < js_urls.length; i++) {
+      const url = js_urls[i];
+      const element = document.createElement('script');
+      element.onload = on_load;
+      element.onerror = on_error.bind(null, url);
+      element.async = false;
+      element.src = url;
+      console.debug("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.head.appendChild(element);
+    }
+  };
+
+  function inject_raw_css(css) {
+    const element = document.createElement("style");
+    element.appendChild(document.createTextNode(css));
+    document.body.appendChild(element);
+  }
+
+  const js_urls = ["https://cdn.bokeh.org/bokeh/release/bokeh-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.4.1.min.js", "https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.4.1.min.js"];
+  const css_urls = [];
+
+  const inline_js = [    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+function(Bokeh) {
+    }
+  ];
+
+  function run_inline_js() {
+    if (root.Bokeh !== undefined || force === true) {
+      try {
+            for (let i = 0; i < inline_js.length; i++) {
+      inline_js[i].call(root, root.Bokeh);
+    }
+
+      } catch (error) {display_loaded(error);throw error;
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      const cell = $(document.getElementById("c953030c-760c-4af8-9c32-f5e807d5f92b")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.debug("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(css_urls, js_urls, function() {
+      console.debug("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+<hr><p>NumPy offers tools for drawing random number out of distributions. The <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> module allows convenient calculation of probability density functions, cumulative distribution functions, etc., of many named probability distributions. For example, we can draw samples out of a standard Normal distribution using NumPy and can then plot a histogram of the results to get that familiar, beautifully shaped curve.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instantiate random number generator</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+
+<span class="c1"># Draw 100,000 Normal samples</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+
+<span class="c1"># Plot the histogram</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">iqplot</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">rug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="ec5e4c52-ba23-4ea0-9797-ac3a3adb9d30" data-root-id="p1002" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"64bfe073-3d30-49bb-9673-3d0003b7788d":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Figure","id":"p1002","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1004"},"y_range":{"type":"object","name":"DataRange1d","id":"p1001","attributes":{"start":0}},"x_scale":{"type":"object","name":"LinearScale","id":"p1011"},"y_scale":{"type":"object","name":"LinearScale","id":"p1012"},"title":{"type":"object","name":"Title","id":"p1009"},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1040","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1034","attributes":{"selected":{"type":"object","name":"Selection","id":"p1035","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1036"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"TB081sD7D8BMHTzWwPsPwJZVwDZgmQ7AllXANmCZDsDgjUSX/zYNwOCNRJf/Ng3AKsbI957UC8Aqxsj3ntQLwHT+TFg+cgrAdP5MWD5yCsC+NtG43Q8JwL420bjdDwnACG9VGX2tB8AIb1UZfa0HwFKn2XkcSwbAUqfZeRxLBsCc313au+gEwJzfXdq76ATA5hfiOluGA8DmF+I6W4YDwDBQZpv6IwLAMFBmm/ojAsB6iOr7mcEAwHqI6vuZwQDAhoHduHK+/r+Ggd24cr7+vxry5Xmx+fu/GvLlebH5+7+uYu468DT5v65i7jrwNPm/QtP2+y5w9r9C0/b7LnD2v9ZD/7xtq/O/1kP/vG2r879qtAd+rObwv2q0B36s5vC//EkgftZD7L/8SSB+1kPsvyQrMQBUuua/JCsxAFS65r9MDEKC0TDhv0wMQoLRMOG/6NqlCJ5O17/o2qUInk7Xv3A6jxkyd8i/cDqPGTJ3yL+A+JUOQYmSv4D4lQ5BiZK/YLzp1eHUwz9gvOnV4dTDP+Ab0+Z1/dQ/4BvT5nX91D/IrFhxPQjgP8isWHE9COA/oMtH77+R5T+gy0fvv5HlP3jqNm1CG+s/eOo2bUIb6z+oBJN1YlLwP6gEk3ViUvA/FJSKtCMX8z8UlIq0IxfzP4AjgvPk2/U/gCOC8+Tb9T/ssnkypqD4P+yyeTKmoPg/WEJxcWdl+z9YQnFxZ2X7P8TRaLAoKv4/xNFosCgq/j+YMLD3dHcAQJgwsPd0dwBATvgrl9XZAUBO+CuX1dkBQATApzY2PANABMCnNjY8A0C6hyPWlp4EQLqHI9aWngRAcE+fdfcABkBwT5919wAGQCYXGxVYYwdAJhcbFVhjB0Dc3pa0uMUIQNzelrS4xQhAkqYSVBkoCkCSphJUGSgKQEhujvN5igtASG6O83mKC0D+NQqT2uwMQP41CpPa7AxAtP2FMjtPDkC0/YUyO08OQGrFAdKbsQ9AasUB0puxD0CQxr44/okQQJDGvjj+iRBAbKp8iC47EUBsqnyILjsRQEaOOthe7BFARo462F7sEUAjcvgnj50SQCNy+CePnRJA"},"shape":[102],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAAAAC3IUV8pEw+P7chRXykTD4/StkzXXu5Jj9K2TNde7kmP/fi5oUcC1E/9+LmhRwLUT/quQRitxhQP+q5BGK3GFA/StkzXXu5Zj9K2TNde7lmP3731xdPhHE/fvfXF0+EcT/DxELLSEB2P8PEQstIQHY//hgRTf/Dgz/+GBFN/8ODP/fi5oUcC5E/9+LmhRwLkT9GARFkatyZP0YBEWRq3Jk/2bj/REFJoj/ZuP9EQUmiP7ipcHkU56s/uKlweRTnqz+LtCi/Kwi0P4u0KL8rCLQ/7D/pNngXuT/sP+k2eBe5P7RY7jyDzsA/tFjuPIPOwD/WhbgsjtDFP9aFuCyO0MU/uvlndbUpyz+6+Wd1tSnLPwfTfkWsB9A/B9N+RawH0D+fhgt+V2vSP5+GC35Xa9I/ImOhdBEn1T8iY6F0ESfVP7txUsxeJtc/u3FSzF4m1z+QI53q47bYP5Ajnerjttg/lJlWbfeu2T+UmVZt967ZP+2lOnkbDNk/7aU6eRsM2T9T2ydDTsHYP1PbJ0NOwdg/xMlWTg6F1z/EyVZODoXXP01bRrqvP9U/TVtGuq8/1T/nPAaISNfSP+c8BohI19I/O8gD7lfj0D87yAPuV+PQPxZx2ODrJcs/FnHY4Oslyz8QAmS1M3fGPxACZLUzd8Y/b72IlgO/wT9vvYiWA7/BP0F66oNwEbo/QXrqg3ARuj8b12YRUhe0PxvXZhFSF7Q/gyzA0/hwrT+DLMDT+HCtPykASTW3CaU/KQBJNbcJpT/EB7U1qb+aP8QHtTWpv5o/Poh0Miekkj8+iHQyJ6SSP8PEQstIQIY/w8RCy0hAhj8+NjYO18V+Pz42Ng7XxX4/tFjuPIPOcD+0WO48g85wPzywUTkWx2U/PLBRORbHZT/quQRitxhQP+q5BGK3GFA/ZCv4pEWeWD9kK/ikRZ5YP/fi5oUcC0E/9+LmhRwLQT8SNavN5u8yPxI1q83m7zI/tyFFfKRMHj+3IUV8pEweP4whRXykTA4/jCFFfKRMDj8AAAAAAAAAAAAAAAAAAAAAXyFFfKRMDj9fIUV8pEwOPwAAAAAAAAAA"},"shape":[102],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1041","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1042"}}},"glyph":{"type":"object","name":"Line","id":"p1037","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1038","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1039","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1010","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1023"},{"type":"object","name":"WheelZoomTool","id":"p1024","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1025","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1026","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1031"},{"type":"object","name":"ResetTool","id":"p1032"},{"type":"object","name":"HelpTool","id":"p1033"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1018","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1019","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1020"},"axis_label":"density","major_label_policy":{"type":"object","name":"AllLabels","id":"p1021"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1013","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1014","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1015"},"axis_label":"x","major_label_policy":{"type":"object","name":"AllLabels","id":"p1016"}}}],"center":[{"type":"object","name":"Grid","id":"p1017","attributes":{"axis":{"id":"p1013"}}},{"type":"object","name":"Grid","id":"p1022","attributes":{"dimension":1,"axis":{"id":"p1018"}}}],"frame_width":375,"frame_height":275}}]}};
+  const render_items = [{"docid":"64bfe073-3d30-49bb-9673-3d0003b7788d","roots":{"p1002":"ec5e4c52-ba23-4ea0-9797-ac3a3adb9d30"},"root_ids":["p1002"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+<p>We could use SciPy to evaluate the PDF, which can be a pain to code up. It’s formula is</p>
+<p><span class="math">\begin{align}
+f(x;\mu, \sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}\,\mathrm{e}^{-(x-\mu)^2/2\sigma^2}.
+\end{align}</span></p>
+<p>Instead of coding this up, we can use SciPy!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># x-values for plotting.</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="c1"># Compute PDF using scipy.stats</span>
+<span class="n">pdf</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Add to the plot</span>
+<span class="n">p</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">line_color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div id="a5f2f8ea-4e34-4a02-92e8-8bab60d5a6b7" data-root-id="p1002" style="display: contents;"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="output_javascript"></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+  const docs_json = {"65cc9f89-6e84-4fe0-9039-87bcbae96c4f":{"version":"3.4.1","title":"Bokeh Application","roots":[{"type":"object","name":"Figure","id":"p1002","attributes":{"x_range":{"type":"object","name":"DataRange1d","id":"p1004"},"y_range":{"type":"object","name":"DataRange1d","id":"p1001","attributes":{"start":0}},"x_scale":{"type":"object","name":"LinearScale","id":"p1011"},"y_scale":{"type":"object","name":"LinearScale","id":"p1012"},"title":{"type":"object","name":"Title","id":"p1009"},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p1040","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1034","attributes":{"selected":{"type":"object","name":"Selection","id":"p1035","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1036"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"TB081sD7D8BMHTzWwPsPwJZVwDZgmQ7AllXANmCZDsDgjUSX/zYNwOCNRJf/Ng3AKsbI957UC8Aqxsj3ntQLwHT+TFg+cgrAdP5MWD5yCsC+NtG43Q8JwL420bjdDwnACG9VGX2tB8AIb1UZfa0HwFKn2XkcSwbAUqfZeRxLBsCc313au+gEwJzfXdq76ATA5hfiOluGA8DmF+I6W4YDwDBQZpv6IwLAMFBmm/ojAsB6iOr7mcEAwHqI6vuZwQDAhoHduHK+/r+Ggd24cr7+vxry5Xmx+fu/GvLlebH5+7+uYu468DT5v65i7jrwNPm/QtP2+y5w9r9C0/b7LnD2v9ZD/7xtq/O/1kP/vG2r879qtAd+rObwv2q0B36s5vC//EkgftZD7L/8SSB+1kPsvyQrMQBUuua/JCsxAFS65r9MDEKC0TDhv0wMQoLRMOG/6NqlCJ5O17/o2qUInk7Xv3A6jxkyd8i/cDqPGTJ3yL+A+JUOQYmSv4D4lQ5BiZK/YLzp1eHUwz9gvOnV4dTDP+Ab0+Z1/dQ/4BvT5nX91D/IrFhxPQjgP8isWHE9COA/oMtH77+R5T+gy0fvv5HlP3jqNm1CG+s/eOo2bUIb6z+oBJN1YlLwP6gEk3ViUvA/FJSKtCMX8z8UlIq0IxfzP4AjgvPk2/U/gCOC8+Tb9T/ssnkypqD4P+yyeTKmoPg/WEJxcWdl+z9YQnFxZ2X7P8TRaLAoKv4/xNFosCgq/j+YMLD3dHcAQJgwsPd0dwBATvgrl9XZAUBO+CuX1dkBQATApzY2PANABMCnNjY8A0C6hyPWlp4EQLqHI9aWngRAcE+fdfcABkBwT5919wAGQCYXGxVYYwdAJhcbFVhjB0Dc3pa0uMUIQNzelrS4xQhAkqYSVBkoCkCSphJUGSgKQEhujvN5igtASG6O83mKC0D+NQqT2uwMQP41CpPa7AxAtP2FMjtPDkC0/YUyO08OQGrFAdKbsQ9AasUB0puxD0CQxr44/okQQJDGvjj+iRBAbKp8iC47EUBsqnyILjsRQEaOOthe7BFARo462F7sEUAjcvgnj50SQCNy+CePnRJA"},"shape":[102],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAAAAAC3IUV8pEw+P7chRXykTD4/StkzXXu5Jj9K2TNde7kmP/fi5oUcC1E/9+LmhRwLUT/quQRitxhQP+q5BGK3GFA/StkzXXu5Zj9K2TNde7lmP3731xdPhHE/fvfXF0+EcT/DxELLSEB2P8PEQstIQHY//hgRTf/Dgz/+GBFN/8ODP/fi5oUcC5E/9+LmhRwLkT9GARFkatyZP0YBEWRq3Jk/2bj/REFJoj/ZuP9EQUmiP7ipcHkU56s/uKlweRTnqz+LtCi/Kwi0P4u0KL8rCLQ/7D/pNngXuT/sP+k2eBe5P7RY7jyDzsA/tFjuPIPOwD/WhbgsjtDFP9aFuCyO0MU/uvlndbUpyz+6+Wd1tSnLPwfTfkWsB9A/B9N+RawH0D+fhgt+V2vSP5+GC35Xa9I/ImOhdBEn1T8iY6F0ESfVP7txUsxeJtc/u3FSzF4m1z+QI53q47bYP5Ajnerjttg/lJlWbfeu2T+UmVZt967ZP+2lOnkbDNk/7aU6eRsM2T9T2ydDTsHYP1PbJ0NOwdg/xMlWTg6F1z/EyVZODoXXP01bRrqvP9U/TVtGuq8/1T/nPAaISNfSP+c8BohI19I/O8gD7lfj0D87yAPuV+PQPxZx2ODrJcs/FnHY4Oslyz8QAmS1M3fGPxACZLUzd8Y/b72IlgO/wT9vvYiWA7/BP0F66oNwEbo/QXrqg3ARuj8b12YRUhe0PxvXZhFSF7Q/gyzA0/hwrT+DLMDT+HCtPykASTW3CaU/KQBJNbcJpT/EB7U1qb+aP8QHtTWpv5o/Poh0Miekkj8+iHQyJ6SSP8PEQstIQIY/w8RCy0hAhj8+NjYO18V+Pz42Ng7XxX4/tFjuPIPOcD+0WO48g85wPzywUTkWx2U/PLBRORbHZT/quQRitxhQP+q5BGK3GFA/ZCv4pEWeWD9kK/ikRZ5YP/fi5oUcC0E/9+LmhRwLQT8SNavN5u8yPxI1q83m7zI/tyFFfKRMHj+3IUV8pEweP4whRXykTA4/jCFFfKRMDj8AAAAAAAAAAAAAAAAAAAAAXyFFfKRMDj9fIUV8pEwOPwAAAAAAAAAA"},"shape":[102],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1041","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1042"}}},"glyph":{"type":"object","name":"Line","id":"p1037","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1038","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1039","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"#1f77b3","line_alpha":0.2,"line_width":2}}}},{"type":"object","name":"GlyphRenderer","id":"p1051","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p1045","attributes":{"selected":{"type":"object","name":"Selection","id":"p1046","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p1047"},"data":{"type":"map","entries":[["x",{"type":"ndarray","array":{"type":"bytes","data":"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"},"shape":[200],"dtype":"float64","order":"little"}],["y",{"type":"ndarray","array":{"type":"bytes","data":"QP3IZGnxuD5mRtNUfQPAPj2I5UuKgsQ+TPg3YtIzyj5NTTmZ+rHQPkNyLtm1ONU+1xhaTyzo2j5qf5T4xAPhPqDKqe7jduU+JnRFk24C6z55BsxSYPPwPi2JuoHlOPU++51wHtSA+j5soJZ/54EAPx3rLGvmggQ/m5lg7Q1sCT923NSL2W0PP8GuQoz2YBM/RcCuNEzWFz8c+ijURz8dP4zBJkW35SE/qZ4hQ0TZJT9+M41G7ZoqP1k42s9gKDA/qbQuin+TMz80TlSWc6g3P+uJnXnUhDw/CRiJ5VclQT9B1UmBiZBEPz/R89FPmkg/TbU4tBRcTT+q+Y1xV3lRP31iKvlcv1Q/2lHW7XiSWD9NXzqlSAddPy0iomZsGmE/OFyg0WoaZD+sxNlQ3ZFnP6R+CWKAkGs/S9Owl9ITcD94ijLaIrVyP2ChHj2LtnU//4FtnUojeT8Y4hXWiQd9P6u2IGovuIA/rA/od+Y1gz9R8kYNYQSGP7SjhDuIK4k/M6VZ9LGzjD9P3InMzFKQP79MHg8rhZI/0s7ayqb1lD+Dua77EqmXP86gFYRZpJo/XxqfpHDsnT+afex4J8OgPxIKw+Ruu6I/ct6sJ3XhpD9S6buAijenP9wwz/7fv6k/++B/DH58rD/19iN7Om+vP1NztxPXTLE/hI58K5X+sj8zn0f5Vs20P1mXvGJtubY/89rmdvXCuD9S2J9W0+m6PySvPWatLb0/WoOC4ueNvz9295150ATBPz6O+qrWT8I/0z5B3Uqnwz8e1P10SgrFP6bsdGfLd8Y/cGCDOZzuxz8iNPGBZG3JPzCnF/al8so/0E2qBb58zD+bnycI6AnOP4bX9/s/mM8/+KBO6uKS0D+kUk6pMFjRPyQdfy7zGtI/1dPD6Aza0j+8JhNfW5TTP8Hfv/m5SNQ/k58q7wT21D9BHrNJHJvVP4kP6vvmNtY/K+1h91XI1j/QjRE6Z07XPyXUC8YoyNc/U8Fed7s02D9/JTusVZPYP+XGFLRF49g/IEE3+/Mj2T8XlVLp5FTZP0Bevmq6ddk/rm2dHTWG2T+ubZ0dNYbZPz9evmq6ddk/FpVS6eRU2T8eQTf78yPZP+PGFLRF49g/fSU7rFWT2D9RwV53uzTYPyPUC8YoyNc/zI0ROmdO1z8p7WH3VcjWP4cP6vvmNtY/Ph6zSRyb1T+QnyrvBPbUP77fv/m5SNQ/uSYTX1uU0z/S08PoDNrSPyAdfy7zGtI/oFJOqTBY0T/0oE7q4pLQP37X9/s/mM8/lp8nCOgJzj/MTaoFvnzMPy2nF/al8so/HjTxgWRtyT9sYIM5nO7HP6LsdGfLd8Y/GtT9dEoKxT/QPkHdSqfDPzuO+qrWT8I/c/ededAEwT9Vg4Li542/Px+vPWatLb0/TdifVtPpuj/u2uZ29cK4P1WXvGJtubY/L59H+VbNtD+Ajnwrlf6yP09ztxPXTLE/7fYjezpvrz/14H8MfnysP9Ywz/7fv6k/TOm7gIo3pz9q3qwndeGkPwsKw+Ruu6I/ln3seCfDoD9YGp+kcOydP8igFYRZpJo/fbmu+xKplz/NztrKpvWUP7tMHg8rhZI/S9yJzMxSkD8opVn0sbOMP6qjhDuIK4k/TPJGDWEEhj+lD+h35jWDP6W2IGovuIA/EeIV1okHfT/zgW2dSiN5P1ShHj2LtnU/b4oy2iK1cj8/07CX0hNwP6R+CWKAkGs/m8TZUN2RZz84XKDRahpkPxwiomZsGmE/TV86pUgHXT/BUdbteJJYP31iKvlcv1Q/mPmNcVd5UT9NtTi0FFxNPy3R89FPmkg/QdVJgYmQRD/8F4nlVyVBP+uJnXnUhDw/HE5UlnOoNz+ptC6Kf5MzP0k42s9gKDA/fjONRu2aKj+TniFDRNklP4zBJkW35SE/APoo1Ec/HT9FwK40TNYXP66uQoz2YBM/dtzUi9ltDz91mWDtDWwJPx3rLGvmggQ/VKCWf+eBAD/7nXAe1ID6PhiJuoHlOPU+eQbMUmDz8D79c0WTbgLrPqDKqe7jduU+WX+U+MQD4T7XGFpPLOjaPiRyLtm1ONU+TU05mfqx0D4k+Ddi0jPKPj2I5UuKgsQ+TkbTVH0DwD5A/chkafG4Pg=="},"shape":[200],"dtype":"float64","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p1052","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p1053"}}},"glyph":{"type":"object","name":"Line","id":"p1048","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"orange","line_width":2}},"nonselection_glyph":{"type":"object","name":"Line","id":"p1049","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"orange","line_alpha":0.1,"line_width":2}},"muted_glyph":{"type":"object","name":"Line","id":"p1050","attributes":{"x":{"type":"field","field":"x"},"y":{"type":"field","field":"y"},"line_color":"orange","line_alpha":0.2,"line_width":2}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p1010","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p1023"},{"type":"object","name":"WheelZoomTool","id":"p1024","attributes":{"renderers":"auto"}},{"type":"object","name":"BoxZoomTool","id":"p1025","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p1026","attributes":{"syncable":false,"level":"overlay","visible":false,"left":{"type":"number","value":"nan"},"right":{"type":"number","value":"nan"},"top":{"type":"number","value":"nan"},"bottom":{"type":"number","value":"nan"},"left_units":"canvas","right_units":"canvas","top_units":"canvas","bottom_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p1031"},{"type":"object","name":"ResetTool","id":"p1032"},{"type":"object","name":"HelpTool","id":"p1033"}]}},"toolbar_location":"above","left":[{"type":"object","name":"LinearAxis","id":"p1018","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1019","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1020"},"axis_label":"density","major_label_policy":{"type":"object","name":"AllLabels","id":"p1021"}}}],"below":[{"type":"object","name":"LinearAxis","id":"p1013","attributes":{"ticker":{"type":"object","name":"BasicTicker","id":"p1014","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p1015"},"axis_label":"x","major_label_policy":{"type":"object","name":"AllLabels","id":"p1016"}}}],"center":[{"type":"object","name":"Grid","id":"p1017","attributes":{"axis":{"id":"p1013"}}},{"type":"object","name":"Grid","id":"p1022","attributes":{"dimension":1,"axis":{"id":"p1018"}}}],"frame_width":375,"frame_height":275}}]}};
+  const render_items = [{"docid":"65cc9f89-6e84-4fe0-9039-87bcbae96c4f","roots":{"p1002":"a5f2f8ea-4e34-4a02-92e8-8bab60d5a6b7"},"root_ids":["p1002"]}];
+  void root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    let attempts = 0;
+    const timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+<p>The usage of NumPy and SciPy for these distributions can get tricky because distributions can be parametrized in different ways. As an example, instead of parametrizing the Normal distribution with <span class="math notranslate nohighlight">\(\sigma\)</span>, we could parametrize it with <span class="math notranslate nohighlight">\(\tau \equiv 1/\sigma\)</span>. In this case, the PDF is</p>
+<p><span class="math">\begin{align}
+f(x;\mu, \tau) = \frac{\tau}{\sqrt{2\pi}}\,\mathrm{e}^{-\tau^2(x-\mu)^2/2}.
+\end{align}</span></p>
+<p>It is important to keep everything straight. To do this, I generally use the parametrizations used by the <a class="reference external" href="https://mc-stan.org/">Stan software package</a>. To help me keep things straight, I built the <a class="reference external" href="https://distribution-explorer.github.io/">Probability Distribution Explorer</a>. I encourage you to spend some time with the Distribution Explorer to familiarize yourself with distributions and how to sample out of them with NumPy and compute PDFs, PMFs, and CDFs with <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p>
+<p><strong>a)</strong> Draw 100,000 samples out of a Gamma distribution with parameters <span class="math notranslate nohighlight">\(\alpha = 5\)</span> and <span class="math notranslate nohighlight">\(\beta = 2\)</span>, and plot a histogram. Then, plot the PDF of the Gamma distribution with these parameters.</p>
+<p><strong>b)</strong> Draw 100,000 samples out of a Negative Bionomial distribution with parameters <span class="math notranslate nohighlight">\(\alpha = 20\)</span> and <span class="math notranslate nohighlight">\(\beta = 2\)</span> and plot a spike plot (You should use the <code class="docutils literal notranslate"><span class="pre">fraction=True</span></code> kwarg with <code class="docutils literal notranslate"><span class="pre">iqplot.spike()</span></code>). Then, plot the PMF of the Negative Binomial distribution with these parameters.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Exercise 3. Working with probability distributions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="e03.2.html" class="btn btn-neutral float-right" title="Exercise 3.2: Simulating distributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x136547590> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

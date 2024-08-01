@@ -1,0 +1,11 @@
+*************************************************************
+Lesson 4: Nonparametric inference with hacker stats
+*************************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   confidence_intervals
+   intro_bootstrap.ipynb
+   pairs_bootstrap_correlation.ipynb
+   ecdf_conf_int.ipynb

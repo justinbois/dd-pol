@@ -1,0 +1,10 @@
+*****************************************
+Exercise 6: Maximum likelihood estimation
+*****************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e06.1.ipynb
+   e06.2.ipynb
+   e06.3.ipynb

@@ -1,0 +1,9 @@
+**************************************************
+Exercise 3. Working with probability distributions
+**************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e03.1.ipynb
+   e03.2.ipynb

@@ -1,0 +1,11 @@
+*******************************************
+Exercise 1. Pandas and split-apply-combine
+*******************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   e01.1.ipynb
+   e01.2.ipynb
+   e01.3.ipynb
+   e01.4.ipynb

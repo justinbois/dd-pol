@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Statistical modeling &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Building a generative model" href="building_a_generative_model.html" />
+    <link rel="prev" title="Why models?" href="why_models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 5: Generative modeling and parametric inference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="why_models.html">Why models?</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Statistical modeling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cartoon-model">Cartoon model.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mathematical-model">Mathematical model.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statistical-model">Statistical model.</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="building_a_generative_model.html">Building a generative model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+      <li class="breadcrumb-item active">Statistical modeling</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/05/statistical_modeling.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statistical-modeling">
+<h1>Statistical modeling<a class="headerlink" href="#statistical-modeling" title="Link to this heading"></a></h1>
+<p>As scientists, we often have in mind a <strong>generative process</strong> by which
+the data we measure are produced. For example, we might expect the
+optical density of a solution of <em>E. coli</em> in LB media to grow
+exponentially over time, with some small measurement error. To model
+this, we specify a model for how bacteria grow and a probability distribution to describe the variation in the measurements. We can then use the data and statistical inference to learn something about the parameters in the model.</p>
+<p>You may have noticed the terms “cartoon model,” “mathematical model,”
+and “statistical model” in the cycle of science we introduced in the first lecture.</p>
+<figure class="align-default">
+<img alt="Cycle of science" src="../../_images/cycle_of_science.png" />
+</figure>
+<p>Being biologists who are doing data analysis, the word “model” is used to mean
+at least three different things in our work (neglecting “model organism,” “model <em>in vitro</em> system,” etc.). So, for the purposes of this course,
+we need to clearly define what we are talking about when we use the word
+“model.”</p>
+<section id="cartoon-model">
+<h2>Cartoon model.<a class="headerlink" href="#cartoon-model" title="Link to this heading"></a></h2>
+<p>These models are the typical cartoons we see in text books or in
+discussion sections of biological papers. They are a sketch of what we
+think might be happening in a system of interest, but they do not
+provide quantifiable predictions.</p>
+</section>
+<section id="mathematical-model">
+<h2>Mathematical model.<a class="headerlink" href="#mathematical-model" title="Link to this heading"></a></h2>
+<p>These models give quantifiable predictions that must be true if the
+hypothesis (which is sketched as a cartoon model) is true. In many
+cases, getting to predictions from a hypothesis is easy. For example, if
+I hypothesize that protein A binds protein B, a quantifiable prediction
+would be that they are colocalized when I image them. However, sometimes
+harder work and deeper thought is needed to generate quantitative
+predictions. This often requires “mathematizing” the cartoon. This is
+how a mathematical model is derived from a cartoon model. Oftentimes
+when biological physicists refer to a “model,” they are talking about
+what we are calling a mathematical model. In the bacterial growth
+example, the mathematical model is that they grow exponentially.</p>
+</section>
+<section id="statistical-model">
+<h2>Statistical model.<a class="headerlink" href="#statistical-model" title="Link to this heading"></a></h2>
+<p>A statistical model goes a step beyond the mathematical model and uses a
+probability distribution to describe any measurement error, or
+stochastic noise in the system being measured. If <span class="math notranslate nohighlight">\(y\)</span> is the data set and <span class="math notranslate nohighlight">\(\theta\)</span> is a set of parameters involved in generating the data, this essentially means
+specifying <span class="math notranslate nohighlight">\(f(y; \theta)\)</span> (and <span class="math notranslate nohighlight">\(g(\theta)\)</span> in the
+Bayesian case, which we will get to next term). The statistical models we will use are <strong>generative</strong> in
+that the encompass the cartoon and mathematical models and any noise to
+use probability to describe how the data are generated.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="why_models.html" class="btn btn-neutral float-left" title="Why models?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="building_a_generative_model.html" class="btn btn-neutral float-right" title="Building a generative model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Jul 31, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x136796bd0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>
