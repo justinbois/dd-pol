@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setting up computing resources &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+  <title>Lesson 0: Setting up computing resources &mdash; PoL workshop on statistical inference, part 1  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -55,7 +55,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Setting up computing resources</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lesson 0: Setting up computing resources</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Setting-up-Google-Colab">Setting up Google Colab</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Watchouts-when-using-Colab">Watchouts when using Colab</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Software-in-Colab">Software in Colab</a></li>
@@ -79,6 +79,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#Launching-JupyterLab">Launching JupyterLab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Data-sets">Data sets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Launching-JupyterLab-from-the-command-line">Launching JupyterLab from the command line</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Checking-your-Stan-installation">Checking your Stan installation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#If-you-are-only-taking-part-1">If you are only taking part 1</a></li>
@@ -98,7 +99,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Pandas and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Polars and split-apply-combine</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
@@ -127,12 +128,12 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Setting up computing resources</li>
+      <li class="breadcrumb-item active">Lesson 0: Setting up computing resources</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part1/lessons/00/configuring_your_computer.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part1/lessons/00/configuring_your_computer.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_1/lessons/00/configuring_your_computer.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_1/lessons/00/configuring_your_computer.ipynb" download> Download notebook</a>
         
       
     
@@ -144,8 +145,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Setting-up-computing-resources">
-<h1>Setting up computing resources<a class="headerlink" href="#Setting-up-computing-resources" title="Link to this heading"></a></h1>
+  <section id="Lesson-0:-Setting-up-computing-resources">
+<h1>Lesson 0: Setting up computing resources<a class="headerlink" href="#Lesson-0:-Setting-up-computing-resources" title="Link to this heading"></a></h1>
 <p>In this lesson you will set up a Python computing environment for scientific computing on your own computer and also learn a bit about Google Colab, a cloud service for running Jupyter notebooks.</p>
 <p>It is advantageous to learn how to set up a Python distribution and manage packages on your own machine, as each person can have different needs. That said, <a class="reference external" href="https://colab.research.google.com/">Google Colab</a> is a nice, free resource to run Jupyter Notebooks on Google’s computers without any local installations necessary.</p>
 <section id="Setting-up-Google-Colab">
@@ -287,6 +288,17 @@ your advantage to have a local functioning Stan installation.</p>
 <p>In the Anaconda Navigator, click <code class="docutils literal notranslate"><span class="pre">Home</span></code> on the left pane. To the right, you will have a pane from which you can launch JupyterLab. On the top of the right pane, you will see two pulldown menus separated by the word “on.” Be sure you select <code class="docutils literal notranslate"><span class="pre">pol_stats</span></code> on the right pulldown menu. This ensures that you are using the environment you just set up.</p>
 <p><strong>You need to make sure you are using the pol_stats environment whenever you launch JupyterLab during the workshop.</strong></p>
 <p>You should see a card for JupyterLab. Do not confuse this with Notebook; you want to launch JupyterLab. Click Launch on the JupyterLab card. This will launch JupyterLab in your default browser.</p>
+</section>
+<section id="Data-sets">
+<h2>Data sets<a class="headerlink" href="#Data-sets" title="Link to this heading"></a></h2>
+<p>You should make sure you have all of the data sets we will use in the workshop downloaded to your machine. You can <a class="reference external" href="http://bois.caltech.edu/data.zip">download all of the data sets from this link</a>. To match the notes for the workshop, I advise the following directory structure.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pol-stats-workshop/
+    data/
+    lessons/
+    exercises/
+</pre></div>
+</div>
+<p>That way, when you are working on a lesson or exercise, the path to the data directory is always <code class="docutils literal notranslate"><span class="pre">../data/</span></code>.</p>
 </section>
 <section id="Launching-JupyterLab-from-the-command-line">
 <h2>Launching JupyterLab from the command line<a class="headerlink" href="#Launching-JupyterLab-from-the-command-line" title="Link to this heading"></a></h2>
@@ -1243,11 +1255,11 @@ CmdStan : 2.35
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Jul 31, 2024.
+      <span class="lastupdated">Last updated on Aug 02, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x13667cc20> 
+   <jinja2.runtime.BlockReference object at 0x131aee510> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

@@ -2,12 +2,11 @@ name: pol_stats
 channels:
   - default
 dependencies:
-  - python>=3.11
-  - bokeh>=3.2.0
+  - python
+  - bokeh
   - click
   - colorcet
   - contourpy
-  - dask
   - datashader
   - fastparquet
   - h5netcdf
@@ -15,9 +14,9 @@ dependencies:
   - hvplot
   - hypothesis
   - ipython
-  - ipywidgets>=7.0.2
+  - ipywidgets
   - jinja2
-  - jsonschema>=3.0
+  - jsonschema
   - jupyter
   - matplotlib
   - mypy
@@ -30,13 +29,13 @@ dependencies:
   - pandoc
   - param
   - pip
+  - pyarrow
   - pytest
   - scikit-image
   - scikit-learn
   - scipy
   - seaborn
   - selenium
-  - setuptools
   - statsmodels
   - sympy
   - toolz
@@ -47,6 +46,7 @@ dependencies:
   - xlrd
   - zarr
   - pip:
+    - accessible-pygments
     - altair
     - arviz
     - awscli
@@ -55,6 +55,10 @@ dependencies:
     - blackcellmagic
     - cmdstanpy
     - commonmark
+    - daft
+    - fastexcel
+    - great_tables
+    - h5pyd
     - iqplot
     - jupytext
     - jupyter-cache
@@ -63,8 +67,10 @@ dependencies:
     - jupyterlab-spellchecker
     - multiprocess
     - polars
+    - polars-ds
     - typing_extensions
     - vega_datasets
     - watermark
     - xarray-datatree
     - xarray-einstats
+    - xlsx2csv

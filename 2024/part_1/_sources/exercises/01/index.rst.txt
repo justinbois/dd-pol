@@ -1,5 +1,5 @@
 *******************************************
-Exercise 1. Pandas and split-apply-combine
+Exercise 1. Polars and split-apply-combine
 *******************************************
 
 .. toctree::
