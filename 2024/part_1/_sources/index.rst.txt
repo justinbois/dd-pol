@@ -16,10 +16,11 @@ Data sets
 Students should download and unzip the `data sets we will use in the workshop <http://bois.caltech.edu/data.zip>`_.
 
 
-Instructor
+People
 ----------
 
 - `Justin Bois <http://bois.caltech.edu/>`_
+- Simon Doll
 
 
 .. toctree::
