@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 6.2: Noise in gene expression &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 6.3: Rounding of somites" href="e06.3.html" />
+    <link rel="prev" title="Exercise 6.1: Hierarchical models are hiding in plain sight" href="e06.1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 6: Hierarchical models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="e06.1.html">Exercise 6.1: Hierarchical models are hiding in plain sight</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 6.2: Noise in gene expression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e06.3.html">Exercise 6.3: Rounding of somites</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 6: Hierarchical models</a></li>
+      <li class="breadcrumb-item active">Exercise 6.2: Noise in gene expression</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/exercises/06/e06.2.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/exercises/06/e06.2.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exercise-6.2:-Noise-in-gene-expression">
+<h1>Exercise 6.2: Noise in gene expression<a class="headerlink" href="#Exercise-6.2:-Noise-in-gene-expression" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/elowitz_et_al_2002_fig_3a.csv">Data set download</a></p>
+<hr><p><strong>Some of the text of this problem was co-written with Michael Elowitz. The problem itself was inspired by Michael Elowitz and by</strong> <a class="reference external" href="https://doi.org/10.1101/049486">this paper</a> <strong>by</strong> <a class="reference external" href="http://nimwegenlab.org">Erik van Nimwegen</a><strong>.</strong></p>
+<p>One cell may seem at first glance identical to any other cell living alongside it in the same conditions. However, contents inside of cells may be highly variable due to variations in gene expression. Generally speaking, we call deviations from what we might expect from a deterministic view of gene expression <em>stochasticity</em>, or <strong>noise</strong>. This is a key concept, because nearly all cellular processes are susceptible to noise, for a host of reasons, including low copy numbers of molecular
+regulators of gene expression.</p>
+<p>To quantitatively define noise, it helps to perform a thought experiment. Say we have many exactly identical cells. In the future, as gene expression, responses to the environment (which we assume is the same for each cell), etc. proceed, the cells will no longer be identical due to stochasticity in all of these processes involving small numbers of molecules. Consider one gene product of interest in these cells. We can define the <strong>total noise</strong>, <span class="math notranslate nohighlight">\(\eta_\mathrm{tot}\)</span>, as the <strong>coefficient
+of variation</strong> of the copy numbers of the gene product. The coefficient of variation is the standard deviation of the copy number divided by the mean copy number. If the standard deviation is comparable to the mean, as we would expect in the case of large copy numbers, we have low noise, but if it is large compared to the mean, we have high noise.</p>
+<p>Continuing with the thought experiment, we might have fluctuations in environmental conditions that might change the expression level of the gene of interest, either directly, or indirectly through expression of other genes in any given cell. We might also have fluctuations in gene expression due to the inherent stochasticity present in cellular processes, such as in those involved in the Central Dogma. This leads us to categorize the noise according to <strong>intrinsic</strong> and <strong>extrinsic</strong> noise.</p>
+<ul class="simple">
+<li><p><strong>Intrinsic noise</strong>: Transcription and translation can occur at different times and rates in otherwise identical systems. This results in fluctuations in copy numbers. The fluctuations in the copy number of the protein of interest are due to fluctuations that affect <em>only</em> the gene of interest. Operationally, intrinsic noise causes the failure of identical genes in identical environments to correlate. This fundamentally limits the precision of regulation. We use the symbol
+<span class="math notranslate nohighlight">\(\eta_\mathrm{int}\)</span> for intrinsic noise.</p></li>
+<li><p><strong>Extrinsic noise</strong>: Other molecular species, such as RNA polymerase, ribosomes, chemical species in the cell’s environment, vary over time and affect the gene of interest. The fluctuations in the copy number of the protein of interest are due to fluctuations that affect <em>all</em> genes in a cell. We use the symbol <span class="math notranslate nohighlight">\(\eta_\mathrm{ext}\)</span> for intrinsic noise.</p></li>
+</ul>
+<p>Measurement of noise, both intrinsic and extrinsic, is necessary. It is really hard to know a priori how intrinsically noisy gene expression will be without measuring it. The problem is that just measuring cell-cell variation does not separate intrinsic noise in the process of gene expression from extrinsic cell-cell variation in key cellular components, such as ribosomes, polymerases, etc. Moreover, even if there were no extrinsic noise at all, intrinsic noise can still depend on the relative
+transcription, translation, and degradation rates, or other factors we are not aware of. Thus, it was critical to actually measure both intrinsic and extrinsic noise and see how both behave.</p>
+<p>Delineating intrinsic and extrinsic noise is difficult, if not impossible, by measuring expression of a single gene in a cell. To construct an experiment to study this, we can conduct another thought experiment. Say we put two perfectly molecularly identical cells in the exact same environment and see if they behave similarly. Unfortunately, we cannot do this, because we cannot prepare two perfectly identical cells. However, we can put two (nearly) identical <em>genes</em> in the <em>same</em> cell. This is
+conceptually related, and allows us to think of these two genes as two independent stochastic samples of the same underlying process. If everything behaved deterministically and was only influenced by extrinsic noise, we would expect strongly correlated variation in both genes. If, however, expression is non-deterministic then variation will be uncorrelated.</p>
+<p>To perform this experiment <a class="reference external" href="https://doi.org/10.1126/science.1070919">Elowitz and coworkers (Science, 2002)</a> developed a system in which identical promoters were used to express fluorescent proteins of different color, cyan fluorescent protein (CFP) and YFP. The promoters were repressed by the LacI protein. They could tune the repression by changing concentration of IPTG, since IPTG inhibits LacI’s ability to act as a repressor.</p>
+<div style="margin: auto; width: 150px;"><p><img alt="intrinsic_extrinsic" src="../../_images/laci_cfp_yfp_circuit.png" /></p>
+</div><p>They were also careful to integrate the promoters into the genome at loci that were equidistant from the origin of replication so that the copy number of each on the chromosome remains the the same as the genome is replicated. They then could measure the expression level for identical promoters under identical conditions, since the promoters are in the same cell. A typical result in shown in the images below.</p>
+<div style="margin: auto; width: 550px;"><p><img alt="cell noise" src="../../_images/cell_noise.png" /></p>
+</div><p>We can see that in some cells, both the CFP and YFP levels are high (yellow in the merge), but in other cases, they CFP and YFP levels differ (green or red in the merge).</p>
+<p>A data set from this experiment, collected by Michael Elowitz, is available <a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/elowitz_et_al_2002_fig_3a.csv">here</a>. Your job in this problem is to do Bayesian modeling to get parameter estimates for the intrinsic and extrinsic noise. This problem has been approached several times, first, of course, in the original <a class="reference external" href="https://doi.org/10.1126/science.1070919">Elowitz paper</a>. Swain, Elowitz, and Siggia (<a class="reference external" href="https://doi.org/10.1073/pnas.162041399">PNAS,
+2002</a>) put out a paper shortly thereafter studying statistical analysis of noise. More recently, Fu and Pachter (<a class="reference external" href="https://doi.org/10.1515/sagmb-2016-0002">Stat. Appl. Genet. Mol. Biol., 2016</a>) studied this problem. Van Nimwegen (<a class="reference external" href="https://doi.org/10.1101/049486">bioRxiv, 2016</a>) took a Bayesian approach, which is what we take here.</p>
+<p>Remember, <strong>intrinsic noise</strong> if the noise inherent in gene expressions levels of the gene of interest in each individual cell and <strong>extrinsic noise</strong> results from variations from cell to cell. Build a hierarchical model for the Elowitz experiment to get parameter estimates for the intrinsic and extrinsic noise. In your modeling, you can make the following assumptions.</p>
+<ol class="arabic simple">
+<li><p>The copy number of a fluorophore is linearly related to the measured fluorescence with zero intercept, which also means there is no background fluorescence.</p></li>
+<li><p>If CFP and YFP have the same copy number in a cell, their measured fluorescence differs by a constant factor.</p></li>
+<li><p>All noise is inherent to the genetic machinery of the bacteria and environmental fluctuations; there is no measurement error.</p></li>
+<li><p>The fluorescent intensity of each cell is independent of all other cells and also identically distributed (i.i.d.).</p></li>
+<li><p>Although under these assumptions the measured fluorescence should take on discrete values, we nonetheless model the fluorescence values as continuous.</p></li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="e06.1.html" class="btn btn-neutral float-left" title="Exercise 6.1: Hierarchical models are hiding in plain sight" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="e06.3.html" class="btn btn-neutral float-right" title="Exercise 6.3: Rounding of somites" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x14260f800> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

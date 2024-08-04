@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warm-up &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generating a transition kernel: The Metropolis-Hastings algorithm" href="metropolis_hastings.html" />
+    <link rel="prev" title="Random number generation" href="mcmc_idea.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 3: Markov chain Monte Carlo and Stan</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="why_mcmc.html">Why MCMC?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcmc_idea.html">Random number generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcmc_idea.html#the-basic-idea-behind-mcmc">The basic idea behind MCMC</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Warm-up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metropolis_hastings.html">Generating a transition kernel: The Metropolis-Hastings algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_reading.html">Further reading on MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stan_hello_world.html">“Hello, world” —Stan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_with_mcmc.html">Parameter estimation with Markov chain Monte Carlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variate_covariate_with_stan.html">Variate-covariate models with MCMC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+      <li class="breadcrumb-item active">Warm-up</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/03/warm_up.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="warm-up">
+<h1>Warm-up<a class="headerlink" href="#warm-up" title="Link to this heading"></a></h1>
+<p>Imagine for a moment that we devised a transition kernel that satisfies
+the desired properties we have laid out. Say we start a walker at position <span class="math notranslate nohighlight">\(\theta_0\)</span>
+in parameter space and it starts walking according to the transition
+kernel. Most likely, for those first few steps, the walker is traversing
+a part of parameter space that has incredibly low probability. Once it
+gets to regions of high probability, the walker will almost never return
+to the region of parameter space in which it began. So, unless we sample
+for an incredibly long time, those first few samples visited are
+over-weighted. So, we need to let the walker walk for a while without
+keeping track of the samples so that it can arrive at the limiting
+distribution. This is called <strong>warm-up</strong>, otherwise known as <strong>burn-in</strong>
+or <strong>tuning</strong> <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>There is no general way to tell if a walker has reached the limiting
+distribution, so we do not know how many warm-up steps are necessary.
+Fortunately, there are several heuristics. For example, Gelman and coauthors proposed
+generating several warm-up chains and computing the <strong>Gelman-Rubin</strong>
+<span class="math notranslate nohighlight">\(\hat{R}\)</span> statistic,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+\hat{R} = \frac{\text{variance between the chains}}{\text{mean variance within the chains}}.\end{aligned}\]</div>
+<p>Limiting chains have <span class="math notranslate nohighlight">\(\hat{R} \approx 1\)</span>, and this is commonly used as
+a metric for having achieved stationarity. Gelman and his coauthors in
+their famous book <em>Bayesian Data Analysis</em> suggest that
+<span class="math notranslate nohighlight">\(|1 - \hat{R}| &lt; 0.1\)</span> as a good rule of thumb for stationary
+chains.</p>
+<p>This simple metric, though widely used, has flaws. We will not go into them in great detail here, but will defer discussion of MCMC diagnostics to a later lecture. You can read more about ensuring chains reach stationarity in this paper by <a class="reference external" href="https://doi.org/10.1214/20-BA1221">Vehtari and coworkers</a> (2020). We will use the methods outlined in that paper, along with their more stringent suggestion that <span class="math notranslate nohighlight">\(|1 - \hat{R}| &lt; 0.01\)</span>.</p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>When using Stan’s sampler, the warm-up is a bit more than just
+burn-in, which is just regular sampling where we simply neglect the first bunch of samples. Stan’s algorithm is actively
+choosing stepping strategies during the warm-up phase.</p>
+</aside>
+</aside>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mcmc_idea.html" class="btn btn-neutral float-left" title="Random number generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metropolis_hastings.html" class="btn btn-neutral float-right" title="Generating a transition kernel: The Metropolis-Hastings algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x140b3f500> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

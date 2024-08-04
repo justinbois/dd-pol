@@ -1,0 +1,9 @@
+************************************
+Lesson 7: Principled pipelines
+************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   sbc.ipynb
+   sbc_in_practice.ipynb

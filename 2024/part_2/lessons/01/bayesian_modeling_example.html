@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bayesian modeling example: parameter estimation from repeated measurements &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Choosing likelihoods" href="choice_of_likelihood.html" />
+    <link rel="prev" title="Tasks of Bayesian modeling" href="bayesian_modeling_tasks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 1: Introduction to Bayesian modeling</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bayes_logic.html">Probability as the logic of science</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayes_notation.html">Notation of parts of Bayes’s Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="marginalization.html">Marginalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayes_model_for_learning.html">Bayes’s theorem as a model for learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="probability_distributions.html">Probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayesian_modeling_tasks.html">Tasks of Bayesian modeling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bayesian modeling example: parameter estimation from repeated measurements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-likelihood">The likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-normal-distribution">The Normal distribution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-likelihood-revisited-and-another-parameter">The likelihood revisited: and another parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#choice-of-prior">Choice of prior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#succinctly-stating-the-model">Succinctly stating the model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="choice_of_likelihood.html">Choosing likelihoods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choice_of_prior.html">Choosing priors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+      <li class="breadcrumb-item active">Bayesian modeling example: parameter estimation from repeated measurements</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/01/bayesian_modeling_example.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bayesian-modeling-example-parameter-estimation-from-repeated-measurements">
+<h1>Bayesian modeling example: parameter estimation from repeated measurements<a class="headerlink" href="#bayesian-modeling-example-parameter-estimation-from-repeated-measurements" title="Link to this heading"></a></h1>
+<p>We will consider one of the simplest examples of parameter estimation, and one that comes up often in research applications.
+Let’s say we repeat a measurement many times. This could be beak depths of finches, fluorescence intensity in a cell, etc. The possibilities abound. To have a concrete example in mind for this example, let’s assume we are measuring the length of <em>C. elegans</em> eggs.</p>
+<p>Our measurements of <em>C. elegans</em> egg length are <span class="math notranslate nohighlight">\(y \equiv\{y_1, y_2, \ldots y_n\}\)</span>. We will ambiguously define a parameter of interest to be <span class="math notranslate nohighlight">\(\mu\)</span>, the typical egg length. We will sharpen our definition of this parameter through specification of the likelihood.</p>
+<p>We wish to calculate <span class="math notranslate nohighlight">\(g(\mu  \mid y)\)</span>, the posterior probability density function for the parameter <span class="math notranslate nohighlight">\(\mu\)</span>, given the data. Values of <span class="math notranslate nohighlight">\(\mu\)</span> for
+which the posterior probability density is high are more probable (that is, more
+plausible) than those for which is it low. The posterior
+<span class="math notranslate nohighlight">\(g(\mu \mid y)\)</span> codifies our knowledge about <span class="math notranslate nohighlight">\(\mu\)</span> in
+light of our data <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>To compute the posterior, we use Bayes’s theorem.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\mu \mid y) = \frac{f(y\mid \mu)\,g(\mu)}{f(y)}.
+\end{aligned}\]</div>
+<p>Since the evidence, <span class="math notranslate nohighlight">\(f(y)\)</span> does not depend on the parameter of
+interest, <span class="math notranslate nohighlight">\(\mu\)</span>, it is really just a normalization constant, so
+we do not need to consider it explicitly at this stage. Specification of the
+likelihood and prior is sufficient for the posterior, since we must have</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y) = \int \mathrm{d}\mu \,f(y\mid \mu)\,g(\mu)
+\end{aligned}\]</div>
+<p>to ensure normalization of the posterior <span class="math notranslate nohighlight">\(g(\mu \mid y)\)</span>. So,
+we have just to specify the likelihood <span class="math notranslate nohighlight">\(f(y\mid \mu)\)</span> and the
+prior <span class="math notranslate nohighlight">\(g(\mu)\)</span>. We begin with the likelihood.</p>
+<section id="the-likelihood">
+<h2>The likelihood<a class="headerlink" href="#the-likelihood" title="Link to this heading"></a></h2>
+<p>To specify the likelihood, we have to ask what we expect from the data,
+given a value of <span class="math notranslate nohighlight">\(\mu\)</span>. If every egg has exactly the same length and there are no errors or confounding
+factors at all in our measurements, we expect <span class="math notranslate nohighlight">\(y_i = \mu\)</span> for
+all <span class="math notranslate nohighlight">\(i\)</span>. In this case</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(y\mid \mu) = \prod_{i=1}^n\delta(y_i - \mu),
+\end{aligned}\]</div>
+<p>the product of Dirac delta functions. Of course, this is really never
+the case. There will be natural variation in egg length and some errors in measurement and/or the system has
+variables that confound the measurement. What, then should we choose for
+our likelihood?</p>
+<p>That choice is of course dependent the story/theoretical modeling behind
+data generation. For our purposes here, we shall assume our data are
+generated from a Normal likelihood. Since this distribution gets heavy
+use, I will pause here to talk a bit more about it.</p>
+</section>
+<section id="the-normal-distribution">
+<h2>The Normal distribution<a class="headerlink" href="#the-normal-distribution" title="Link to this heading"></a></h2>
+<p>A univariate Normal (also known as Gaussian), probability distribution has a
+probability density function (PDF) of</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y \mid \mu, \sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}\,
+\exp\left[-\frac{(y - \mu)^2}{2\sigma^2}\right].
+\end{aligned}\]</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> is a location parameter and in the case of the Normal distribution is called the mean and
+<span class="math notranslate nohighlight">\(\sigma\)</span> is a scale parameter and is called the standard deviation in this case. The square of this scale parameter is referred to as the variance. Importantly (and confusingly), the terms “mean,” “standard
+deviation,” and “variance” in this context are <em>names of parameters</em> of the distribution;
+they are not what you compute directly from data as plug-in estimates. We will therefore use the terms location parameter and scale parameter, though the terms mean and standard deviation are used very widely in the literature.</p>
+<p>The <strong>central limit theorem</strong> says that any quantity that emerges from a
+large number of subprocesses tends to be Normally distributed, provided
+none of the subprocesses is very broadly distributed. We will not prove
+this important theorem, but we make use of it when choosing likelihood
+distributions based on the stories behind the generative process.
+Indeed, in the simple case of estimating a single parameter where many
+processes may contribute to noise in the measurement, the Normal
+distribution is a good choice for a likelihood.</p>
+<p>More generally, the <strong>multivariate Normal distribution</strong> for
+<span class="math notranslate nohighlight">\(y = (y_1, y_2, \cdots, y_n)^\mathsf{T}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y \mid \boldsymbol{\mu}, \boldsymbol{\sigma}) = (2\pi)^{-\frac{n}{2}} \left(\det \mathsf{\Sigma}\right)^{-\frac{1}{2}}\,
+\exp\left[-\frac{1}{2}(y - \boldsymbol{\mu})^\mathsf{T}\cdot \mathsf{\Sigma}^{-1}\cdot(y - \boldsymbol{\mu})\right],
+\end{aligned}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = (\mu_1, \mu_2,\ldots, \mu_n)^\mathsf{T}\)</span> is an
+array of location parameters. The parameter
+<span class="math notranslate nohighlight">\(\mathsf{\Sigma}\)</span> is a symmetric positive definite matrix called
+the <strong>covariance matrix</strong>. If off-diagonal entry
+<span class="math notranslate nohighlight">\(\Sigma_{ij}\)</span> is nonzero, then <span class="math notranslate nohighlight">\(y_i\)</span> and
+<span class="math notranslate nohighlight">\(y_j\)</span> are correlated (or anticorrelated). In the case where all <span class="math notranslate nohighlight">\(y_i\)</span> are
+independent, all off-diagonal terms in the covariance matrix are zero,
+and the multivariate Normal distribution reduces to</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y \mid \boldsymbol{\mu}, \boldsymbol{\sigma}) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma_i^2}}\,
+\exp\left[-\frac{(y_i - \mu_i)^2}{2\sigma_i^2}\right],
+\end{aligned}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma^2_i\)</span> is the <span class="math notranslate nohighlight">\(i`th entry along the diagonal
+of the covariance matrix. This is the variance associated with
+measurement :math:`i\)</span>. So, if all independent measurements <span class="math notranslate nohighlight">\(y_i\)</span> have the same
+location and scale parameters, which is to say that the measurements are
+<strong>independent and identically distributed</strong> (i.i.d.), the
+multi-dimensional Gaussian reduces to</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y \mid \mu, \sigma) = \left(\frac{1}{2\pi \sigma^2} \right)^{-\frac{n}{2}}\,
+\exp\left[-\frac{1}{2\sigma^2}\,\sum_{i=1}^n (y_i - \mu)^2\right].
+\end{aligned}\]</div>
+</section>
+<section id="the-likelihood-revisited-and-another-parameter">
+<h2>The likelihood revisited: and another parameter<a class="headerlink" href="#the-likelihood-revisited-and-another-parameter" title="Link to this heading"></a></h2>
+<p>For the purposes of this demonstration of parameter estimation, we
+assume the Normal distribution is a good choice for our likelihood for
+repeated measurements (as it often is). We have to decide how the measurements are
+related to specify how many entries in the covariance matrix we need to
+specify as parameters. It is often the case that the measurements are i.i.d,
+so that only a single mean and variance are specified. So, we choose our
+likelihood to be</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y\mid \mu, \sigma) = \left(\frac{1}{2\pi \sigma^2} \right)^{\frac{n}{2}}\,
+\exp\left[-\frac{1}{2\sigma^2}\,\sum_{i=1}^n (y_i - \mu)^2\right].
+\end{aligned}\]</div>
+<p>By choosing this as our likelihood, we are saying that we expect our
+measurements to have a well-defined mean <span class="math notranslate nohighlight">\(\mu\)</span> with a spread
+described by the variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<p>But wait a minute; we had a single parameter, <span class="math notranslate nohighlight">\(\mu\)</span>, that we
+sought to estimate, and now we now have another parameter,
+<span class="math notranslate nohighlight">\(\sigma\)</span>, beyond the one we’re trying to measure. So, our statistical model has <em>two</em> parameters, and
+Bayes’s theorem now reads</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\mu, \sigma \mid y) = \frac{f(y\mid \mu, \sigma)\,g(\mu, \sigma)}
+{f(y)}.
+\end{aligned}\]</div>
+<p>After we compute the posterior, we can still find the posterior probability distribution we are after by marginalizing.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\mu\mid y) = \int_0^\infty \mathrm{d}\sigma\,g(\mu, \sigma \mid y).
+\end{aligned}\]</div>
+</section>
+<section id="choice-of-prior">
+<h2>Choice of prior<a class="headerlink" href="#choice-of-prior" title="Link to this heading"></a></h2>
+<p>Now that we have defined a likelihood, we know what the parameters are
+and we can define a prior, <span class="math notranslate nohighlight">\(g(\mu, \sigma)\)</span>. As is often the case,
+we assume <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are independent of each other,
+so that</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\mu, \sigma) = g(\mu)\,g(\sigma).
+\end{aligned}\]</div>
+<p>How might we choose prior distributions for <span class="math notranslate nohighlight">\(\mu\)</span> and
+<span class="math notranslate nohighlight">\(\sigma\)</span>? Remember, the prior probability distribution captures
+what we know about the parameter before we measure data. For the current example of <em>C. elegans</em> eggs, we can guess that the egg length should be about 50 µm, but we are not too sure about
+this. So, we will make the prior distribution broad; we take <span class="math notranslate nohighlight">\(g(\mu)\)</span> to be Normal with a location parameter of 50 µm, but
+a scale parameter of 20 µm. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\mu) = \frac{1}{\sqrt{2\pi \sigma_\mu^2}}\,\exp\left[-\frac{(\mu-\mu_\mu)^2}{2\sigma^2}\right],
+\end{aligned}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mu_\mu = 50\)</span> µm and <span class="math notranslate nohighlight">\(\sigma_\mu = 20\)</span> µm. This means
+that getting a very tiny egg length of, say, 10 µm is unlikely, as is a
+very large egg of 90 µm.</p>
+<p>For <span class="math notranslate nohighlight">\(g(\sigma)\)</span>, we might think that the egg length may vary about
+five or ten microns (approximately 10-20% of our guessed egg size), but not much more than that. We could again choose
+a Normal prior, with</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+g(\sigma) = \frac{1}{\sqrt{2\pi \sigma_\sigma^2}}\,\exp\left[-\frac{(\mu-\mu_\sigma)^2}{2\sigma_\sigma^2}\right],\end{aligned}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mu_\sigma = 5\)</span> µm and <span class="math notranslate nohighlight">\(\sigma_\sigma = 2\)</span> µm.</p>
+<p>In this
+case, we have the obvious issue that there is nonzero probability that
+<span class="math notranslate nohighlight">\(\mu\)</span> or <span class="math notranslate nohighlight">\(\sigma\)</span> could be negative, which we know is respectively
+unphysical or mathematically disallowed. We could refine our prior distribution to make sure this
+does not happen. With any approach we choose, the prior should roughly
+match what we would sketch on a piece of paper and cover any reasonable
+parameter values and exclude any that are unreasonable (or unphysical).</p>
+</section>
+<section id="succinctly-stating-the-model">
+<h2>Succinctly stating the model<a class="headerlink" href="#succinctly-stating-the-model" title="Link to this heading"></a></h2>
+<p>Our model is complete, which means that we have now completely specified
+the posterior. We can write it out. First, defining the parametrization of the priors.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+&amp;\mu_\mu = 50 \text{ microns} \nonumber \\[1em]
+&amp;\sigma_\mu = 20 \text{ microns} \nonumber \\[1em]
+&amp;\mu_\sigma = 5 \text{ microns} \nonumber \\[1em]
+&amp;\sigma_\sigma = 2 \text{ microns}.
+\end{align}\end{split}\]</div>
+<p>Then, the posterior is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+g(\mu, \sigma\mid y) = &amp;\;\frac{1}{f(y)}\,\left\{\left(\frac{1}{2\pi \sigma^2} \right)^{\frac{n}{2}}\,
+\exp\left[-\frac{1}{2\sigma^2}\,\sum_{i=1}^n (y_i - \mu)^2\right] \right.\nonumber\\
+&amp;\;\;\;\;\;\;\;\;\;\;\;\times \, \frac{1}{\sqrt{2\pi \sigma_\mu^2}}\,\exp\left[-\frac{(\mu-\mu_\mu)^2}{2 \sigma_\mu^2}\right] \nonumber\\
+&amp;\;\;\;\;\;\;\;\;\;\;\;\times\,\left.\frac{1}{\sqrt{2\pi \sigma_\sigma^2}}\,\exp\left[-\frac{(\sigma-\mu_\sigma)^2}{2 \sigma_\sigma^2}\right]\right\},
+\end{aligned}\end{split}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+f(y) = \int \mathrm{d}\mu\,\int\mathrm{d}\sigma\, \{\text{term in braces in the above equation}\}.
+\end{aligned}\]</div>
+<p>Oh my, this is a mess, even for this simple model! Even though we have
+the posterior, it is very hard to make sense of it. Essentially the rest
+of the course involved making sense of the posterior, which is the
+challenge. It turns out that writing it down is relatively easy.</p>
+<p>One of the first things we can do to make sense of our model, and also
+to specify it, is to use a shorthand for model specification. First of
+all, we do not need to specify the evidence, since it is always given by
+integrating the likelihood and prior; that is by fully marginalizing the
+likelihood. So, we will always omit its specification. Now, we would
+like to have a notation for stating the likelihood and prior. English
+works well.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The parameter <span class="math notranslate nohighlight">\(\mu\)</span> is Normally distributed with location parameter 50 µm and scale parameter 20 µm.</p></li>
+<li><p>The parameter <span class="math notranslate nohighlight">\(\sigma\)</span> is Normally distributed with location parameter 5 µm and scale parameter 2 µm.</p></li>
+<li><p>The egg lengths are i.i.d. and are Normally distributed with location parameter <span class="math notranslate nohighlight">\(\mu\)</span> and scale parameter <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+</ul>
+</div></blockquote>
+<p>This is much easier to understand. We can write this with a convenient,
+and self evident, shorthand. <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;\mu \sim \text{Norm}(\mu_\mu, \sigma_\mu),\\[1em]
+&amp;\sigma \sim \text{Norm}(\mu_\sigma, \sigma_\sigma),\\[1em]
+&amp;y_i \sim \text{Norm}(\mu, \sigma) \;\forall i.
+\end{aligned}\end{split}\]</div>
+<p>Here, the symbol <span class="math notranslate nohighlight">\(\sim\)</span> may be read as “is distributed as.” The
+above three lines are completely sufficient to specify our model.
+Because we will be using a probabilistic programming language in
+practice, we will almost never need to code up any nasty mathematical
+expressions in our modeling and we can express a model as we have done here.</p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>I understand that I should be providing units on all parameters that
+I am specifying with numbers. I am not doing this here, nor
+throughout the course, to avoid notational clutter and to maintain
+focus on the modeling.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bayesian_modeling_tasks.html" class="btn btn-neutral float-left" title="Tasks of Bayesian modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="choice_of_likelihood.html" class="btn btn-neutral float-right" title="Choosing likelihoods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x142865ac0> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

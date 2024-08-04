@@ -1,0 +1,15 @@
+****************************************************
+Lesson 3: Markov chain Monte Carlo and Stan
+****************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   why_mcmc
+   mcmc_idea
+   warm_up
+   metropolis_hastings
+   further_reading
+   stan_hello_world.ipynb
+   parameter_estimation_with_mcmc.ipynb
+   variate_covariate_with_stan.ipynb

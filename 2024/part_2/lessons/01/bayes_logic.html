@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probability as the logic of science &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Notation of parts of Bayes’s Theorem" href="bayes_notation.html" />
+    <link rel="prev" title="Lesson 1: Introduction to Bayesian modeling" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 1: Introduction to Bayesian modeling</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Probability as the logic of science</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-statistical-inference">What is statistical inference?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-problem-of-probability">The problem of probability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#frequentist-probability">Frequentist probability.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bayesian-probability">Bayesian probability.</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#desiderata-for-bayesian-probability">Desiderata for Bayesian probability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-sum-rule-the-product-rule-and-conditional-probability">The sum rule, the product rule, and conditional probability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-to-scientific-measurement">Application to scientific measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bayess-theorem">Bayes’s Theorem</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-prior-probability">The prior probability.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-likelihood">The likelihood.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-evidence">The evidence.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-posterior-probability">The posterior probability.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bayes_notation.html">Notation of parts of Bayes’s Theorem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="marginalization.html">Marginalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayes_model_for_learning.html">Bayes’s theorem as a model for learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="probability_distributions.html">Probability distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayesian_modeling_tasks.html">Tasks of Bayesian modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bayesian_modeling_example.html">Bayesian modeling example: parameter estimation from repeated measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choice_of_likelihood.html">Choosing likelihoods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choice_of_prior.html">Choosing priors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+      <li class="breadcrumb-item active">Probability as the logic of science</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/01/bayes_logic.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="probability-as-the-logic-of-science">
+<h1>Probability as the logic of science<a class="headerlink" href="#probability-as-the-logic-of-science" title="Link to this heading"></a></h1>
+<p>We thought about the process of scientific inquiry last term, but we visit it again here to refresh us about where statistical inference fits in the process of doing science. In the figure below, we have a
+sketch of the scientific processes. This cycle repeats itself as we
+explore nature and learn more. In the boxes are milestones, and along
+the arrows in orange text are the tasks that get us to these milestones.</p>
+<figure class="align-center align-default" id="id7">
+<a class="reference internal image-reference" href="../../_images/cycle_of_science.png"><img alt="cycle of science" src="../../_images/cycle_of_science.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">A sketch of the scientific process. Adapted from Fig. 1.1 of P.
+Gregory, <em>Bayesian Logical Data Analysis for the Physical Sciences</em>,
+Cambridge, 2005.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Let’s consider the tasks and their milestones. We start in the lower
+left.</p>
+<ul>
+<li><p><em>Hypothesis invention/refinement</em>. In this stage of the scientific process, the researcher(s) think about nature, all that they have learned, including from their experiments, and formulate hypotheses or theories they can pursue with experiments. This step requires innovation, and sometimes genius (e.g., general relativity).</p></li>
+<li><p><em>Deductive inference</em>. Given the hypothesis, the researchers deduce what must be true if the hypothesis is true. The result of deductive inference is a set of (preferably quantitative) predictions that can be tested experimentally. You have done a lot of this in your study to this point, e.g., given X and Y, derive Z. Logically, this requires a series of <strong>strong syllogisms</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If A is true, then B is true.</p></li>
+<li><p>A is true.</p></li>
+<li><p>Therefore B is true.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><em>Do experiment</em>. This requires <em>work</em>, and also its own kind of innovation. Specifically, you need to think carefully about how to construct your experiment to test the hypothesis. It also usually requires money. The result of doing experiments is data.</p></li>
+<li><p><em>Statistical (plausible) inference</em>. This step is perhaps the least familiar to you, but <em>this is the step that this course is all about</em>. I will talk about what statistical inference is next; it’s too involved for this bullet point. But the result of statistical inference is knowledge about how <em>plausible</em> a hypothesis and estimates of parameters under that hypothesis are.</p></li>
+</ul>
+<section id="what-is-statistical-inference">
+<h2>What is statistical inference?<a class="headerlink" href="#what-is-statistical-inference" title="Link to this heading"></a></h2>
+<p>As we designed our experiment under our hypothesis, we used deductive
+logic to say, “If A is true, then B is true,”” where
+A is our hypothesis and B is an experimental
+observation. This was <em>deductive</em> inference.</p>
+<p>Now, let’s say we observe B. Does this make A true? Not
+necessarily. But it does make A more <em>plausible</em>. This is called
+a <em>weak syllogism</em>. As an example, consider the following
+hypothesis/observation pair.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A = Wastewater injection after hydraulic fracturing, known as fracking, can lead to greater occurrence of earthquakes.</p></li>
+<li><p>B = The frequency of earthquakes in Oklahoma has increased
+100 fold since 2010, when fracking became common practice there.</p></li>
+</ul>
+</div></blockquote>
+<p>Because B was observed, A is more plausible. A is not necessarily true, but definitely more plausible.</p>
+<p>Statistical inference is the business of quantifying <em>how much more
+plausible</em> A is after obeserving B. In order to do
+statistical inference, we need a way to quantify plausibility.
+Probability serves this role.</p>
+<p>So, <strong>statistical inference requires a probability theory.</strong> Thus,
+probability theory is a generalization of logic. Due to this logical
+connection and its crucial role in science, E. T. Jaynes said that
+probability is the “logic of science.”</p>
+</section>
+<section id="the-problem-of-probability">
+<h2>The problem of probability<a class="headerlink" href="#the-problem-of-probability" title="Link to this heading"></a></h2>
+<p>We know what we need, a theory called probability to quantify
+plausibility. We more formally <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> defined probably last term. We will not formally define probability here, but use our
+common sense reasoning of it. Nonetheless, it is important to understand
+that there are two dominant <em>interpretations</em> of probability.</p>
+<section id="frequentist-probability">
+<h3>Frequentist probability.<a class="headerlink" href="#frequentist-probability" title="Link to this heading"></a></h3>
+<p>In the <em>frequentist</em> interpretation of probability, the probability
+<span class="math notranslate nohighlight">\(P(A)\)</span> represents a long-run frequency over a large number of
+identical repetitions of an experiment. These repetitions can be, and
+often are, hypothetical. The event <span class="math notranslate nohighlight">\(A\)</span> is restricted to
+propositions about <em>random variables</em>, a quantity that can very
+meaningfully from experiment to experiment. <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="bayesian-probability">
+<h3>Bayesian probability.<a class="headerlink" href="#bayesian-probability" title="Link to this heading"></a></h3>
+<p>Here, <span class="math notranslate nohighlight">\(P(A)\)</span> is interpreted to directly represent the degree of
+belief, or plausibility, about <span class="math notranslate nohighlight">\(A\)</span>. So, <span class="math notranslate nohighlight">\(A\)</span> can be any
+logical proposition.</p>
+<p>You may have heard about a split, or even a fight, between people who
+use Bayesian and frequentist interpretations of probability applied to
+statistical inference. There is no need for a fight. The two ways of
+approaching statistical inference differ in their interpretation of
+probability, the tool we use to quantify plausibility. Both are valid. In fact, we used frequentist methods exclusively last term to great effect.</p>
+<p>In my opinion, the Bayesian interpretation of probability is more
+intuitive to apply to scientific inference. It always starts with a
+simple probabilistic expression and proceeds to quantify plausibility.
+It is conceptually cleaner to me, since we can talk about plausibility
+of anything, including parameter values. In other words, Bayesian
+probability serves to quantify our own knowledge, or degree of
+certainty, about a hypothesis or parameter value. Conversely, in
+frequentist statistical inference, the parameter values are fixed, and
+we can only study how repeated experiments will convert the real
+parameter value to an observed real number.</p>
+<p>Going forward, we will use the Bayesian interpretation of probability.</p>
+</section>
+</section>
+<section id="desiderata-for-bayesian-probability">
+<h2>Desiderata for Bayesian probability<a class="headerlink" href="#desiderata-for-bayesian-probability" title="Link to this heading"></a></h2>
+<p>In 1946, R. Cox laid out a pair of rules based on some desired
+properties of probability as a quantifier of plausibility. These ideas
+were expanded on by E. T. Jaynes in the 1970s. The <em>desiderata</em> are</p>
+<ul>
+<li><p>Probability is represented by real numbers.</p></li>
+<li><p>Probability must agree with rationality. As more information is supplied, probability must rise in a continuous, monotonic manner. The deductive limit must be obtained where appropriate.</p></li>
+<li><p>Probability must be consistent.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Structure consistency: If a result is reasoned in more than one way, we should get the same result.</p></li>
+<li><p>Propriety: All relevant information must be considered.</p></li>
+<li><p>Jaynes consistency: Equivalent states of knowledge must be represented by equivalent probability.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Based on these desiderata, we can work out important results that a
+probability function must satisfy. I pause to note that one can
+generally define probability without a specific <em>interpretation</em> in
+mind, and it is valid for both Bayesian and frequentist interpretations, and we did this last term.</p>
+<p>Two results of these desiderata (worked out in chapter 2 of Gregory’s
+book) are the <em>sum rule</em> and the <em>product rule</em>.</p>
+</section>
+<section id="the-sum-rule-the-product-rule-and-conditional-probability">
+<h2>The sum rule, the product rule, and conditional probability<a class="headerlink" href="#the-sum-rule-the-product-rule-and-conditional-probability" title="Link to this heading"></a></h2>
+<p>The <strong>sum rule</strong> says that the probability of all events must add to
+unity. Let <span class="math notranslate nohighlight">\(A^c\)</span> be all events <em>except</em> <span class="math notranslate nohighlight">\(A\)</span>, called the <strong>complement</strong> of <span class="math notranslate nohighlight">\(A\)</span>. Then, the
+sum rule states that</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(A) + P(A^c) = 1.
+\end{aligned}\]</div>
+<p>Now, let’s say that we are interested in event <span class="math notranslate nohighlight">\(A\)</span> happening
+<em>given</em> that event <span class="math notranslate nohighlight">\(B\)</span> happened. So, <span class="math notranslate nohighlight">\(A\)</span> is <em>conditional</em> on
+<span class="math notranslate nohighlight">\(B\)</span>. We denote this conditional probability as
+<span class="math notranslate nohighlight">\({P(A\mid B)}\)</span>. Given this notion of conditional probability, we
+can write the sum rule as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(A\mid B) + P(A^c \mid B) = 1,
+\end{aligned}\]</div>
+<p>for any <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<p>The <strong>product rule</strong> states that</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(A, B) = P(A\mid B)\, P(B),
+\end{aligned}\]</div>
+<p>where <span class="math notranslate nohighlight">\(P(A,B)\)</span> is the probability of both <span class="math notranslate nohighlight">\(A\)</span> <em>and</em>
+<span class="math notranslate nohighlight">\(B\)</span> happening. The product rule is also referred to as the
+definition of conditional probability. It can similarly be expanded as
+we did with the sum rule.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(A, B\mid C) = P(A\mid B, C)\, P(B \mid C),
+\end{aligned}\]</div>
+<p>for any <span class="math notranslate nohighlight">\(C\)</span>.</p>
+</section>
+<section id="application-to-scientific-measurement">
+<h2>Application to scientific measurement<a class="headerlink" href="#application-to-scientific-measurement" title="Link to this heading"></a></h2>
+<p>This is all a bit abstract. Let’s bring it into the realm of scientific
+experiment. We’ll assign meanings to these things we have been calling
+<span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+A &amp;= \text{hypothesis (or set of parameter values), } \theta, \\
+B &amp;= \text{Measured data set, } y,\\
+C &amp;= \text{All other information we know, } I.
+\end{aligned}\end{split}\]</div>
+<p>So, we may be interested in the probability of obtaining a data set <span class="math notranslate nohighlight">\(y\)</span> given some set of parameters <span class="math notranslate nohighlight">\(\theta\)</span> . In other words, we want to learn about <span class="math notranslate nohighlight">\(P(y|\theta)\)</span>.</p>
+<p>To go a bit further, let’s rewrite the product rule.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(\theta, y\mid I) = P(\theta \mid y, I)\, P(y \mid I).
+\end{aligned}\]</div>
+<p>We have explicitly written all other information we know going into the experiment as <span class="math notranslate nohighlight">\(I\)</span>. This is always present, so henceforth we will not write it, but we should keep in mind that we are not doing science in a vacuum; <span class="math notranslate nohighlight">\(I\)</span> is always there.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(\theta, y) = P(\theta \mid y)\, P(y).
+\end{aligned}\]</div>
+<p>Ahoy! The quantity <span class="math notranslate nohighlight">\(P(\theta \mid y)\)</span> is exactly what we want
+from our statistical inference. This is the probability for values of a parameter, given
+measured data.</p>
+<p>But wait a minute. The parameter <span class="math notranslate nohighlight">\(\theta\)</span> is not something that can vary meaningfully from experiment to experiment; it is not a random variable. So, in the frequentist picture, we cannot assign a probability to it. That is, <span class="math notranslate nohighlight">\(P(\theta\mid y)\)</span> and <span class="math notranslate nohighlight">\(P(y, \theta)\)</span> do not make any sense. So, in the frequentist perspective, we can really only analyze <span class="math notranslate nohighlight">\(P(y\mid \theta)\)</span>. But in a Bayesian perspective, we <em>can</em> analyze what we want, <span class="math notranslate nohighlight">\(P(\theta\mid y)\)</span>!</p>
+<p>Now, how do we compute it <span class="math notranslate nohighlight">\(P(\theta\mid y)\)</span>?</p>
+</section>
+<section id="bayess-theorem">
+<h2>Bayes’s Theorem<a class="headerlink" href="#bayess-theorem" title="Link to this heading"></a></h2>
+<p>Note that because “and” is commutative,
+<span class="math notranslate nohighlight">\(P(\theta, y) = P(y, \theta)\)</span>. So, we apply the product
+rule to both sides of the seemingly trivial equality.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+  P(\theta \mid y)\, P(y) =  P(\theta, y)
+  = P(y, \theta) = P(y \mid \theta)\, P(\theta).\end{aligned}\]</div>
+<p>If we take the terms at the beginning and end of this equality and
+rearrange, we get</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(\theta \mid y) = \frac{P(y \mid \theta)\, P(\theta)}{P(y)}.
+\end{aligned}\]</div>
+<p>This result is called <strong>Bayes’s theorem</strong>. This is far more instructive
+in terms of how to compute our goal, which is the left hand side.
+The quantities on the right hand side all have meaning. We will talk
+about the meaning of each term in turn, and this is easier to do using
+their names; each item in Bayes’s theorem has a name.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+\text{posterior} = \,\frac{\text{likelihood} \times \text{prior}}{\text{evidence}}.
+\end{aligned}\]</div>
+<section id="the-prior-probability">
+<h3>The prior probability.<a class="headerlink" href="#the-prior-probability" title="Link to this heading"></a></h3>
+<p>First, consider the prior, <span class="math notranslate nohighlight">\(P(\theta)\)</span>. As probability is a
+measure of plausibility, or how believable a hypothesis is. This represents the
+plausibility about hypothesis <span class="math notranslate nohighlight">\(\theta\)</span> given everything we know
+<em>before</em> we did the experiment to get the data.</p>
+</section>
+<section id="the-likelihood">
+<h3>The likelihood.<a class="headerlink" href="#the-likelihood" title="Link to this heading"></a></h3>
+<p>The likelihood, <span class="math notranslate nohighlight">\(P(y\mid \theta)\)</span>, describes how likely it is to
+acquire the observed data, <em>given the hypothesis or parameter value</em> <span class="math notranslate nohighlight">\(\theta\)</span>. It also contains information about what we expect from the data,
+given our measurement method. Is there noise in the instruments we are
+using? How do we model that noise? These are contained in the
+likelihood.</p>
+</section>
+<section id="the-evidence">
+<h3>The evidence.<a class="headerlink" href="#the-evidence" title="Link to this heading"></a></h3>
+<p>I will not talk much about this here, except to say that the evidence, <span class="math notranslate nohighlight">\(P(y)\)</span> can be
+computed from the likelihood and prior, and is also called the <em>marginal
+likelihood</em>, a name whose meaning will become clear in the next
+section. <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="the-posterior-probability">
+<h3>The posterior probability.<a class="headerlink" href="#the-posterior-probability" title="Link to this heading"></a></h3>
+<p>This is what we are after, <span class="math notranslate nohighlight">\(P(\theta\mid y)\)</span>. How plausible is the hypothesis or parameter value, given that
+we have measured some new data? It is calculated directly from the
+likelihood and prior (since the evidence is also computed from them).
+Computing the posterior distribution constitutes the bulk of our
+inference tasks.</p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>But we were not too formal. For example, we were not discussing <span class="math notranslate nohighlight">\(\sigma\)</span>
+algebras, measurability, etc.</p>
+</aside>
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>More formally, a random variable transforms the possible outcomes of
+an experiment to real numbers.</p>
+</aside>
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>I have heard this referred to as the “fully marginalized likelihood”
+because of the cute correspondence of the acronym and how some people
+feel trying to get their head around the meaning of the quantity.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Lesson 1: Introduction to Bayesian modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bayes_notation.html" class="btn btn-neutral float-right" title="Notation of parts of Bayes’s Theorem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x1428a9e50> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

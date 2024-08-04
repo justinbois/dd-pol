@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random number generation &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Warm-up" href="warm_up.html" />
+    <link rel="prev" title="Why MCMC?" href="why_mcmc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 3: Markov chain Monte Carlo and Stan</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="why_mcmc.html">Why MCMC?</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Random number generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-basic-idea-behind-mcmc">The basic idea behind MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warm_up.html">Warm-up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metropolis_hastings.html">Generating a transition kernel: The Metropolis-Hastings algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_reading.html">Further reading on MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stan_hello_world.html">“Hello, world” —Stan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_estimation_with_mcmc.html">Parameter estimation with Markov chain Monte Carlo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variate_covariate_with_stan.html">Variate-covariate models with MCMC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+      <li class="breadcrumb-item active">Random number generation</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="../../_sources/lessons/03/mcmc_idea.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="random-number-generation">
+<h1>Random number generation<a class="headerlink" href="#random-number-generation" title="Link to this heading"></a></h1>
+<p>To understand the posterior probability distribution, we can draw samples from it. We have already seen how to draw random numbers from various distributions using the <code class="docutils literal notranslate"><span class="pre">np.random</span></code> module. Importantly, the samples we draw are <strong>independent</strong>, meaning that what the value of the sample number <span class="math notranslate nohighlight">\(n\)</span> is has not bearing on what we will get for sample number <span class="math notranslate nohighlight">\(n+1\)</span>.</p>
+<p>How do we get random numbers from a specific distribution? Random number generators are capable of (approximately) drawing integers from a Discrete Uniform distribution. For example, NumPy’s built-in generator, the <a class="reference external" href="https://en.wikipedia.org/wiki/Permuted_congruential_generator">PCG64 generator</a>, generates 128 bit numbers, allowing for <span class="math notranslate nohighlight">\(2^{128}\)</span>, or about <span class="math notranslate nohighlight">\(10^{38}\)</span>, possible integers. In practice, these are converted to floating point numbers (since a double floating point number has far less than 128 bits) on the interval [0, 1) by dividing the random number by <span class="math notranslate nohighlight">\(2^{128}\)</span>. Effectively, then, the random number generators provide draws out of a Uniform distribution on the interval [0, 1).</p>
+<p>To convert from random numbers on a Uniform distribution to random numbers from a nonuniform distribution, we need a transform. For many named distributions convenient transforms exist. For example, the <cite>Box-Muller transform</cite> is often used to get random draws from a Normal distribution. In the absence of a clever transform we can use a distribution’s <a class="reference external" href="https://en.wikipedia.org/wiki/Quantile_function">quantile function</a>, also known as a <strong>percent-point function</strong>, which is the inverse CDF, <span class="math notranslate nohighlight">\(F^{-1}(y)\)</span>. For example, the quantile function for the Exponential distribution is</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+F^{-1}(p) = -\beta^{-1}\,\ln(1-p),
+\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is the value of the CDF, ranging from zero to one. We first draw <span class="math notranslate nohighlight">\(p\)</span> out of a Uniform distribution on [0, 1), and the compute <span class="math notranslate nohighlight">\(F^{-1}(p)\)</span> to get a draw from an exponential distribution. A graphical illustration of using a quantile function to draw 50 random numbers out of Gamma(5, 2) is shown below.</p>
+<div style="height:200px;"><script src="bokeh-content-5d1ea08a817f433dbce73e6bdf19eeaf-lessons-03-mcmc_idea.js" id="e91cc64b-42e9-44d8-85e0-24ea65468fe4"></script></div><p>Each draw from a Uniform distribution, marked by an × on the vertical axis, is converted to a draw from a Gamma distribution, marked by ○ on the horizontal axis, by computing the inverse CDF.</p>
+</section>
+<section id="the-basic-idea-behind-mcmc">
+<h1>The basic idea behind MCMC<a class="headerlink" href="#the-basic-idea-behind-mcmc" title="Link to this heading"></a></h1>
+<p>Our goal is to draw independent samples from a <strong>target distribution</strong>. In the above plot, that distribution is the Gamma distribution with parameters <span class="math notranslate nohighlight">\(\alpha = 5\)</span> and <span class="math notranslate nohighlight">\(\beta = 2\)</span>. As we have seen, in order get independent samples, we need to be able to define a transform the converts draws from a Uniform distribution to draws from the target distribution. Unfortunately, we almost never can derive such a transformation for an arbitrary distribution, including the posterior distributions we get from Bayesian models.</p>
+<p>But the samples need not be independent! Instead, we only need that the
+samples be generated from a process that generates samples from the
+target distribution in the correct proportions. If we draw enough <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> of
+them, we do not need to worry about the lack of independence. In the
+case of the parameter estimation problem, the distribution we wish to
+draw from is the posterior distribution <span class="math notranslate nohighlight">\(g(\theta\mid y)\)</span>. For
+notational simplicity in what follows, since we know we are always
+talking about a posterior distribution, we will use <span class="math notranslate nohighlight">\(P(\theta)\)</span>
+for shorthand notation for an arbitrary distribution of <span class="math notranslate nohighlight">\(\theta\)</span>. The
+techniques I discuss are not limited to sampling out of posteriors; we
+can sample out of any distribution.</p>
+<p><strong>The approach of MCMC is to take random walks in parameter space such
+that the probability that a walker arrives at point</strong> <span class="math notranslate nohighlight">\(\theta\)</span> <strong>is
+proportional to</strong> <span class="math notranslate nohighlight">\(P(\theta)\)</span>. This is the main concept. You should re-read that bolded sentence.</p>
+<p>If we can achieve such a walk, we can just take the walker positions as
+samples from the distributions. To implement this random walk, we define
+a <strong>transition kernel</strong>, <span class="math notranslate nohighlight">\(T(\theta_{i+1}\mid \theta_i)\)</span>, the
+probability of a walker stepping from position <span class="math notranslate nohighlight">\(\theta_i\)</span> in
+parameter space to position <span class="math notranslate nohighlight">\(\theta_{i+1}\)</span>. The transition kernel
+defines a <strong>Markov chain</strong>, which you can think of as a random walker
+whose next step depends only on where the walker is <em>right now</em>; i.e.,
+it has no memory. Where the walker goes for step <span class="math notranslate nohighlight">\(i+1\)</span> depends
+<em>only</em> on where it was at step <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>The condition that the probability of arrival at point
+<span class="math notranslate nohighlight">\(\theta_{i+1}\)</span> is proportional to <span class="math notranslate nohighlight">\(P(\theta_{i+1})\)</span> may be
+stated as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+P(\theta_{i+1}) = \int \mathrm{d}\theta_i\, T(\theta_{i+1}\mid \theta_i)\,
+P(\theta_i).
+\end{aligned}\]</div>
+<p>Here, we have taken <span class="math notranslate nohighlight">\(\theta\)</span> to be continuous. Were it discrete,
+we just replace the integral with a sum. When this relation holds, it is
+said that the target distribution is an <strong>invariant distribution</strong> or
+<strong>stationary distribution</strong> of the transition kernel. When this
+invariant distribution is unique, it is called a <strong>limiting
+distribution</strong>. We want to choose our transition kernel
+<span class="math notranslate nohighlight">\(T(\theta_{i+1}\mid \theta_i)\)</span> such that the target distribution <span class="math notranslate nohighlight">\(P(\theta)\)</span> is
+limiting. This is the case if the above equation holds and the chain is <strong>ergodic</strong>.
+An ergodic Markov chain has the following properties:</p>
+<ol class="arabic simple">
+<li><p>It is <strong>aperiodic</strong>. A <em>periodic</em> Markov chain can only return to a
+given point in parameter space after <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(2k\)</span>,
+<span class="math notranslate nohighlight">\(3k,\ldots\)</span> steps, where <span class="math notranslate nohighlight">\(k\)</span> is the period. An aperiodic
+chain is <em>not</em> periodic.</p></li>
+<li><p>It is <strong>irreducible</strong>, which means that any point in parameter space
+is accessible to the walker from any other.</p></li>
+<li><p>It is <strong>positive recurrent</strong>, which means that the walker will surely
+revisit any point in parameter space in a finite number of
+steps.</p></li>
+</ol>
+<p>So, if our transition kernel satisfies this checklist and the invariance condition, it will eventually sample the
+posterior distribution. We will discuss how to come up with such a
+transition kernel in a moment; first we focus on the important concept
+of “eventually” in the preceding sentence.</p>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>The word “enough” is pretty loaded here. We need to draw enough samples such that we get a sufficient number <em>effectively independent</em> samples. One algorithm for drawing samples might require 1000 samples for each effectively independent one. Another, better one might only require 10. <a class="reference external" href="https://arxiv.org/abs/2311.02726">Margossian and Gelman</a> have a nice discussion on this.</p>
+</aside>
+</aside>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="why_mcmc.html" class="btn btn-neutral float-left" title="Why MCMC?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="warm_up.html" class="btn btn-neutral float-right" title="Warm-up" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x142a55640> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

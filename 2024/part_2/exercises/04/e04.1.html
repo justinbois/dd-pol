@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 4.1: Determining a dissociation constants &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 4.2: Heavy-tailed distributions and outliers" href="e04.2.html" />
+    <link rel="prev" title="Exercise 4: More Bayesian inference with MCMC" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 4: More Bayesian inference with MCMC</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 4.1: Determining a dissociation constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e04.2.html">Exercise 4.2: Heavy-tailed distributions and outliers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+      <li class="breadcrumb-item active">Exercise 4.1: Determining a dissociation constants</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/exercises/04/e04.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/exercises/04/e04.1.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exercise-4.1:-Determining-a-dissociation-constants">
+<h1>Exercise 4.1: Determining a dissociation constants<a class="headerlink" href="#Exercise-4.1:-Determining-a-dissociation-constants" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/rasson_dissociation_anisotropy.csv">Data set download</a></p>
+<hr><p>The data set we will consider in this problem comes from a <a class="reference external" href="https://doi.org/10.1016/j.jmb.2014.09.002">paper by Rasson and coworkers</a>. The text below is long, and sets up a problem we will approach again in future problem sets.</p>
+<p>The authors were investigating the biochemistry of Spire-actin interactions. Spire is an actin binding protein that can nucleate actin filaments. In particular, it has four domains (called <span class="math notranslate nohighlight">\(S_A\)</span>, <span class="math notranslate nohighlight">\(S_B\)</span>, <span class="math notranslate nohighlight">\(S_C\)</span>, and <span class="math notranslate nohighlight">\(S_D\)</span>), which bind monomeric actin. These four domains, acting in concert, can line up actin monomers to help in nucleation. In this problem, we will determine the dissociation constant, <span class="math notranslate nohighlight">\(K_d\)</span>, describing binding of <span class="math notranslate nohighlight">\(S_D\)</span> to monomeric actin.</p>
+<p>The strategy to determine <span class="math notranslate nohighlight">\(K_d\)</span> is to perform a titration experiment. Consider the chemical reaction describing <span class="math notranslate nohighlight">\(S_D\)</span>-actin binding.</p>
+<p><span class="math">\begin{align}
+\text{actin}\cdot S_D \rightleftharpoons \text{actin} + S_D,
+\end{align}</span></p>
+<p>which has dissociation constant <span class="math notranslate nohighlight">\(K_d\)</span>. (In this system actin does not polymerize and stay monometic because it is treated with Latrunculin.) Let <span class="math notranslate nohighlight">\(c_a\)</span> be the equilibrium concentration of actin and <span class="math notranslate nohighlight">\(c_d\)</span> be the equilibrium concentration of <span class="math notranslate nohighlight">\(S_D\)</span>, and <span class="math notranslate nohighlight">\(c_{ad}\)</span> be the equilibrium concentration of bound actin-<span class="math notranslate nohighlight">\(S_D\)</span>. Then, at equilibrium,</p>
+<p><span class="math">\begin{align}
+K_d = \frac{c_a c_d}{c_{ad}}.
+\end{align}</span></p>
+<p>If we started with a total actin concentration of <span class="math notranslate nohighlight">\(c_a^0\)</span> and a total <span class="math notranslate nohighlight">\(S_D\)</span> concentration of <span class="math notranslate nohighlight">\(c_d^0\)</span>, we also have</p>
+<p><span class="math">\begin{align}
+c_a^0 = c_a + c_{ad}, \\[1mm]
+c_d^0 = c_d + c_{ad},
+\end{align}</span></p>
+<p>by conservation of mass. With these relations, we can now write <span class="math notranslate nohighlight">\(c_{ad}\)</span> in terms of <span class="math notranslate nohighlight">\(c_a^0\)</span> and <span class="math notranslate nohighlight">\(c_d^0\)</span>, which are known quantities (this is what we pipetted into our solution).</p>
+<p><span class="math">\begin{align}
+K_d &= \frac{(c_a^0 - c_{ad})(c_d^0 - c_{ad})}{c_{ad}},\\[1mm]
+\Rightarrow\;&\;\;c_{ad}^2 - (K_d + c_a^0 + c_d^0)c_{ad} + c_a^0 c_d^0 = 0.
+\end{align}</span></p>
+<p>The solution to this quadratic equation gives <span class="math notranslate nohighlight">\(c_{ad}\)</span> as a function of <span class="math notranslate nohighlight">\(K_d\)</span>. Note that we must choose one of the two roots, the one that is physical. The physical root satisfies <span class="math notranslate nohighlight">\(0 &lt; c_{ad} &lt; \min(c_a^0, c_d^0)\)</span>. In this case, it is</p>
+<p><span class="math">\begin{align}
+c_{ad} = \frac{1}{2}\left(K_d + c_a^0 + c_d^0 - \sqrt{\left(K_d + c_a^0 + c_d^0\right)^2 - 4c_a^0c_d^0}\right).
+\end{align}</span></p>
+<p>In a titration experiment, we fix <span class="math notranslate nohighlight">\(c_d^0\)</span> and vary <span class="math notranslate nohighlight">\(c_a^0\)</span>, and measure <span class="math notranslate nohighlight">\(c_{ad}\)</span> to get a curve. From the curve, we can perform a parameter estimation to get <span class="math notranslate nohighlight">\(K_d\)</span>.</p>
+<p>The problem with this approach is that we do not have a direct way of measuring <span class="math notranslate nohighlight">\(c_{ad}\)</span>. The authors instead employed <a class="reference external" href="https://en.wikipedia.org/wiki/Fluorescence_anisotropy">fluorescence anisotropy</a>. I will not go into the details here of how it works, but will simply say that larger complexes rotate more slowly, and therefore give a higher fluorescence anisotropy signal (which is dimensionless) than do smaller complexes.</p>
+<p>So, the authors fluorescently tagged <span class="math notranslate nohighlight">\(S_D\)</span>. We will call this molecule <span class="math notranslate nohighlight">\(S_{D^*}\)</span>, with concentration <span class="math notranslate nohighlight">\(c_{d^*}\)</span>. When free in solution, this molecule gives an anisotropy signal of <span class="math notranslate nohighlight">\(r_f\)</span>. When bound to actin, it gives an anisotropy signal of <span class="math notranslate nohighlight">\(r_b\)</span>. So, the total anisotropy signal we detect is</p>
+<p><span class="math">\begin{align}
+r = \frac{1}{c_{d^*}^0}\,\left(r_f c_{d^*} + r_b c_{ad^*}\right).
+\end{align}</span></p>
+<p>Clearly, when all <span class="math notranslate nohighlight">\(S_{D^*}\)</span> is free, the anisotropy signal is <span class="math notranslate nohighlight">\(r_f\)</span> and when all <span class="math notranslate nohighlight">\(S_{D^*}\)</span> is bound to actin, the signal is <span class="math notranslate nohighlight">\(r_b\)</span>. Remembering conservation of mass, <span class="math notranslate nohighlight">\(c_{d^*} = c_{d^*}^0 - c_{ad^*}\)</span>, we have</p>
+<p><span class="math">\begin{align}
+r = \frac{1}{c_{d^*}^0}\,\left(r_f (c_{d^*}^0 - c_{ad^*}) + r_b c_{ad^*}\right)
+= r_f  + \frac{r_b-r_f}{c_{d^*}^0}\, c_{ad^*}.
+\end{align}</span></p>
+<p>Now, returning to our equilibrium expression, we have</p>
+<p><span class="math">\begin{align}
+c_{ad^*} = \frac{1}{2}\left(K_d^* + c_a^0 + c_{d^*}^0 - \sqrt{\left(K_d^* + c_a^0 + c_{d^*}^0\right)^2 - 4c_a^0c_{d^*}^0}\right),
+\end{align}</span></p>
+<p>so we can write the measured anisotropy <span class="math notranslate nohighlight">\(r\)</span> as a function of <span class="math notranslate nohighlight">\(K_d^*\)</span> and the known quantities <span class="math notranslate nohighlight">\(c_a^0\)</span> and <span class="math notranslate nohighlight">\(c_{d^*}^0\)</span>. Note that we now have three parameters in our mathematical model, <span class="math notranslate nohighlight">\(K_d^*\)</span>, <span class="math notranslate nohighlight">\(r_f\)</span>, and <span class="math notranslate nohighlight">\(r_b\)</span>, since the latter two are not known <em>a priori</em>. The parameter we are most interested in is <span class="math notranslate nohighlight">\(K_d^*\)</span>, the dissociation constant for the fluorescently labeled Spire-D and actin.</p>
+<p>Your job in this exercise is to obtain an estimate and credible region for the parameter <span class="math notranslate nohighlight">\(K_{d}^*\)</span>. You can load and tidy the data set using the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and tidy data frame for dissociation</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;rasson_dissociation_anisotropy.csv&quot;</span><span class="p">),</span> <span class="n">comment_prefix</span><span class="o">=</span><span class="s2">&quot;#&quot;</span>
+<span class="p">)</span>
+
+<span class="n">df_1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;[SDfluor] (uM)&quot;</span><span class="p">,</span> <span class="s2">&quot;[actin] (uM) trial 1&quot;</span><span class="p">,</span> <span class="s2">&quot;anisotropy trial 1&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;[actin] (uM) trial 1&quot;</span><span class="p">:</span> <span class="s2">&quot;[actin] (uM)&quot;</span><span class="p">,</span> <span class="s2">&quot;anisotropy trial 1&quot;</span><span class="p">:</span> <span class="s2">&quot;anisotropy&quot;</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">trial</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;[SDfluor] (uM)&quot;</span><span class="p">,</span> <span class="s2">&quot;[actin] (uM) trial 2&quot;</span><span class="p">,</span> <span class="s2">&quot;anisotropy trial 2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;[actin] (uM) trial 2&quot;</span><span class="p">:</span> <span class="s2">&quot;[actin] (uM)&quot;</span><span class="p">,</span> <span class="s2">&quot;anisotropy trial 2&quot;</span><span class="p">:</span> <span class="s2">&quot;anisotropy&quot;</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span><span class="n">trial</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">df_1</span><span class="p">,</span> <span class="n">df_2</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Exercise 4: More Bayesian inference with MCMC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="e04.2.html" class="btn btn-neutral float-right" title="Exercise 4.2: Heavy-tailed distributions and outliers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x1425fb080> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

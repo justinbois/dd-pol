@@ -1,0 +1,9 @@
+******************************************************
+Lesson 5: Prior and posterior predictive checks
+******************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   prior_predictive_checks
+   posterior_predictive_checks

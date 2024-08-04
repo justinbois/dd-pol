@@ -1,0 +1,65 @@
+PoL workshop on statistical inference
+=====================================================================
+
+Physical biology is a quantitative science, and biological scientists need to be equipped with tools to analyze quantitative data. Bayesian methods are especially apt in this context because they involve explicit models that describe the data generation process. The Bayesian approach allows us to directly learn from experiment to inform our understanding of nature through models.
+
+
+Prerequisites
+--------------
+
+Familiarity with the Python programming language and the `NumPy package <https://numpy.org>`_ and `Pandas <https://pandas.pydata.org:>`_ or `Polars <https://pola.rs/>`_ packages are assumed. We will use `Bokeh <https://docs.bokeh.org/en/latest/>`_ for plotting, and some familiarity with that package is useful as well, but not required. Finally, students should have some experience with calculus and familiarity with basic concepts in probability, though advanced knowledge is not required.
+
+
+Data sets
+---------
+
+Students should download and unzip the `data sets we will use in the workshop <http://bois.caltech.edu/data.zip>`_.
+
+
+Instructor
+----------
+
+- `Justin Bois <http://bois.caltech.edu/>`_
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Lessons
+
+   lessons/00/configuring_your_computer.ipynb
+   lessons/01/index
+   lessons/02/index
+   lessons/03/index
+   lessons/04/index
+   lessons/05/index
+   lessons/06/index
+   lessons/07/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Exercises
+
+   exercises/01/index
+   exercises/02/index
+   exercises/03/index
+   exercises/04/index
+   exercises/05/index
+   exercises/06/index
+   exercises/07/index
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Schedule
+
+   schedule
+
+
+Useful resources
+----------------
+
+- `BE/Bi 103 b at Caltech <https://bebi103b.github.io/>`_
+- `Distribution Explorer <https://distribution-explorer.github.io/>`_
+- `Stan documentation <https://mc-stan.org/>`_
+- `Michael Betancourt's writings <https://betanalpha.github.io/writing/>`_
+- `BDA3, by Gelman, Carlin, Stern, Dunson, Vehtari, and Rubin <http://www.stat.columbia.edu/~gelman/book/BDA3.pdf>`_

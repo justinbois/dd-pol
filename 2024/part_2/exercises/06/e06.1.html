@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise 6.1: Hierarchical models are hiding in plain sight &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Exercise 6.2: Noise in gene expression" href="e06.2.html" />
+    <link rel="prev" title="Exercise 6: Hierarchical models" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/06/index.html">Lesson 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 6: Hierarchical models</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 6.1: Hierarchical models are hiding in plain sight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e06.2.html">Exercise 6.2: Noise in gene expression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e06.3.html">Exercise 6.3: Rounding of somites</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Exercise 6: Hierarchical models</a></li>
+      <li class="breadcrumb-item active">Exercise 6.1: Hierarchical models are hiding in plain sight</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/exercises/06/e06.1.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/exercises/06/e06.1.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Exercise-6.1:-Hierarchical-models-are-hiding-in-plain-sight">
+<h1>Exercise 6.1: Hierarchical models are hiding in plain sight<a class="headerlink" href="#Exercise-6.1:-Hierarchical-models-are-hiding-in-plain-sight" title="Link to this heading"></a></h1>
+<hr><p>Say we have a set of measurements, <span class="math notranslate nohighlight">\(\mathbf{x} = \{x_1, x_2,\ldots\}\)</span>. Each measurement has associated with is some measurement error such that <span class="math notranslate nohighlight">\(x_i \sim \text{Norm}(\mu_i, s)\)</span>. Furthermore, there is a natural variability from measurement to measurement such that <span class="math notranslate nohighlight">\(\mu_i \sim \text{Norm}(\mu, \sigma)\)</span>.</p>
+<p><strong>a)</strong> Write a mathematical expression for the joint generative probability density, <span class="math notranslate nohighlight">\(\pi(\mathbf{x}, \boldsymbol{\mu}, \mu, s, \sigma)\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{x} = \{x_1, x_2,\ldots\}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = \{\mu_1, \mu_2, \ldots\}\)</span>. You may assume that the prior may be separated such that <span class="math notranslate nohighlight">\(g(\mu, \sigma, s) = g(\mu) g(\sigma) g(s)\)</span>.</p>
+<p><strong>b)</strong> Calculate <span class="math notranslate nohighlight">\(\pi(\mathbf{x}, \mu, s, \sigma)\)</span>. <em>Hint</em>: It may help to use the relation</p>
+<p><span class="math">\begin{align}
+\frac{(x_i-\mu_i)^2}{2s^2} + \frac{(\mu_i-\mu)^2}{2\sigma^2} = \frac{(x_i-\mu)^2}{2(s^2 + \sigma^2)} + \frac{\left(\mu_i - b\right)^2}{2a^2},
+\end{align}</span></p>
+<p>where</p>
+<p><span class="math">\begin{align}
+a^2 = \frac{s^2\sigma^2}{s^2+\sigma^2}\;\;\text{and}\;\;
+b = \frac{x_i/s^2 + \mu/s^2}{s^{-2} + \sigma^{-2}},
+\end{align}</span></p>
+<p>which may be found by completing the square. <em>Another hint</em>: It is useful to know about Gaussian integrals, namely that</p>
+<p><span class="math">\begin{align}
+\int_{-\infty}^\infty \mathrm{d}x\,\mathrm{e}^{-(x-b)^2 / 2 a^2} = \sqrt{2\pi a^2}.
+\end{align}</span></p>
+<p><strong>c)</strong> Write an expression fro <span class="math notranslate nohighlight">\(\pi(\mathbf{x}, \mu, s, \sigma)\)</span> in the limit where the natural variability is much greater than the measurement error (<span class="math notranslate nohighlight">\(s \ll \sigma\)</span>).</p>
+<p><strong>d)</strong> Finally, in this limit, write the expression for <span class="math notranslate nohighlight">\(\pi(\mathbf{x}, \mu, \sigma)\)</span> and show that for this hierarchical model, the limit of <span class="math notranslate nohighlight">\(s\ll \sigma\)</span> is equivalent to having a likelihood of <span class="math notranslate nohighlight">\(x_i \sim \text{Norm}(\mu, \sigma)\;\forall i\)</span>.</p>
+<p>This problem shows how a hierarchical model can reduce to a non-hierarchical one. In this case, it helps you see what is being neglected when you choose not to use a hierarchical model (since so many models actually are hierarchical if you don’t make approximations like the one derived here).</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Exercise 6: Hierarchical models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="e06.2.html" class="btn btn-neutral float-right" title="Exercise 6.2: Noise in gene expression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x142707320> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

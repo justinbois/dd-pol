@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choosing a hierarchical prior &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Implementation of a worm reversal hierarchical model" href="implementation.html" />
+    <link rel="prev" title="Modeling repeated experiments" href="modeling_repeated_experiments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Lesson 1: Introduction to Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Parameter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Markov chain Monte Carlo and Stan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Display of MCMC results and diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Prior and posterior predictive checks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 6: Hierarchical models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="modeling_repeated_experiments.html">Modeling repeated experiments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Choosing a hierarchical prior</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Exchangeability">Exchangeability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Choice-of-the-conditional-distribution">Choice of the conditional distribution</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html">Implementation of a worm reversal hierarchical model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generalization.html">Generalization of hierarchical models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hierarchical_implementation.html">General implementation of hierarchical models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. First foray into MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Hierarchical models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: Principled pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 6: Hierarchical models</a></li>
+      <li class="breadcrumb-item active">Choosing a hierarchical prior</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/lessons/06/choosing_a_hierarchical_prior.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/lessons/06/choosing_a_hierarchical_prior.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Choosing-a-hierarchical-prior">
+<h1>Choosing a hierarchical prior<a class="headerlink" href="#Choosing-a-hierarchical-prior" title="Link to this heading"></a></h1>
+<hr><p>Choice of a hierarchical prior is not always as straightforward as for priors we are used to considering because we have to specify the hyperprior and all conditional priors, <span class="math notranslate nohighlight">\(g(\theta\mid \phi)\)</span>.</p>
+<section id="Exchangeability">
+<h2>Exchangeability<a class="headerlink" href="#Exchangeability" title="Link to this heading"></a></h2>
+<p>The conditional probability, <span class="math notranslate nohighlight">\(g(\theta\mid \phi)\)</span>, can take any reasonable form. In the case where we have no reason to believe that we can distinguish any one <span class="math notranslate nohighlight">\(\theta_i\)</span> from another prior to the experiment, then the label “<span class="math notranslate nohighlight">\(i\)</span>” applied to the experiment may be exchanged with the label of any other experiment. I.e., <span class="math notranslate nohighlight">\(g(\theta_1, \theta_2, \ldots, \theta_k \mid \phi)\)</span> is invariant to permutations of the indices. Parameters behaving this way are said to be
+<strong>exchangeable</strong>. A common (simple) exchangeable distribution is</p>
+<p><span class="math">\begin{align}
+g(\theta\mid \phi) = \prod_{i=1}^k g(\theta_i\mid \phi),
+\end{align}</span></p>
+<p>which means that each of the parameters is an independent sample out of a distribution <span class="math notranslate nohighlight">\(g(\theta_i\mid \phi)\)</span>, which we often take to be the same for all <span class="math notranslate nohighlight">\(i\)</span>. This is reasonable to do in the worm reversal example.</p>
+<p>In all of the hierarchical models we will work with, we will assume exchangeability. In situations where the indices of the experiment contain real information, meaning that the prior is no longer invariant to permuations of the indices, we lose exchangeability. An example would be if we did one set of experiments on one instrument and another set of experiments on another instrument. If we suspect these different instrument may have a real effect on the measured data, we need to explicitly
+model the differences. This is an example of a <strong>factor model</strong>, which feature more nuance than the hierarchical models we will consider. We will not go into factor models in this course (but we definitely would if we had more time! Add it to the long list of beautiful advanced topics….). Of course, we may <em>choose</em> to ignore differences between the two instruments in our modeling and recover exchangeability.</p>
+</section>
+<section id="Choice-of-the-conditional-distribution">
+<h2>Choice of the conditional distribution<a class="headerlink" href="#Choice-of-the-conditional-distribution" title="Link to this heading"></a></h2>
+<p>We need to specify our prior, which for this hierarchical model means that we have to specify the conditional distribution, <span class="math notranslate nohighlight">\(g(\theta_i\mid \phi)\)</span>, as well as <span class="math notranslate nohighlight">\(g(\phi)\)</span>. We could assume a Beta prior for <span class="math notranslate nohighlight">\(\phi\)</span>; the one we chose in our original nonhierarchical model would be a good choice.</p>
+<p><span class="math">\begin{align}
+\phi \sim \text{Beta}(1.1, 1.1).
+\end{align}</span></p>
+<p>For the conditional distribution <span class="math notranslate nohighlight">\(g(\theta_i\mid \phi)\)</span>, we might also assume it is Beta-distributed. This necessitates another parameter because the Beta distribution has two parameters.</p>
+<p>The Beta distribution is typically written as</p>
+<p><span class="math">\begin{align}
+g(\theta\mid \alpha, \beta) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\,
+\theta^{\alpha-1}(1-\theta)^{\beta-1},
+\end{align}</span></p>
+<p>where it is parametrized by positive constants <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>. The Beta distribution has mean and <strong>concentration</strong>, respectively, of</p>
+<p><span class="math">\begin{align}
+\phi &= \frac{\alpha}{\alpha + \beta}, \\[1em]
+\kappa &= \alpha + \beta.
+\end{align}</span></p>
+<p>The concentration <span class="math notranslate nohighlight">\(\kappa\)</span> is a measure of how sharp the distribution is. The bigger <span class="math notranslate nohighlight">\(\kappa\)</span> is, the most sharply peaked the distribution is. Since we would like to parametrize our Beta distribution with its mean <span class="math notranslate nohighlight">\(\phi\)</span>, we could use <span class="math notranslate nohighlight">\(\kappa\)</span> as our other parameter. So, our expression for the posterior is</p>
+<p><span class="math">\begin{align}
+g(\theta, \phi, \kappa \mid n, N) = \frac{f(n,N\mid \theta)\,\left(
+\prod_{i=1}^k g(\theta_i\mid \phi, \kappa)\right)\,g(\phi, \kappa)}{f(n, N)}.
+\end{align}</span></p>
+<p>We are left to specify the hyperprior <span class="math notranslate nohighlight">\(g(\phi, \kappa)\)</span>. We will take <span class="math notranslate nohighlight">\(\phi\)</span> to come from a Beta distribution and <span class="math notranslate nohighlight">\(\kappa\)</span> to come from an weakly informative Half-Normal. Note that to switch from a parametrization using <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(\kappa\)</span> to one using <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>, we can use</p>
+<p><span class="math">\begin{align}
+&\alpha = \phi \kappa\\[1em]
+&\beta = (1-\phi)\kappa.
+\end{align}</span></p>
+<p>With all of this, we can now put together our model.</p>
+<p><span class="math">\begin{align}
+&\phi \sim \text{Beta}(1.1, 1.1), \\[1em]
+&\kappa \sim \text{HalfNorm}(0, 1000), \\[1em]
+&\alpha = \phi \kappa, \\[1em]
+&\beta = (1-\phi)\kappa,\\[1em]
+&\theta_i \sim \text{Beta}(\alpha, \beta) \;\;\forall i,\\[1em]
+&n_i \sim \text{Binom}(N_i, \theta_i)\;\;\forall i.
+\end{align}</span></p>
+<p>This is a complete specification of a hierarchical model.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modeling_repeated_experiments.html" class="btn btn-neutral float-left" title="Modeling repeated experiments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="implementation.html" class="btn btn-neutral float-right" title="Implementation of a worm reversal hierarchical model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 04, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x112d6a990> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

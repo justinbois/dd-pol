@@ -1,0 +1,12 @@
+****************************************************
+Lesson 6: Hierarchical models
+****************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   modeling_repeated_experiments
+   choosing_a_hierarchical_prior
+   implementation
+   generalization
+   hierarchical_implementation

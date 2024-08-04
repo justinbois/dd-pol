@@ -1,0 +1,11 @@
+*******************************************************
+Lesson 4: Display of MCMC results and diagnostics
+*******************************************************
+
+.. toctree::
+   :maxdepth: 1
+
+   display_of_mcmc_samples
+   posterior_summaries
+   mcmc_diagnostics
+   funnel_of_hell
