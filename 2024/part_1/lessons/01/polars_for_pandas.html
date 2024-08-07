@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polars for Pandas users &mdash; PoL workshop on statistical inference, part 1  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Lesson 2: Exploratory plotting" href="../02/index.html" />
+    <link rel="prev" title="Styling data frames" href="styling_data_frames.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #827F7F" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Lessons</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../00/configuring_your_computer.html">Lesson 0: Setting up computing resources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Lesson 1: Polars and split-apply-combine</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro_to_polars.html">Introduction to Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tidy_data.html">Tidy data and split-apply-combine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="styling_data_frames.html">Styling data frames</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Polars for Pandas users</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#A-sample-data-frame">A sample data frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#From-Polars-to-Pandas-and-from-Pandas-to-Polars">From Polars to Pandas and from Pandas to Polars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Pandas-and-Polars-for-common-tasks">Pandas and Polars for common tasks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Hierarchical-indexes">Hierarchical indexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Computing-environment">Computing environment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../03/index.html">Lesson 3: Probability distributions and the plug-in principle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04/index.html">Lesson 4: Nonparametric inference with hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05/index.html">Lesson 5: Generative modeling and parametric inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../06/index.html">Lesson 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../07/index.html">Lesson 7: Variate-covariate modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../08/index.html">Lesson 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/01/index.html">Exercise 1. Polars and split-apply-combine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/02/index.html">Exercise 2. Exploratory plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/03/index.html">Exercise 3. Working with probability distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/04/index.html">Exercise 4: Nonparametric hacker stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/05/index.html">Exercise 5: Generative modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/06/index.html">Exercise 6: Maximum likelihood estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/07/index.html">Exercise 7: MLE with variate-covariate models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../exercises/08/index.html">Exercise 8: Model assessment</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Schedule</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html">Schedule overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schedule.html#daily-schedule">Daily schedule</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #827F7F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PoL workshop on statistical inference, part 1</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Lesson 1: Polars and split-apply-combine</a></li>
+      <li class="breadcrumb-item active">Polars for Pandas users</li>
+  <li class="wy-breadcrumbs-aside">
+    
+        
+        
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_1/lessons/01/polars_for_pandas.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_1/lessons/01/polars_for_pandas.ipynb" download> Download notebook</a>
+        
+      
+    
+  </li>
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Polars-for-Pandas-users">
+<h1>Polars for Pandas users<a class="headerlink" href="#Polars-for-Pandas-users" title="Link to this heading"></a></h1>
+<hr><div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">polars.selectors</span> <span class="k">as</span> <span class="nn">cs</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<hr><p>As of August 2024, <a class="reference external" href="https://pandas.pydata.org/">Pandas</a> is by far and away the most widely used data frame package for Python. We are using Polars primarily because, in my opinion, the API is more intuitive and therefore easier for beginners and experts alike to use. It is also faster, sometimes much faster. It is, however, important to know about Pandas and how to use it because many of your colleagues use it and many packages you may use do, too.</p>
+<p>Therefore, in this part of the lesson, I discuss how to convert Polars data frame to Pandas, and vice versa. I also provide syntax for doing common tasks in Polars and Pandas.</p>
+<section id="A-sample-data-frame">
+<h2>A sample data frame<a class="headerlink" href="#A-sample-data-frame" title="Link to this heading"></a></h2>
+<p>For ease of discussion and comparison, we will use a simple data frame that has two categorical columns, <code class="docutils literal notranslate"><span class="pre">'c1'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'c2'</span></code>, two quantitative columns as floats, <code class="docutils literal notranslate"><span class="pre">'q1'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code>, and a column, <code class="docutils literal notranslate"><span class="pre">'i1'</span></code> of integer values. It also has an identity column, a unique identifier for each row that is useful when converting the data frame to tall format. Note that <code class="docutils literal notranslate"><span class="pre">'q1'</span></code> has a null value and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code> has a NaN value.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)),</span>
+    <span class="n">c1</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">c2</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">q1</span><span class="o">=</span><span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">3.1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">2.9</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">7.3</span><span class="p">],</span>
+    <span class="n">q2</span><span class="o">=</span><span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">7.8</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+    <span class="n">i1</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Take a look</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (8, 6)</small><table border="1" class="dataframe"><thead><tr><th>id</th><th>c1</th><th>c2</th><th>q1</th><th>q2</th><th>i1</th></tr><tr><td>i64</td><td>str</td><td>str</td><td>f64</td><td>f64</td><td>i64</td></tr></thead><tbody><tr><td>1</td><td>&quot;a&quot;</td><td>&quot;c&quot;</td><td>1.1</td><td>4.5</td><td>5</td></tr><tr><td>2</td><td>&quot;a&quot;</td><td>&quot;d&quot;</td><td>2.2</td><td>2.3</td><td>3</td></tr><tr><td>3</td><td>&quot;a&quot;</td><td>&quot;c&quot;</td><td>3.1</td><td>NaN</td><td>0</td></tr><tr><td>4</td><td>&quot;a&quot;</td><td>&quot;d&quot;</td><td>null</td><td>1.1</td><td>2</td></tr><tr><td>5</td><td>&quot;b&quot;</td><td>&quot;c&quot;</td><td>2.9</td><td>7.8</td><td>4</td></tr><tr><td>6</td><td>&quot;b&quot;</td><td>&quot;d&quot;</td><td>1.7</td><td>2.3</td><td>3</td></tr><tr><td>7</td><td>&quot;b&quot;</td><td>&quot;c&quot;</td><td>3.0</td><td>1.1</td><td>4</td></tr><tr><td>8</td><td>&quot;b&quot;</td><td>&quot;d&quot;</td><td>7.3</td><td>0.8</td><td>1</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section id="From-Polars-to-Pandas-and-from-Pandas-to-Polars">
+<h2>From Polars to Pandas and from Pandas to Polars<a class="headerlink" href="#From-Polars-to-Pandas-and-from-Pandas-to-Polars" title="Link to this heading"></a></h2>
+<p>If you have a Polars data frame, you can directly convert it to a Pandas data frame using the <code class="docutils literal notranslate"><span class="pre">to_pandas()</span></code>, method. Let’s do that for our data frame.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>c1</th>
+      <th>c2</th>
+      <th>q1</th>
+      <th>q2</th>
+      <th>i1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>a</td>
+      <td>c</td>
+      <td>1.1</td>
+      <td>4.5</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>a</td>
+      <td>d</td>
+      <td>2.2</td>
+      <td>2.3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>a</td>
+      <td>c</td>
+      <td>3.1</td>
+      <td>NaN</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>a</td>
+      <td>d</td>
+      <td>NaN</td>
+      <td>1.1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>b</td>
+      <td>c</td>
+      <td>2.9</td>
+      <td>7.8</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>b</td>
+      <td>d</td>
+      <td>1.7</td>
+      <td>2.3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>b</td>
+      <td>c</td>
+      <td>3.0</td>
+      <td>1.1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>b</td>
+      <td>d</td>
+      <td>7.3</td>
+      <td>0.8</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Note that the null value because a NaN. All missing data in Pandas are NaN. (Well, not really. You can have an <code class="docutils literal notranslate"><span class="pre">object</span></code> data data type for a column that permits <code class="docutils literal notranslate"><span class="pre">None</span></code> values. However, when Pandas reads in data, when there are missing data, it assigns it to be NaN by default.)</p>
+<p>Note also that Pandas has an index displayed on the left side of the data frame. In general, we will not use Pandas indexes.</p>
+<p>Similarly, if you have a data frame in Pandas, you can convert it to a Polars data frame using the <code class="docutils literal notranslate"><span class="pre">pl.from_pandas()</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (8, 6)</small><table border="1" class="dataframe"><thead><tr><th>id</th><th>c1</th><th>c2</th><th>q1</th><th>q2</th><th>i1</th></tr><tr><td>i64</td><td>str</td><td>str</td><td>f64</td><td>f64</td><td>i64</td></tr></thead><tbody><tr><td>1</td><td>&quot;a&quot;</td><td>&quot;c&quot;</td><td>1.1</td><td>4.5</td><td>5</td></tr><tr><td>2</td><td>&quot;a&quot;</td><td>&quot;d&quot;</td><td>2.2</td><td>2.3</td><td>3</td></tr><tr><td>3</td><td>&quot;a&quot;</td><td>&quot;c&quot;</td><td>3.1</td><td>null</td><td>0</td></tr><tr><td>4</td><td>&quot;a&quot;</td><td>&quot;d&quot;</td><td>null</td><td>1.1</td><td>2</td></tr><tr><td>5</td><td>&quot;b&quot;</td><td>&quot;c&quot;</td><td>2.9</td><td>7.8</td><td>4</td></tr><tr><td>6</td><td>&quot;b&quot;</td><td>&quot;d&quot;</td><td>1.7</td><td>2.3</td><td>3</td></tr><tr><td>7</td><td>&quot;b&quot;</td><td>&quot;c&quot;</td><td>3.0</td><td>1.1</td><td>4</td></tr><tr><td>8</td><td>&quot;b&quot;</td><td>&quot;d&quot;</td><td>7.3</td><td>0.8</td><td>1</td></tr></tbody></table></div></div>
+</div>
+</section>
+<section id="Pandas-and-Polars-for-common-tasks">
+<h2>Pandas and Polars for common tasks<a class="headerlink" href="#Pandas-and-Polars-for-common-tasks" title="Link to this heading"></a></h2>
+<p>Below is a table listing common tasks with data frame done using Polars and Pandas.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Description</p></th>
+<th class="head"><p>Pandas</p></th>
+<th class="head"><p>Polars</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Convert dictionary to df</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame(data)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.DataFrame(data)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Make 2D Numpy array into df</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame(my_ar,</span> <span class="pre">columns=['col1',</span> <span class="pre">'col2',</span> <span class="pre">'col3'])</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.DataFrame(my_ar,</span> <span class="pre">schema=['col1',</span> <span class="pre">'col2',</span> <span class="pre">'col3']',</span> <span class="pre">orient='row')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Read from CSV</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.read_csv(file_name)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.read_csv(file_name)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lazily read CSV</p></td>
+<td><p>—</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.scan_csv(file_name)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Read from Excel</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.read_excel(file_name)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.read_excel(file_name)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Read from JSON</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.read_json(file_name)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.read_json(file_name)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Read from HDF5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.read_hdf(file_name)</span></code></p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Write CSV</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.to_csv(fname,</span> <span class="pre">index=False)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.write_csv(fname)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Rename columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.rename(columns={'c1':</span> <span class="pre">'cat1',</span> <span class="pre">'c2':</span> <span class="pre">'cat2'})</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.rename({'c1':</span> <span class="pre">'cat1',</span> <span class="pre">'c2':</span> <span class="pre">'cat2'})</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Get column <code class="docutils literal notranslate"><span class="pre">'q1'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Get columns <code class="docutils literal notranslate"><span class="pre">'c1'</span></code> and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[['c1',</span> <span class="pre">'q2']]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[['c1',</span> <span class="pre">'q2']]</span></code> or <code class="docutils literal notranslate"><span class="pre">df.select(pl.col('c1'),</span> <span class="pre">pl.col('q2'))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Get columns containing floats</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select_dtypes(float)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select(cs.float())</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[4,</span> <span class="pre">:]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.row(4)</span></code> or <code class="docutils literal notranslate"><span class="pre">pl.row(4,</span> <span class="pre">named=True)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code> as data frame</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[[4],</span> <span class="pre">:]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[4]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Get row where <code class="docutils literal notranslate"><span class="pre">i1</span></code> is <code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[df['i1']==2,</span> <span class="pre">:]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.row(by_predicate=pl.col('i1')==2)</span></code> or <code class="docutils literal notranslate"><span class="pre">df.filter(pl.col('i1')==2)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Sub df with rows where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[df['c1']=='a',</span> <span class="pre">:]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.filter(pl.col('c1')=='a')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Sub df where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code> and <code class="docutils literal notranslate"><span class="pre">c2</span></code> is <code class="docutils literal notranslate"><span class="pre">'d'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[(df['c1']=='a')</span> <span class="pre">&amp;</span> <span class="pre">(df['c2']=='d'),</span> <span class="pre">:]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.filter((pl.col('c1')=='a')</span> <span class="pre">&amp;</span> <span class="pre">(pl.col('c2')=='d'))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Iterate over columns of df</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">col,</span> <span class="pre">s</span> <span class="pre">in</span> <span class="pre">df.items()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">s</span> <span class="pre">in</span> <span class="pre">df</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Iterate over rows of df</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">row_ind,</span> <span class="pre">row</span> <span class="pre">in</span> <span class="pre">df.iterrows()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">r</span> <span class="pre">in</span> <span class="pre">iter_rows(named=True)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Group by single column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Group by maintaining order</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1',</span> <span class="pre">sort=False)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1',</span> <span class="pre">maintain_order=True)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Group by multiple columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Iterate over groups</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">group,</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby('c1')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(group,),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.group_by('c1')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Iterate over nested groups</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(g1,</span> <span class="pre">g2),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(g1,</span> <span class="pre">g2),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Group by and apply mean¹</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1').mean(numeric_only=True)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').mean()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Group by and apply median to one column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].median()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1').median())</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Group by and apply mean to two columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')[['q1',</span> <span class="pre">'q2']].median()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1',</span> <span class="pre">'q2').mean())</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Group by and apply custom func to col²</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].apply(my_fun)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1').map_elements(my_fun,</span> <span class="pre">return_dtype=float))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Group by and apply custom func to 2 cols³</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')[['q1',</span> <span class="pre">'q2']].apply(my_fun)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.struct(['q1',</span> <span class="pre">'q2']).map_elements(my_fun,</span> <span class="pre">return_dtype=float))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Group by and rank within each group</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].rank()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select(pl.col('q1').rank().over('c1'))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Convert to tall format</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.melt(value_name='value',</span> <span class="pre">var_name='var',</span> <span class="pre">id_vars='id')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.unpivot(value_name='value',</span> <span class="pre">variable_name='var',</span> <span class="pre">index='id')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pivot tall result above</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df_tall.pivot(columns='var',</span> <span class="pre">index='id').reset_index()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df_tall.pivot(on='var',</span> <span class="pre">index='id')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Select columns with string in name</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.filter(regex='q')</span></code> or <code class="docutils literal notranslate"><span class="pre">df[df.columns[df.columns.str.contains('q')]]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select(cs.contains('q'))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add column of zeros to data frame</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(new_col=0)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.lit(0).alias('new_col'))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Add a Numpy array as column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">my_array</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(new_col=my_array)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.Series(my_array).alias('new_col'))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Multiply two columns; make new column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['q1q2']</span> <span class="pre">=</span> <span class="pre">df['q1']</span> <span class="pre">*</span> <span class="pre">df['q2']</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(q1q2=df['q1']</span> <span class="pre">*</span> <span class="pre">df['q2']</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns((pl.col('q1')</span> <span class="pre">*</span> <span class="pre">pl.col('q2')).alias('q1q2'))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Apply a function to each row making new col⁴</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.assign(new_col=my_fun)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.struct(pl.all()).map_elements(my_fun,</span> <span class="pre">return_dtype=float).alias('new_col')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Drop rows with missing data</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.dropna()</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.drop_nulls()</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Sort according to a column</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.sort_values(by='i1')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.sort(by='i1')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Inner join two data frames⁵</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.merge(df,</span> <span class="pre">df2,</span> <span class="pre">on=shared_columns)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.join(df2,</span> <span class="pre">on=shared_columns)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Concatenate data frames vertically</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.concat((df,</span> <span class="pre">df2))</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.concat((df,</span> <span class="pre">df2),</span> <span class="pre">how='diagonal')</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Concatenate data frames horizontally</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.concat((df,</span> <span class="pre">df2),</span> <span class="pre">axis=1)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pl.concat((df,</span> <span class="pre">df2),</span> <span class="pre">how='horizontal')</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Footnotes</strong></p>
+<ol class="arabic simple">
+<li><p>Note that in Pandas, NaNs are omitted from calculations like means. In Polars, NaNs <em>are included</em>, and the result will be NaN. However, <code class="docutils literal notranslate"><span class="pre">null</span></code>s are not included.</p></li>
+<li><p>For Pandas, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take an <code class="docutils literal notranslate"><span class="pre">array_like</span></code> data type (list, Numpy array, Pandas Series, etc.) as input. For Polars, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take a Polars Series as input. A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">np.sum(np.sin(x))</span></code>. A Polars example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">s.exp().sum()</span></code>.</p></li>
+<li><p>For Pandas, the function must take a Pandas DataFrame as an argument. For Polars, it must take a Polars Series with a struct data type. A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">df:</span> <span class="pre">(np.sin(s['q1'])</span> <span class="pre">*</span> <span class="pre">s['q2']).sum()</span></code>. A Polas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">(s.struct.field('q1').sin()</span> <span class="pre">*</span> <span class="pre">s.struct.field('q2')).sum()</span></code></p></li>
+<li><p>For Pandas, <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take as its argument a Pandas Series with an index containing the names of the columns of the original data frame. For Polars, <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take as its argument a dictionary with keys given by the names of the columns of the original data frame. The functions may then have the same syntax (though possibly with different type hints). An example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">r:</span> <span class="pre">r['i1']</span> <span class="pre">*</span> <span class="pre">np.sin(r['q2'])</span></code>. However, note that in Polars, a <code class="docutils literal notranslate"><span class="pre">null</span></code> value is treated as
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means you cannot apply a function to it, multiply by it, etc.</p></li>
+<li><p>For Polars, the <code class="docutils literal notranslate"><span class="pre">on</span></code> kwarg for <code class="docutils literal notranslate"><span class="pre">df.join()</span></code> is required. With Pandas, which columns to join on are inferred based on like-names of columns.</p></li>
+</ol>
+</section>
+<section id="Hierarchical-indexes">
+<h2>Hierarchical indexes<a class="headerlink" href="#Hierarchical-indexes" title="Link to this heading"></a></h2>
+<p>Pandas supports hierarchical indexes, called <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>es. This is not supports by Polars. Polars will not read a CSV file with hierarchical indexes. If you have a data set in a CSV file with hierarchical indexes, you can convert it to a CSV file in tall format where the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> has been converted to columns using the <code class="docutils literal notranslate"><span class="pre">bebi103.utils.unpivot_csv()</span></code> function. This operation is akin to a <code class="docutils literal notranslate"><span class="pre">df.melt()</span></code> operation on a data frame with a hierarchical index. You can then read that CSV
+file into Polars and begin working with it.</p>
+</section>
+<section id="Computing-environment">
+<h2>Computing environment<a class="headerlink" href="#Computing-environment" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="o">%</span><span class="k">watermark</span> -v -p numpy,pandas,polars,jupyterlab
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Python implementation: CPython
+Python version       : 3.12.4
+IPython version      : 8.25.0
+
+numpy     : 1.26.4
+pandas    : 2.2.2
+polars    : 1.4.1
+jupyterlab: 4.0.13
+
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="styling_data_frames.html" class="btn btn-neutral float-left" title="Styling data frames" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../02/index.html" class="btn btn-neutral float-right" title="Lesson 2: Exploratory plotting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <span class="lastupdated">Last updated on Aug 06, 2024.
+      </span></p>
+  </div>
+
+   <jinja2.runtime.BlockReference object at 0x12eddca10> 
+
+<p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
+
+<br/>
+
+<p>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>.
+
+ 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54852702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-54852702-1', {
+          'anonymize_ip': false,
+      });
+    </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>

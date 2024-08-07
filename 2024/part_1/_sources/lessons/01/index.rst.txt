@@ -8,3 +8,4 @@ Lesson 1: Polars and split-apply-combine
    Introduction to Polars <intro_to_polars.ipynb>
    Tidy data and split-apply-combine <tidy_data.ipynb>
    Styling data frames <styling_data_frames.ipynb>
+   Polars for Pandas users <polars_for_pandas.ipynb>

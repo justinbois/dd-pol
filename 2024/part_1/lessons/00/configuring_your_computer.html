@@ -5,11 +5,11 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lesson 0: Setting up computing resources &mdash; PoL workshop on statistical inference, part 1  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
-      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=720011df" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
 
   
   <!--[if lt IE 9]>
@@ -244,7 +244,7 @@ be imported and built.</p>
 </section>
 <section id="Stan-installation">
 <h2>Stan installation<a class="headerlink" href="#Stan-installation" title="Link to this heading"></a></h2>
-<p><em>If you are only taking part 1 of the course, you can proceed to</em> <a class="reference external" href="#Launching-JupyterLab">the next section</a><em>.</em></p>
+<p><em>If you are only taking part 1 of the course, you can proceed to</em><a class="reference external" href="#Launching-JupyterLab">the next section</a><em>.</em></p>
 <p>For part 2, we will be using <a class="reference external" href="http://mc-stan">Stan</a> for much of our statistical modeling. Stan has a probabilistic programming language. Programs written in this language, called <em>Stan programs</em>, are translated into C++ by the Stan parser, and then the C++ code is compiled. As you will see throughout the class, there are many advantages to this approach.</p>
 <p>There are many interfaces for Stan, including the two most widely used <a class="reference external" href="https://cran.r-project.org/web/packages/rstan/vignettes/rstan.html">RStan</a> and <a class="reference external" href="https://pystan.readthedocs.io">PyStan</a>, which are R and Python interfaces, respectively. We will use a simple interface, <a class="reference external" href="https://mc-stan.org/cmdstanpy/">CmdStanPy</a>, which has several advantages that will become apparent when you start using it.</p>
 <p>Whichever interface you use needs to have Stan installed and functional, which means you have to have an installed C++ toolchain. Installation and compilation can be tricky and varies from operating system to operating system. The instructions below are not guaranteed to work; you may have to do some troubleshooting on your own. Note that you can use Google Colab for computing as well, so you do not need to worry if you have trouble installing Stan locally. That said, it will definitely be to
@@ -258,7 +258,7 @@ your advantage to have a local functioning Stan installation.</p>
 </section>
 <section id="Configuring-a-C++-toolchain-for-Windows">
 <h3>Configuring a C++ toolchain for Windows<a class="headerlink" href="#Configuring-a-C++-toolchain-for-Windows" title="Link to this heading"></a></h3>
-<p><em>According to the</em> <a class="reference external" href="https://mc-stan.org/cmdstanpy/installation.html#cmdstan-installation">CmdStanPy documentation</a><em>, you can skip this step, though I did previously verify that the below worked on a Windows machine.</em></p>
+<p><em>According to the</em><a class="reference external" href="https://mc-stan.org/cmdstanpy/installation.html#cmdstan-installation">CmdStanPy documentation</a><em>, you can skip this step, though I did previously verify that the below worked on a Windows machine.</em></p>
 <p>You need to install a C++ toolchain for Windows. One possibility is to install a <a class="reference external" href="http://www.mingw.org">MinGW</a> toolchain, and one way to do that is using <code class="docutils literal notranslate"><span class="pre">conda</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install libpython m2w64-toolchain -c msys2
 </pre></div>
@@ -1255,11 +1255,11 @@ CmdStan : 2.35
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 02, 2024.
+      <span class="lastupdated">Last updated on Aug 06, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x10f8d43b0> 
+   <jinja2.runtime.BlockReference object at 0x12ec13dd0> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

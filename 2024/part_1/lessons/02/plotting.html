@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Making plots with Bokeh &mdash; PoL workshop on statistical inference, part 1  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -493,7 +493,7 @@ function(Bokeh) {
 <h2>The Python visualization landscape<a class="headerlink" href="#The-Python-visualization-landscape" title="Link to this heading"></a></h2>
 <p>Let us start by looking at some of the many plotting packages available in Python. In a <a class="reference external" href="https://www.youtube.com/watch?v=FytuB8nFHPQ">talk at PyCon in 2017</a>, <a class="reference external" href="http://vanderplas.com">Jake VanderPlas</a>, who is one of the authors of one of them (<a class="reference external" href="https://altair-viz.github.io">Altair</a>), gave an overview of the Python visualization landscape. That landscape is depicted below, taken from <a class="reference external" href="https://github.com/rougier/python-visualization-landscape">this visualization of it</a> by <a class="reference external" href="http://www.labri.fr/perso/nrougier/">Nicolas
 Rougier</a>. (It is from 2017, so it is dated, and definitely not complete, notably missing <a class="reference external" href="https://panel.holoviz.org">Panel</a> and domain-specific plotting like <a class="reference external" href="https://napari.org/stable/">napari</a> and <a class="reference external" href="https://python-visualization.github.io/folium/">Folium</a>, for example.)</p>
-<div style="margin: auto; width: 600px;"><p><img alt="python_viz_landscape" src="../../_images/python_viz_landscape.png" /></p>
+<div style="margin: auto; width: 600px;"><img alt="python_viz_landscape" src="../../_images/python_viz_landscape.png" />
 </div><p>The landscape is divided into three main pods based on the low-level renderer of the graphics, JavaScript, <a class="reference external" href="https://matplotlib.org">Matplotlib</a>, and <a class="reference external" href="https://www.opengl.org">OpenGL</a> (though Matplotlib is higher-level than JavaScript and OpenGL). We will not discuss packages based on OpenGL. Packages that use JavaScript for rendering are particularly well suited for interactivity in browsers. Interactivity and portability (accomplished by rendering in browsers) are key features of modern
 plotting libraries, so we will use JavaScript-based plotting in the workshop (as I do in my own work).</p>
 </section>
@@ -536,7 +536,7 @@ steps take place, but because we use Pandas’s <strong>high-level functionality
 Plotting libraries in Python usually take care of the rendering part for you, either rendering the plot as SVG, PDF, PNG, or other formats, including interactive ones that use <a class="reference external" href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Canvas_element">HTML Canvas</a> that can be viewed in a browser. The plotting libraries then vary in their level of abstraction from the data set.</p>
 <p>Lower-level plotting libraries typically are more customizable, but require more <a class="reference external" href="https://en.wikipedia.org/wiki/Boilerplate_code">boilerplate code</a> to get your data plotted and are therefore more cumbersome. Higher-level plotting libraries aim to make it easier to move directly from a data frame to a plot. Because of this streamlining, though, they are often more difficult to customize.</p>
 <p>The developers of <a class="reference external" href="http://holoviz.org/">HoloViz</a> made a nice graphic for this concept (Copyright PyViz authors, downloaded <a class="reference external" href="https://holoviz.org/background.html">here</a>).</p>
-<div style="margin: auto; width: 500px;"><p><img alt="shortcuts" src="../../_images/shortcuts.png" /></p>
+<div style="margin: auto; width: 500px;"><img alt="shortcuts" src="../../_images/shortcuts.png" />
 </div><p>Using a low-level plotting library, you can get to any graphic you like, but it takes many steps to do so. Using a high level library, you can rapidly get to many, if not most, of the graphics you like in very few steps. However, you cannot get to <em>all</em> graphics. In a layered approach, in which the higher level libraries give you access to the lower level customizations, you can get to any graphic, and can do so quickly. The layered approach requires proficiency in using the low-level and
 high-level libraries.</p>
 </section>
@@ -1077,11 +1077,11 @@ jupyterlab: 4.0.13
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 02, 2024.
+      <span class="lastupdated">Last updated on Aug 06, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x12e5a8680> 
+   <jinja2.runtime.BlockReference object at 0x12edc7590> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Introduction to data frames and Polars &mdash; PoL workshop on statistical inference, part 1  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -87,6 +87,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tidy_data.html">Tidy data and split-apply-combine</a></li>
 <li class="toctree-l2"><a class="reference internal" href="styling_data_frames.html">Styling data frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars_for_pandas.html">Polars for Pandas users</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../02/index.html">Lesson 2: Exploratory plotting</a></li>
@@ -169,7 +170,7 @@ usable format. Wrangling is the topic of the next lesson; for now all data sets 
 <h2>The data set<a class="headerlink" href="#The-data-set" title="Link to this heading"></a></h2>
 <p>We will explore using data frames with a real data set. We will use a data set published in <a class="reference external" href="https://doi.org/10.1098/rsos.160321">Beattie, et al., Perceptual impairment in face identification with poor sleep, Royal Society Open Science, 3, 160321, 2016</a>. In this paper, researchers used the <a class="reference external" href="https://doi.org/10.3758/BRM.42.1.286">Glasgow Facial Matching Test</a> (GMFT) to investigate how sleep deprivation affects a subject’s ability to match faces, as well as the confidence the subject has in
 those matches. Briefly, the test works by having subjects look at a pair of faces. Two such pairs are shown below.</p>
-<div style="width: 300px; margin: auto;"><p><img alt="GFMT faces" src="../../_images/gfmt_faces.png" /></p>
+<div style="width: 300px; margin: auto;"><img alt="GFMT faces" src="../../_images/gfmt_faces.png" />
 </div><p>The top two pictures are the same person, the bottom two pictures are different people. For each pair of faces, the subject gets as much time as he or she needs and then says whether or not they are the same person. The subject then rates his or her confidence in the choice.</p>
 <p>In this study, subjects also took surveys to determine properties about their sleep. The Sleep Condition Indicator (SCI) is a measure of insomnia disorder over the past month (scores of 16 and below indicate insomnia). The Pittsburgh Sleep Quality Index (PSQI) quantifies how well a subject sleeps in terms of interruptions, latency, etc. A higher score indicates poorer sleep. The Epworth Sleepiness Scale (ESS) assesses daytime drowsiness.</p>
 <p>The data set can be downloaded <a class="reference external" href="https://s3.amazonaws.com/bebi103.caltech.edu/data/gfmt_sleep.csv">here</a>. The contents of this file were adapted from <a class="reference external" href="https://doi.org/10.5061/dryad.r620r">the Excel file posted on the public Dryad repository</a>. (<em>Note this: if you want other people to use and explore your data, make it publicly available.</em>) I’ll say it more boldly.</p>
@@ -1162,11 +1163,11 @@ jupyterlab: 4.0.13
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 02, 2024.
+      <span class="lastupdated">Last updated on Aug 06, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x12e58cf20> 
+   <jinja2.runtime.BlockReference object at 0x12ed85610> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
