@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# 22. Implementation of MLE for variate-covariate models\n",
+    "# Implementation of MLE for variate-covariate models\n",
     "\n",
     "[Dataset download](https://s3.amazonaws.com/bebi103.caltech.edu/data/good_invitro_droplet_data.csv)\n",
     "\n",
