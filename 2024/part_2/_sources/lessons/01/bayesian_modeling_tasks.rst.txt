@@ -2,11 +2,11 @@
 Tasks of Bayesian modeling
 ===========================
 
-We have learned about Bayes’s theorem as a way to update
-a hypothesis in light of new data. We use the word “hypothesis” very
+We have learned about Bayes's theorem as a way to update
+a hypothesis in light of new data. We use the word "hypothesis" very
 loosely here. Remember, in the Bayesian view, probability can describe
 the plausibility of any proposition. The value of a parameter is such a
-proposition, and we will apply the term “hypothesis” to parameter values as well. Again for concreteness, we will consider the problem of parameter estimation here, where :math:`\theta` will denote a set of parameter values, our “hypothesis” in this context.
+proposition, and we will apply the term "hypothesis" to parameter values as well. Again for concreteness, we will consider the problem of parameter estimation here, where :math:`\theta` will denote a set of parameter values, our "hypothesis" in this context.
 
 As we have seen, our goal is to obtain updated knowledge about :math:`\theta` as codified in the posterior distribution, :math:`g(\theta \mid y)`, where :math:`y` is the data we measured. Bayes's theorem gives us access to this distribution.
 
@@ -84,11 +84,12 @@ with the integral replaced by a sum for discrete :math:`\theta`. As an example, 
 
 So, making sense of the posterior typically involves computing integrals (or sums).
 
-In addition to using conjagacy, which we have already discussed, in coming lessons, we will explore a few ways to do this.
+In coming lessons, we will explore a two ways to do this.
 
 1. Finding the values of the parameters :math:`\theta` that maximize the posterior and then approximating the posterior as locally Normal. This involves a numerical optimization calculation to find the maximizing parameters, and then uses known analytical results about multivariate Normal distributions to automatically compute the integrals (without actually having to do integration!).
 2. *Sampling* out of the posterior. As you saw in an earlier homework, we can perform marginalization, and indeed most other integrals, by sampling. The trick is sampling out of the posterior, which is not as easy as the sampling you have done so far. We resort to using the sampling method called **Markov chain Monte Carlo** (MCMC) to do it.
-3. Performing and optimization to find which distribution in a family of distributions most closely approximates the posterior, and then use this approximate distribution as a substitute for the posterior. We choose the family of candidate distributions to have nice properties, known analytical results, ease of sampling, etc., thereby making exploration of the posterior much easier than by full MCMC. This is called **variational inference**.
 
-For the rest of this lecture, though, we will focus on model building.
+There are other ways to make sense of a posterior. Another commonly used one is **variational inference**, in which we perform an optimization to find which distribution in a family of distributions most closely approximates the posterior, and then use this approximate distribution as a substitute for the posterior. We choose the family of candidate distributions to have nice properties, known analytical results, ease of sampling, etc., thereby making exploration of the posterior much easier than by full MCMC.
+
+For the rest of this lesson, though, we will focus on model building.
 

@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bayesian approach to parameter estimation by optimization &mdash; PoL workshop on statistical inference, part 2  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -756,7 +756,7 @@ var element = document.currentScript.previousSibling.previousSibling;
 <section id="Why-use-the-MAP-for-parameter-estimation?">
 <h2>Why use the MAP for parameter estimation?<a class="headerlink" href="#Why-use-the-MAP-for-parameter-estimation?" title="Link to this heading"></a></h2>
 <p>Despite these drawbacks, using the MAP/Normal approximation for parameter estimation is still useful in Bayesian inference, at least for simple, well-behaved problems. Why? The most important reason is speed. For problems with simple models (which we will encountered in the next section of this lesson), optimization is <em>much</em> faster than other methods for characterizing the posterior, such as directly plotting it or using Markov chain Monte Carlo. If you have high-throughput data, you may not
-have the computational resources to do a full Bayesian treatment with other methods. Provided your model that is tractable by optimization method, finding the MAP and summarizing with an approximate Normal distribution is an attractive method.</p>
+have the computational resources to do a full Bayesian treatment with other methods. Provided your model that is tractable by optimization methods, finding the MAP and summarizing with an approximate Normal distribution is an attractive method.</p>
 <p>In many cases, the Normal approximation can also be a good approximation. But this is definitely not guaranteed! In real inference problems, it is very difficult to identify pathologies that would lead to breakdown of the Normal approximation, since comparing to the real posterior would involve computationally intensive methods to compute it.</p>
 <p>In the next sections of this lesson, we will work though the mechanics of finding the MAP and computing credible regions.</p>
 </section>
@@ -803,11 +803,11 @@ jupyterlab: 4.0.13
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 04, 2024.
+      <span class="lastupdated">Last updated on Aug 11, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x14292b4d0> 
+   <jinja2.runtime.BlockReference object at 0x147d23710> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

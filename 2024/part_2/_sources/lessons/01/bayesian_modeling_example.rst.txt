@@ -114,7 +114,7 @@ and the multivariate Normal distribution reduces to
     \exp\left[-\frac{(y_i - \mu_i)^2}{2\sigma_i^2}\right],
     \end{aligned}
 
-where :math:`\sigma^2_i` is the :math:`i`th entry along the diagonal
+where :math:`\sigma^2_i` is the ith entry along the diagonal
 of the covariance matrix. This is the variance associated with
 measurement :math:`i`. So, if all independent measurements :math:`y_i` have the same
 location and scale parameters, which is to say that the measurements are

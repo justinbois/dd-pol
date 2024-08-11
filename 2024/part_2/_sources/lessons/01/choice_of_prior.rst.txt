@@ -173,7 +173,7 @@ Jeffreys priors are pleasing in that they deal with Fisher's criticisms. They gu
 
 1. They can be very difficult or impossible to derive for more complicated models.
 2. They can be improper. When they are improper, the prior is not encoding prior knowledge using probability, since an improper prior cannot be a probability or probability density.
-3. In the case of hierarchical models, which we will get to later in the term, use of Jeffreys priors can nefariously lead to improper *posteriors*! It is often difficult to discover that this is the case for a particular model without doing a very careful analysis.
+3. In the case of hierarchical models, which we will get to later, use of Jeffreys priors can nefariously lead to improper *posteriors*! It is often difficult to discover that this is the case for a particular model without doing a very careful analysis.
 4. They still do not really encode prior knowledge anyway. We still have the problem of a kinesin motor traveling at faster than the speed of light.
 
 

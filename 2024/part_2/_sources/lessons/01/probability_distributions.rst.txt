@@ -2,8 +2,6 @@
 Probability distributions
 *************************
 
-**Note**: *Much of this section of the lecture is almost verbatim the same as part of a lecture from last term. I repeat it here because it is important to doing probabilistic modeling.*
-
 So far we have talked about probability of events, and we have in mind
 measurements, parameter values and hypotheses as the events.
 We have a bit of a problem, though, if the sample space consists of real

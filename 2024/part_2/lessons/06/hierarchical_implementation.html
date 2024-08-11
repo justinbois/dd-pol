@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>General implementation of hierarchical models &mdash; PoL workshop on statistical inference, part 2  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -496,7 +496,7 @@ function(Bokeh) {
 <p>To think about the structure of hierarchical models, we will consider the following experimental design. We are measuring fluorescent intensity of a reporter of gene expression in <em>E. coli</em> cells. One Monday, we prepare four batches of <em>E. coli</em> and grow them up on plates. From each plate, we select colonies. We then mount a slide with a selection from a given colony and use fluorescence microscopy to determine the fluorescence level of individual cells. We do a similar experiment on Wednesday,
 and then another on Thursday. We model the measured fluorescence values as Normally distributed.</p>
 <p>There is a hierarchical structure here, depicted below.</p>
-<p><img alt="hierarchical model" src="../../_images/hierarchical_model.png" /></p>
+<img alt="hierarchical model" src="../../_images/hierarchical_model.png" />
 <ul class="simple">
 <li><p>Level 0: This level has the hyperparameters <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>, the location and scale parameters of fluorescence intensity typical of an <em>E. coli</em> cell expressing the fluorescent gene of interest. These are the parameters we ultimately wish to get estimates for.</p></li>
 <li><p>Level 1 corresponds to the day the experiment was performed. There will be variability from day to day, and the location and scale parameters for a given day are conditioned on the hyperparameters, but can vary from the parameters of other days.</p></li>
@@ -1392,11 +1392,11 @@ cmdstan   : 2.35.0
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 04, 2024.
+      <span class="lastupdated">Last updated on Aug 11, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x14292c5f0> 
+   <jinja2.runtime.BlockReference object at 0x147cbd5b0> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

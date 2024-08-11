@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tasks of Bayesian modeling &mdash; PoL workshop on statistical inference, part 2  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -185,13 +185,13 @@ f(y) = \int\mathrm{d}\theta\,\pi(y,\theta) = \int\mathrm{d}\theta\,f(y\mid\theta
 g(\theta_2 \mid y) = \int \mathrm{d}\theta_1 \, g(\theta_1, \theta_2 \mid y).
 \end{align}\]</div>
 <p>So, making sense of the posterior typically involves computing integrals (or sums).</p>
-<p>In addition to using conjagacy, which we have already discussed, in coming lessons, we will explore a few ways to do this.</p>
+<p>In coming lessons, we will explore a two ways to do this.</p>
 <ol class="arabic simple">
 <li><p>Finding the values of the parameters <span class="math notranslate nohighlight">\(\theta\)</span> that maximize the posterior and then approximating the posterior as locally Normal. This involves a numerical optimization calculation to find the maximizing parameters, and then uses known analytical results about multivariate Normal distributions to automatically compute the integrals (without actually having to do integration!).</p></li>
 <li><p><em>Sampling</em> out of the posterior. As you saw in an earlier homework, we can perform marginalization, and indeed most other integrals, by sampling. The trick is sampling out of the posterior, which is not as easy as the sampling you have done so far. We resort to using the sampling method called <strong>Markov chain Monte Carlo</strong> (MCMC) to do it.</p></li>
-<li><p>Performing and optimization to find which distribution in a family of distributions most closely approximates the posterior, and then use this approximate distribution as a substitute for the posterior. We choose the family of candidate distributions to have nice properties, known analytical results, ease of sampling, etc., thereby making exploration of the posterior much easier than by full MCMC. This is called <strong>variational inference</strong>.</p></li>
 </ol>
-<p>For the rest of this lecture, though, we will focus on model building.</p>
+<p>There are other ways to make sense of a posterior. Another commonly used one is <strong>variational inference</strong>, in which we perform an optimization to find which distribution in a family of distributions most closely approximates the posterior, and then use this approximate distribution as a substitute for the posterior. We choose the family of candidate distributions to have nice properties, known analytical results, ease of sampling, etc., thereby making exploration of the posterior much easier than by full MCMC.</p>
+<p>For the rest of this lesson, though, we will focus on model building.</p>
 </section>
 </section>
 
@@ -207,11 +207,11 @@ g(\theta_2 \mid y) = \int \mathrm{d}\theta_1 \, g(\theta_1, \theta_2 \mid y).
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 04, 2024.
+      <span class="lastupdated">Last updated on Aug 11, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x142928f80> 
+   <jinja2.runtime.BlockReference object at 0x147cbf0e0> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

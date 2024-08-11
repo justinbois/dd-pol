@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Principled analysis pipelines &mdash; PoL workshop on statistical inference, part 2  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3356d8fa" />
@@ -132,7 +132,7 @@
              
   <section id="Principled-analysis-pipelines">
 <h1>Principled analysis pipelines<a class="headerlink" href="#Principled-analysis-pipelines" title="Link to this heading"></a></h1>
-<p><em>This lesson is based heavily on</em> <a class="reference external" href="https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html">this article</a> <em>by Michael Betancourt.</em></p>
+<p><em>This lesson is based heavily on</em><a class="reference external" href="https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html">this article</a><em>by Michael Betancourt.</em></p>
 <hr><section id="Building-a-workflow">
 <h2>Building a workflow<a class="headerlink" href="#Building-a-workflow" title="Link to this heading"></a></h2>
 <p>We have talked at length about Bayesian model building. The steps were roughly as follows.</p>
@@ -199,7 +199,7 @@ s_i = 1 - \frac{\sigma_{i,\mathrm{post}}^2}{\sigma_{i,\mathrm{prior}}^2}.
 <section id="Shrinkage-vs.-z-score-plot">
 <h3>Shrinkage vs. z-score plot<a class="headerlink" href="#Shrinkage-vs.-z-score-plot" title="Link to this heading"></a></h3>
 <p>To graphically assess the shrinkage and z-score, we typically make a shrinkage vs. z-score plot. Each point in the plot represents the results from one of the <span class="math notranslate nohighlight">\(N\)</span> data sets drawn from the generative model. A typical shrinkage vs. z-score plot for a model with two parameters <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(b\)</span> is shown below.</p>
-<div style="margin: auto; width: 350px"><p><img alt="z-shrinkage" src="../../_images/z-shrinkage.png" /></p>
+<div style="margin: auto; width: 350px"><img alt="z-shrinkage" src="../../_images/z-shrinkage.png" />
 </div><p>Note that the z-scores are symmetric about zero and do not range much above three. The shrinkage is mostly close to unity, and those that drift away do not drift too far. This model permits learning from the data.</p>
 </section>
 <section id="Rank-statistics">
@@ -229,7 +229,7 @@ g(\theta) = \int\mathrm{d}\tilde{y}\,\int\mathrm{d}\tilde{\theta}\,g(\theta \mid
 <section id="A-rank-statistic-ECDF-plot">
 <h3>A rank statistic ECDF plot<a class="headerlink" href="#A-rank-statistic-ECDF-plot" title="Link to this heading"></a></h3>
 <p>We can make an ECDF difference plot to test for uniformity. Such a plot is shown below.</p>
-<div style="margin: auto; width: 350px"><p><img alt="rank_plot" src="../../_images/rank_plot.png" /></p>
+<div style="margin: auto; width: 350px"><img alt="rank_plot" src="../../_images/rank_plot.png" />
 </div><p>The y-axis is the difference between the ECDF of the <span class="math notranslate nohighlight">\(N\)</span> rank statistics and that of a Uniform distribution. The surrounding envelope is the confidence interval of the ECDF difference. If the actual ECDF difference is too much outside of the envelope, then the data averaged posterior and the prior are not equal, and there is a problem with sampling. In the case above, for each of the two parameters, the sampler seems to be performing ok.</p>
 </section>
 <section id="Rank-statistic-histograms">
@@ -271,11 +271,11 @@ properly sample the true posterior. And by checking the diagnostics, you will kn
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 04, 2024.
+      <span class="lastupdated">Last updated on Aug 11, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x112adbe60> 
+   <jinja2.runtime.BlockReference object at 0x147a7bbc0> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 

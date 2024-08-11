@@ -63,7 +63,7 @@ The problem of probability
 ==========================
 
 We know what we need, a theory called probability to quantify
-plausibility. We more formally [1]_ defined probably last term. We will not formally define probability here, but use our
+plausibility. We more formally [1]_ defined probability in part one of this workshop. We will not formally define probability here, but use our
 common sense reasoning of it. Nonetheless, it is important to understand
 that there are two dominant *interpretations* of probability.
 
