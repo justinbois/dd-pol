@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exercise 2.2: Conjugacy and the Beta-Binomial conjugate pair &mdash; PoL workshop on statistical inference, part 2  documentation</title>
+  <title>&lt;no title&gt; &mdash; PoL workshop on statistical inference, part 2  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -28,9 +28,7 @@
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Exercise 3. First foray into MCMC" href="../03/index.html" />
-    <link rel="prev" title="Exercise 2.1: Least squares" href="e02.1.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -65,13 +63,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../lessons/07/index.html">Lesson 7: Principled pipelines</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../01/index.html">Exercise 1. Practice with Bayesian modeling</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercise 2. Paremeter estimation by optimization</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="e02.1.html">Exercise 2.1: Least squares</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Exercise 2.2: Conjugacy and the Beta-Binomial conjugate pair</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Exercise 1. Practice with Bayesian modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../02/index.html">Exercise 2. Paremeter estimation by optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../03/index.html">Exercise 3. First foray into MCMC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../04/index.html">Exercise 4: More Bayesian inference with MCMC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../05/index.html">Exercise 5: Bayesian modeling with prior and posterior predictive checks</a></li>
@@ -98,13 +92,12 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Exercise 2. Paremeter estimation by optimization</a></li>
-      <li class="breadcrumb-item active">Exercise 2.2: Conjugacy and the Beta-Binomial conjugate pair</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
   <li class="wy-breadcrumbs-aside">
     
         
         
-            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/exercises/02/e02.2.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/exercises/02/e02.2.ipynb" download> Download notebook</a>
+            <a href="https://colab.research.google.com/github/justinbois/dd-pol/blob/gh-pages/2024/part_2/exercises/01/Untitled.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Google Colab" title="Open in Google Colab"></a> | <a href="https://raw.githubusercontent.com/justinbois/dd-pol/gh-pages/2024/part_2/exercises/01/Untitled.ipynb" download> Download notebook</a>
         
       
     
@@ -116,17 +109,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Exercise-2.2:-Conjugacy-and-the-Beta-Binomial-conjugate-pair">
-<h1>Exercise 2.2: Conjugacy and the Beta-Binomial conjugate pair<a class="headerlink" href="#Exercise-2.2:-Conjugacy-and-the-Beta-Binomial-conjugate-pair" title="Link to this heading"></a></h1>
-<hr><div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+  <div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
 
-<span class="kn">import</span> <span class="nn">bokeh.plotting</span>
 <span class="kn">import</span> <span class="nn">bokeh.io</span>
+<span class="kn">import</span> <span class="nn">bokeh.plotting</span>
+
 <span class="n">bokeh</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">output_notebook</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -145,7 +136,7 @@
 </style>
 <div>
     <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
-    <span id="e9608846-2e06-472d-b507-b0dbb05dc08f">Loading BokehJS ...</span>
+    <span id="c6ec926c-cd6a-492a-872c-0cbc6e281fd2">Loading BokehJS ...</span>
 </div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -318,7 +309,7 @@ const JS_MIME_TYPE = 'application/javascript';
      "</div>"}};
 
   function display_loaded(error = null) {
-    const el = document.getElementById("e9608846-2e06-472d-b507-b0dbb05dc08f");
+    const el = document.getElementById("c6ec926c-cd6a-492a-872c-0cbc6e281fd2");
     if (el != null) {
       const html = (() => {
         if (typeof root.Bokeh === "undefined") {
@@ -452,7 +443,7 @@ function(Bokeh) {
       console.log("Bokeh: BokehJS failed to load within specified timeout.");
       root._bokeh_failed_load = true;
     } else if (force !== true) {
-      const cell = $(document.getElementById("e9608846-2e06-472d-b507-b0dbb05dc08f")).parents('.cell').data().cell;
+      const cell = $(document.getElementById("c6ec926c-cd6a-492a-872c-0cbc6e281fd2")).parents('.cell').data().cell;
       cell.output_area.append_execute_result(NB_LOAD_WARNING)
     }
   }
@@ -469,51 +460,116 @@ function(Bokeh) {
 }(window));
 </script></div>
 </div>
-<hr><p>We have talked about Bayes theorem as a model for learning. The idea there was that we know something before (<em>a priori</em>) acquiring data, and then we update our knowledge after (<em>a posteriori</em>). So, we come in with the prior and out with the posterior after acquiring data. It might make sense, then, that the prior and the posterior distributions have the same functional form. That is, the prior and the posterior have the same distribution, and the parameters of the distribution are updated from
-the prior to the posterior by the likelihood. When the prior and posterior have the same functional form, the prior is said to be <strong>conjugate</strong> to the likelihood. This <em>seems</em> pleasing: the likelihood serves to update the prior into the posterior, so it should determine the functional form of the prior/posterior such that they are the same.</p>
-<p>Conjugate priors are especially useful because they enable analytical calculation of the posterior, typically without have to do any mathematics yourself. This is perhaps best seen through example.</p>
-<p>As a motivating example of use of a conjugate prior, we will use data from one of the experiments from a paper by <a class="reference external" href="https://doi.org/10.1093/jhered/esz009">Mossman, et al., 2019</a>, in which the authors investigated the age of <em>Drosophila</em> parents on the viability of the eggs of their offspring. In one vial, they mated young (≤ 3 days old) males with old females (≥ 45 days old). Of the 176 eggs laid by their offspring over a 10-day period, 94 of them hatched, while the remainder failed to hatch.
-In another vial, they mated young males with young females. Of the 190 eggs laid by their offspring over a 10-day period, 154 hatched. (They took many more data than these, but we’re using this experiment as a demonstration of conjugacy.)</p>
-<p><strong>a)</strong> I contend that the number of eggs that hatched, <span class="math notranslate nohighlight">\(n\)</span>, out of <span class="math notranslate nohighlight">\(N\)</span> total eggs can be models with a Binomial distribution;</p>
-<p><span class="math">\begin{align}
-n \mid N, \theta \sim \text{Binom}(N, \theta).
-\end{align}</span></p>
-<p>Provide an argument as to why this is a good model.</p>
-<p><strong>b)</strong> Writing out the PMF of the Beta distribution,</p>
-<p><span class="math">\begin{align}
-f(n\mid N, \theta) = \begin{pmatrix}N\\n\end{pmatrix} \theta^n(1-\theta)^{N-n}.
-\end{align}</span></p>
-<p>This identifies a single parameter to estimate, <span class="math notranslate nohighlight">\(\theta\)</span>, which is the probability of hatching. Our goal, then, is to understand the posterior distribution <span class="math notranslate nohighlight">\(g(\theta \mid n, N)\)</span>. Naturally, we need to specify a prior to complete our model. In this part of the problem, your task is to prove that the Beta distribution is conjugate to the Binomial likelihood. Its PDF is</p>
-<p><span class="math">\begin{align}
-g(\theta \mid \alpha, \beta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha,\beta)},
-\end{align}</span></p>
-<p>where <span class="math notranslate nohighlight">\(B(\alpha,\beta)\)</span> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Beta_function">beta function</a>,</p>
-<p><span class="math">\begin{align}
-B(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
-\end{align}</span></p>
-<p>Note that there are two parameters, <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> that parametrize the prior. If in fact the Beta distribution is conjugate to the Binomial, it is these two parameters that get updated by the data.</p>
-<p>You should explore the Beta distribution in the <a class="reference external" href="https://distribution-explorer.github.io/continuous/beta.html">Distribution Explorer</a> to get a feel for its shape and how the parameters <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> affect its shape. Importantly, if <span class="math notranslate nohighlight">\(\alpha = \beta = 1\)</span>, we get a Uniform distribution on the interval [0, 1].</p>
-<p>Now, prove that if we have</p>
-<p><span class="math">\begin{align}
-\theta \mid \alpha, \beta \sim \text{Beta}(\alpha, \beta), \\[1em]
-n \mid N, \theta \sim \text{Binom}(N, \theta),
-\end{align}</span></p>
-<p>that the posterior is also Beta distributed;</p>
-<p><span class="math">\begin{align}
-\theta \mid n, N, \alpha, \beta \sim \text{Beta}(\alpha_\mathrm{post}, \beta_\mathrm{post}).
-\end{align}</span></p>
-<p>In so doing, derive expressions for the updated parameters of the Beta distribution, <span class="math notranslate nohighlight">\(\alpha_\mathrm{post}\)</span> and <span class="math notranslate nohighlight">\(\beta_\mathrm{post}\)</span>.</p>
-<p><strong>c)</strong> You now have the whole posterior analytically, and you can plot it! Plot the posterior distributions for <span class="math notranslate nohighlight">\(\theta\)</span> for both young mothers and old mothers.</p>
-<p><strong>d)</strong> The maximum likelihood estimate for <span class="math notranslate nohighlight">\(\theta\)</span>, as we worked out in part 1 of the workshop, is <span class="math notranslate nohighlight">\(\theta_{\mathrm{MLE}} = n / N\)</span>. Show that the maximum a posteriori estimate for <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\theta_\mathrm{MAP}\)</span>, is also <span class="math notranslate nohighlight">\(n/N\)</span> for a uniform prior (<span class="math notranslate nohighlight">\(\alpha = \beta = 1\)</span>), but is not in general given by <span class="math notranslate nohighlight">\(n/N\)</span>. Any prior information does come into the posterior.</p>
-</section>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mu_m</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">mu_l</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">sigma_m_0</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sigma_l_0</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">sigma_m</span> <span class="o">=</span> <span class="n">sigma_m_0</span> <span class="o">*</span> <span class="n">mu_m</span>
+<span class="n">sigma_l</span> <span class="o">=</span> <span class="n">sigma_l_0</span> <span class="o">*</span> <span class="n">mu_l</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">Sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">sigma_m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>               <span class="n">rho</span> <span class="o">*</span> <span class="n">sigma_m</span> <span class="o">*</span> <span class="n">sigma_l</span><span class="p">],</span>
+                  <span class="p">[</span><span class="n">rho</span> <span class="o">*</span> <span class="n">sigma_m</span> <span class="o">*</span> <span class="n">sigma_l</span><span class="p">,</span>  <span class="n">sigma_l</span><span class="o">**</span><span class="mi">2</span><span class="p">]]</span>
+                <span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mu_m</span><span class="p">,</span> <span class="n">mu_l</span><span class="p">])</span>
+
+<span class="n">rng</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.50768976, 0.00125116],
+       [0.4385389 , 0.00128665],
+       [0.51410268, 0.00136513],
+       [0.47239969, 0.00112072],
+       [0.39220288, 0.00119127],
+       [0.48254544, 0.00131655],
+       [0.4777042 , 0.00134175],
+       [0.45055507, 0.00115296],
+       [0.51098081, 0.00124431],
+       [0.35144884, 0.00105316],
+       [0.49412968, 0.00107261],
+       [0.503575  , 0.0013507 ],
+       [0.45001069, 0.00094374],
+       [0.51494082, 0.00128905],
+       [0.4437385 , 0.00122463],
+       [0.38045669, 0.00107983],
+       [0.41486237, 0.0012626 ],
+       [0.42153937, 0.00124834],
+       [0.39606031, 0.00137487],
+       [0.41083447, 0.00119087],
+       [0.5282254 , 0.00104397],
+       [0.43346576, 0.00120584],
+       [0.51874375, 0.00119851],
+       [0.44354242, 0.00127822],
+       [0.44774871, 0.00121527],
+       [0.45991162, 0.00137265],
+       [0.4507717 , 0.00120299],
+       [0.49230015, 0.0013502 ],
+       [0.59182145, 0.00121499],
+       [0.43948041, 0.00095747],
+       [0.46749317, 0.00123662],
+       [0.46814742, 0.00133981],
+       [0.45123269, 0.00112428],
+       [0.47536444, 0.0011393 ],
+       [0.40668449, 0.00130622],
+       [0.44903709, 0.00134197],
+       [0.51651045, 0.00129292],
+       [0.46108985, 0.00135369],
+       [0.43840282, 0.00127695],
+       [0.37960924, 0.00115739],
+       [0.41799343, 0.00115196],
+       [0.47326002, 0.00138399],
+       [0.43811829, 0.00089298],
+       [0.45532049, 0.00143661],
+       [0.46558195, 0.00124233],
+       [0.41652332, 0.00137464],
+       [0.46485724, 0.0013093 ],
+       [0.39829149, 0.00126446],
+       [0.46895926, 0.00132996],
+       [0.4471435 , 0.00108916],
+       [0.49588543, 0.00136989],
+       [0.42692805, 0.00130465],
+       [0.50743087, 0.00133027],
+       [0.40805401, 0.00129568],
+       [0.41124015, 0.00128395],
+       [0.42711701, 0.00099705],
+       [0.47956547, 0.00123255],
+       [0.42737534, 0.00119084],
+       [0.4674463 , 0.00121713],
+       [0.47105832, 0.00120665]])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="e02.1.html" class="btn btn-neutral float-left" title="Exercise 2.1: Least squares" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../03/index.html" class="btn btn-neutral float-right" title="Exercise 3. First foray into MCMC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
@@ -523,7 +579,7 @@ n \mid N, \theta \sim \text{Binom}(N, \theta),
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x143c55b50> 
+   <jinja2.runtime.BlockReference object at 0x143b5bc20> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
