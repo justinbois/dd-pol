@@ -143,7 +143,7 @@
 </div>
 </div>
 <hr><p>As of August 2024, <a class="reference external" href="https://pandas.pydata.org/">Pandas</a> is by far and away the most widely used data frame package for Python. We are using Polars primarily because, in my opinion, the API is more intuitive and therefore easier for beginners and experts alike to use. It is also faster, sometimes much faster. It is, however, important to know about Pandas and how to use it because many of your colleagues use it and many packages you may use do, too.</p>
-<p>Therefore, in this part of the lesson, I discuss how to convert Polars data frame to Pandas, and vice versa. I also provide syntax for doing common tasks in Polars and Pandas.</p>
+<p>Therefore, in this part of the lesson, I discuss how to convert a Polars data frame to Pandas, and vice versa. I also provide syntax for doing common tasks in Polars and Pandas. It is also worth reading the <a class="reference external" href="https://docs.pola.rs/user-guide/migration/pandas/">section of the Polars user guide comparing Pandas and Polars</a>.</p>
 <section id="A-sample-data-frame">
 <h2>A sample data frame<a class="headerlink" href="#A-sample-data-frame" title="Link to this heading"></a></h2>
 <p>For ease of discussion and comparison, we will use a simple data frame that has two categorical columns, <code class="docutils literal notranslate"><span class="pre">'c1'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'c2'</span></code>, two quantitative columns as floats, <code class="docutils literal notranslate"><span class="pre">'q1'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code>, and a column, <code class="docutils literal notranslate"><span class="pre">'i1'</span></code> of integer values. It also has an identity column, a unique identifier for each row that is useful when converting the data frame to tall format. Note that <code class="docutils literal notranslate"><span class="pre">'q1'</span></code> has a null value and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code> has a NaN value.</p>
@@ -374,135 +374,139 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">df.rename(columns={'c1':</span> <span class="pre">'cat1',</span> <span class="pre">'c2':</span> <span class="pre">'cat2'})</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.rename({'c1':</span> <span class="pre">'cat1',</span> <span class="pre">'c2':</span> <span class="pre">'cat2'})</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Get column <code class="docutils literal notranslate"><span class="pre">'q1'</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code></p></td>
+<tr class="row-odd"><td><p>Get column <code class="docutils literal notranslate"><span class="pre">'q1'</span></code> as series</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code> or <code class="docutils literal notranslate"><span class="pre">df.get_column('q1')</span></code> or <code class="docutils literal notranslate"><span class="pre">df.loc[:,'q1']</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df['q1']</span></code> or <code class="docutils literal notranslate"><span class="pre">df.get_column('q1')</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Get columns <code class="docutils literal notranslate"><span class="pre">'c1'</span></code> and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df[['c1',</span> <span class="pre">'q2']]</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df[['c1',</span> <span class="pre">'q2']]</span></code> or <code class="docutils literal notranslate"><span class="pre">df.select(pl.col('c1'),</span> <span class="pre">pl.col('q2'))</span></code></p></td>
+<tr class="row-even"><td><p>Get column <code class="docutils literal notranslate"><span class="pre">'q1'</span></code> as data frame</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[['q1']]</span></code> or <code class="docutils literal notranslate"><span class="pre">df.loc[:,['q1']]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select('q1')</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Get columns containing floats</p></td>
+<tr class="row-odd"><td><p>Get columns <code class="docutils literal notranslate"><span class="pre">'c1'</span></code> and <code class="docutils literal notranslate"><span class="pre">'q2'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df[['c1',</span> <span class="pre">'q2']]</span></code> or <code class="docutils literal notranslate"><span class="pre">df.loc[:,</span> <span class="pre">['c1',</span> <span class="pre">'q2']]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.select('c1',</span> <span class="pre">'q2')</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Get columns containing floats</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.select_dtypes(float)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.select(cs.float())</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
+<tr class="row-odd"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.loc[4,</span> <span class="pre">:]</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">pl.row(4)</span></code> or <code class="docutils literal notranslate"><span class="pre">pl.row(4,</span> <span class="pre">named=True)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.row(4)</span></code> or <code class="docutils literal notranslate"><span class="pre">df.row(4,</span> <span class="pre">named=True)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code> as data frame</p></td>
+<tr class="row-even"><td><p>Get row <code class="docutils literal notranslate"><span class="pre">4</span></code> as data frame</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.loc[[4],</span> <span class="pre">:]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df[4]</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Get row where <code class="docutils literal notranslate"><span class="pre">i1</span></code> is <code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<tr class="row-odd"><td><p>Get row where <code class="docutils literal notranslate"><span class="pre">i1</span></code> is <code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.loc[df['i1']==2,</span> <span class="pre">:]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.row(by_predicate=pl.col('i1')==2)</span></code> or <code class="docutils literal notranslate"><span class="pre">df.filter(pl.col('i1')==2)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Sub df with rows where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code></p></td>
+<tr class="row-even"><td><p>Sub df with rows where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.loc[df['c1']=='a',</span> <span class="pre">:]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.filter(pl.col('c1')=='a')</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Sub df where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code> and <code class="docutils literal notranslate"><span class="pre">c2</span></code> is <code class="docutils literal notranslate"><span class="pre">'d'</span></code></p></td>
+<tr class="row-odd"><td><p>Sub df where <code class="docutils literal notranslate"><span class="pre">c1</span></code> is <code class="docutils literal notranslate"><span class="pre">'a'</span></code> and <code class="docutils literal notranslate"><span class="pre">c2</span></code> is <code class="docutils literal notranslate"><span class="pre">'d'</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.loc[(df['c1']=='a')</span> <span class="pre">&amp;</span> <span class="pre">(df['c2']=='d'),</span> <span class="pre">:]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.filter((pl.col('c1')=='a')</span> <span class="pre">&amp;</span> <span class="pre">(pl.col('c2')=='d'))</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Iterate over columns of df</p></td>
+<tr class="row-even"><td><p>Iterate over columns of df</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">col,</span> <span class="pre">s</span> <span class="pre">in</span> <span class="pre">df.items()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">s</span> <span class="pre">in</span> <span class="pre">df</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Iterate over rows of df</p></td>
+<tr class="row-odd"><td><p>Iterate over rows of df</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">row_ind,</span> <span class="pre">row</span> <span class="pre">in</span> <span class="pre">df.iterrows()</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">r</span> <span class="pre">in</span> <span class="pre">iter_rows(named=True)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">r</span> <span class="pre">in</span> <span class="pre">df.iter_rows(named=True)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Group by single column</p></td>
+<tr class="row-even"><td><p>Group by single column</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1')</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Group by maintaining order</p></td>
+<tr class="row-odd"><td><p>Group by maintaining order</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1',</span> <span class="pre">sort=False)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1',</span> <span class="pre">maintain_order=True)</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Group by multiple columns</p></td>
+<tr class="row-even"><td><p>Group by multiple columns</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Iterate over groups</p></td>
+<tr class="row-odd"><td><p>Iterate over groups</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">group,</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby('c1')</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(group,),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.group_by('c1')</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Iterate over nested groups</p></td>
+<tr class="row-even"><td><p>Iterate over nested groups</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(g1,</span> <span class="pre">g2),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(g1,</span> <span class="pre">g2),</span> <span class="pre">subdf</span> <span class="pre">in</span> <span class="pre">df.groupby(['c1',</span> <span class="pre">'c2'])</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Group by and apply mean¹</p></td>
+<tr class="row-odd"><td><p>Group by and apply mean¹</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1').mean(numeric_only=True)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').mean()</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Group by and apply median to one column</p></td>
+<tr class="row-even"><td><p>Group by and apply median to one column</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].median()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1').median())</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Group by and apply mean to two columns</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')[['q1',</span> <span class="pre">'q2']].median()</span></code></p></td>
+<tr class="row-odd"><td><p>Group by and apply mean to two columns</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')[['q1',</span> <span class="pre">'q2']].mean()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1',</span> <span class="pre">'q2').mean())</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Group by and apply custom func to col²</p></td>
+<tr class="row-even"><td><p>Group by and apply custom func to col²</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].apply(my_fun)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.col('q1').map_elements(my_fun,</span> <span class="pre">return_dtype=float))</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Group by and apply custom func to 2 cols³</p></td>
+<tr class="row-odd"><td><p>Group by and apply custom func to 2 cols³</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')[['q1',</span> <span class="pre">'q2']].apply(my_fun)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.group_by('c1').agg(pl.struct(['q1',</span> <span class="pre">'q2']).map_elements(my_fun,</span> <span class="pre">return_dtype=float))</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Group by and rank within each group</p></td>
+<tr class="row-even"><td><p>Group by and rank within each group</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.groupby('c1')['q1'].rank()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.select(pl.col('q1').rank().over('c1'))</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Convert to tall format</p></td>
+<tr class="row-odd"><td><p>Convert to tall format</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.melt(value_name='value',</span> <span class="pre">var_name='var',</span> <span class="pre">id_vars='id')</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.unpivot(value_name='value',</span> <span class="pre">variable_name='var',</span> <span class="pre">index='id')</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Pivot tall result above</p></td>
+<tr class="row-even"><td><p>Pivot tall result above</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df_tall.pivot(columns='var',</span> <span class="pre">index='id').reset_index()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df_tall.pivot(on='var',</span> <span class="pre">index='id')</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Select columns with string in name</p></td>
+<tr class="row-odd"><td><p>Select columns with string in name</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.filter(regex='q')</span></code> or <code class="docutils literal notranslate"><span class="pre">df[df.columns[df.columns.str.contains('q')]]</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.select(cs.contains('q'))</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Add column of zeros to data frame</p></td>
+<tr class="row-even"><td><p>Add column of zeros to data frame</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(new_col=0)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.lit(0).alias('new_col'))</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Add a Numpy array as column</p></td>
+<tr class="row-odd"><td><p>Add a Numpy array as column</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df['new_col']</span> <span class="pre">=</span> <span class="pre">my_array</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(new_col=my_array)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.Series(my_array).alias('new_col'))</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Multiply two columns; make new column</p></td>
+<tr class="row-even"><td><p>Multiply two columns; make new column</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df['q1q2']</span> <span class="pre">=</span> <span class="pre">df['q1']</span> <span class="pre">*</span> <span class="pre">df['q2']</span></code> or <code class="docutils literal notranslate"><span class="pre">df.assign(q1q2=df['q1']</span> <span class="pre">*</span> <span class="pre">df['q2']</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns((pl.col('q1')</span> <span class="pre">*</span> <span class="pre">pl.col('q2')).alias('q1q2'))</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Apply a function to each row making new col⁴</p></td>
+<tr class="row-odd"><td><p>Apply a function to each row making new col⁴</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.assign(new_col=my_fun)</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.struct(pl.all()).map_elements(my_fun,</span> <span class="pre">return_dtype=float).alias('new_col')</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.with_columns(pl.struct(pl.all()).map_elements(my_fun,</span> <span class="pre">return_dtype=float).alias('new_col'))</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Drop rows with missing data</p></td>
+<tr class="row-even"><td><p>Drop rows with missing data</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.dropna()</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.drop_nulls()</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Sort according to a column</p></td>
+<tr class="row-odd"><td><p>Sort according to a column</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.sort_values(by='i1')</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.sort(by='i1')</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Inner join two data frames⁵</p></td>
+<tr class="row-even"><td><p>Inner join two data frames⁵</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pd.merge(df,</span> <span class="pre">df2,</span> <span class="pre">on=shared_columns)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">df.join(df2,</span> <span class="pre">on=shared_columns)</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Concatenate data frames vertically</p></td>
+<tr class="row-odd"><td><p>Concatenate data frames vertically</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pd.concat((df,</span> <span class="pre">df2))</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pl.concat((df,</span> <span class="pre">df2),</span> <span class="pre">how='diagonal')</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Concatenate data frames horizontally</p></td>
+<tr class="row-even"><td><p>Concatenate data frames horizontally</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pd.concat((df,</span> <span class="pre">df2),</span> <span class="pre">axis=1)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pl.concat((df,</span> <span class="pre">df2),</span> <span class="pre">how='horizontal')</span></code></p></td>
 </tr>
@@ -511,8 +515,8 @@
 <p><strong>Footnotes</strong></p>
 <ol class="arabic simple">
 <li><p>Note that in Pandas, NaNs are omitted from calculations like means. In Polars, NaNs <em>are included</em>, and the result will be NaN. However, <code class="docutils literal notranslate"><span class="pre">null</span></code>s are not included.</p></li>
-<li><p>For Pandas, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take an <code class="docutils literal notranslate"><span class="pre">array_like</span></code> data type (list, Numpy array, Pandas Series, etc.) as input. For Polars, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take a Polars Series as input. A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">np.sum(np.sin(x))</span></code>. A Polars example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">s.exp().sum()</span></code>.</p></li>
-<li><p>For Pandas, the function must take a Pandas DataFrame as an argument. For Polars, it must take a Polars Series with a struct data type. A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">df:</span> <span class="pre">(np.sin(s['q1'])</span> <span class="pre">*</span> <span class="pre">s['q2']).sum()</span></code>. A Polas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">(s.struct.field('q1').sin()</span> <span class="pre">*</span> <span class="pre">s.struct.field('q2')).sum()</span></code></p></li>
+<li><p>For Pandas, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take an <code class="docutils literal notranslate"><span class="pre">array_like</span></code> data type (list, Numpy array, Pandas Series, etc.) as input. For Polars, the function <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take a Polars Series as input. It is wise to specify the data type of the output of the function (shown as <code class="docutils literal notranslate"><span class="pre">float</span></code> in the above example, but can be whatever type <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> returns). A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">np.sum(np.sin(x))</span></code>. A Polars example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">s.exp().sum()</span></code>.</p></li>
+<li><p>For Pandas, the function must take a Pandas DataFrame as an argument. For Polars, it must take a Polars Series with a struct data type. A Pandas example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">df:</span> <span class="pre">(np.sin(s['q1'])</span> <span class="pre">*</span> <span class="pre">s['q2']).sum()</span></code>. A Polars example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">s:</span> <span class="pre">(s.struct.field('q1').sin()</span> <span class="pre">*</span> <span class="pre">s.struct.field('q2')).sum()</span></code></p></li>
 <li><p>For Pandas, <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take as its argument a Pandas Series with an index containing the names of the columns of the original data frame. For Polars, <code class="docutils literal notranslate"><span class="pre">my_fun</span></code> must take as its argument a dictionary with keys given by the names of the columns of the original data frame. The functions may then have the same syntax (though possibly with different type hints). An example: <code class="docutils literal notranslate"><span class="pre">my_fun</span> <span class="pre">=</span> <span class="pre">lambda</span> <span class="pre">r:</span> <span class="pre">r['i1']</span> <span class="pre">*</span> <span class="pre">np.sin(r['q2'])</span></code>. However, note that in Polars, a <code class="docutils literal notranslate"><span class="pre">null</span></code> value is treated as
 <code class="docutils literal notranslate"><span class="pre">None</span></code>, which means you cannot apply a function to it, multiply by it, etc.</p></li>
 <li><p>For Polars, the <code class="docutils literal notranslate"><span class="pre">on</span></code> kwarg for <code class="docutils literal notranslate"><span class="pre">df.join()</span></code> is required. With Pandas, which columns to join on are inferred based on like-names of columns.</p></li>
@@ -520,8 +524,8 @@
 </section>
 <section id="Hierarchical-indexes">
 <h2>Hierarchical indexes<a class="headerlink" href="#Hierarchical-indexes" title="Link to this heading"></a></h2>
-<p>Pandas supports hierarchical indexes, called <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>es. This is not supports by Polars. Polars will not read a CSV file with hierarchical indexes. If you have a data set in a CSV file with hierarchical indexes, you can convert it to a CSV file in tall format where the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> has been converted to columns using the <code class="docutils literal notranslate"><span class="pre">bebi103.utils.unpivot_csv()</span></code> function. This operation is akin to a <code class="docutils literal notranslate"><span class="pre">df.melt()</span></code> operation on a data frame with a hierarchical index. You can then read that CSV
-file into Polars and begin working with it.</p>
+<p>Pandas supports hierarchical indexes, called <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>es. This is not supports by Polars. Polars will not read a CSV file with hierarchical indexes. If you have a data set in a CSV file with hierarchical indexes, you can convert it to a CSV file in tall format where the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> has been converted to columns using the <code class="docutils literal notranslate"><span class="pre">bebi103.utils.unpivot_csv()</span></code> function. This operation is akin to a <code class="docutils literal notranslate"><span class="pre">df.melt()</span></code> operation on a data frame with a hierarchical index. You can then read the
+converted CSV file into Polars and begin working with it.</p>
 </section>
 <section id="Computing-environment">
 <h2>Computing environment<a class="headerlink" href="#Computing-environment" title="Link to this heading"></a></h2>
@@ -540,7 +544,7 @@ file into Polars and begin working with it.</p>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Python implementation: CPython
-Python version       : 3.12.4
+Python version       : 3.12.3
 IPython version      : 8.25.0
 
 numpy     : 1.26.4
@@ -565,11 +569,11 @@ jupyterlab: 4.0.13
 
   <div role="contentinfo">
     <p>
-      <span class="lastupdated">Last updated on Aug 09, 2024.
+      <span class="lastupdated">Last updated on Aug 22, 2024.
       </span></p>
   </div>
 
-   <jinja2.runtime.BlockReference object at 0x13afcc050> 
+   <jinja2.runtime.BlockReference object at 0x12eded190> 
 
 <p>© 2021–2024 Justin Bois. With the exception of pasted graphics, where the source is noted, this work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License CC-BY 4.0</a>. All code contained herein is licensed under an <a rel="license" href="https://opensource.org/licenses/MIT">MIT license</a>.</p>
 
